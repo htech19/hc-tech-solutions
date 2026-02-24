@@ -73,7 +73,7 @@ const ProductsSection = () => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => setSelected(product)}
-                className="bg-card rounded-xl p-5 border-glow cursor-pointer card-interactive group"
+                className="bg-card rounded-xl p-5 border-glow shadow-sm cursor-pointer card-interactive group"
               >
                 <div className="w-full aspect-square rounded-lg bg-muted flex items-center justify-center mb-4 overflow-hidden">
                   <ShoppingBag size={36} className="text-muted-foreground group-hover:text-primary transition-colors" />
@@ -101,7 +101,7 @@ const ProductsSection = () => {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-card rounded-2xl p-6 md:p-8 max-w-md w-full border-glow relative"
+                className="bg-card rounded-2xl p-6 md:p-8 max-w-md w-full shadow-xl border border-border relative"
               >
                 <button
                   onClick={() => setSelected(null)}

@@ -26,8 +26,8 @@ const ServiceCard = ({ icon, title, items, highlighted, badge, index }: ServiceC
     whileInView="visible"
     viewport={{ once: true, margin: "-50px" }}
     variants={fadeUp}
-    className={`relative bg-card rounded-xl p-6 card-interactive ${
-      highlighted ? "border-glow-strong" : "border-glow"
+    className={`relative bg-card rounded-xl p-6 shadow-sm card-interactive ${
+      highlighted ? "border-glow-strong shadow-md" : "border-glow"
     }`}
   >
     {badge && (

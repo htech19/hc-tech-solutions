@@ -22,7 +22,7 @@ const ContactSection = () => {
   };
 
   const inputClasses =
-    "w-full bg-card border-glow rounded-xl py-3 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all";
+    "w-full bg-card border border-border rounded-xl py-3 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm transition-all";
 
   return (
     <section id="contato" className="py-20 md:py-28 bg-muted/30">
