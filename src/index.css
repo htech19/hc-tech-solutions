@@ -6,46 +6,46 @@
 
 @layer base {
   :root {
-    --background: 0 0% 10%;
-    --foreground: 0 0% 95%;
+    --background: 210 20% 96%;
+    --foreground: 220 43% 11%;
 
-    --card: 0 0% 13%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 43% 11%;
 
-    --popover: 0 0% 13%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 43% 11%;
 
     --primary: 153 100% 33%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 120 1% 75%;
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 210 11% 91%;
+    --secondary-foreground: 220 43% 11%;
 
-    --muted: 0 0% 18%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 210 14% 93%;
+    --muted-foreground: 218 11% 46%;
 
-    --accent: 153 80% 25%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 153 80% 95%;
+    --accent-foreground: 153 100% 25%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
     --ring: 153 100% 33%;
 
     --radius: 0.75rem;
 
-    --glow-green: 0 0 20px hsla(153, 100%, 33%, 0.4);
-    --glow-green-strong: 0 0 30px hsla(153, 100%, 33%, 0.6);
+    --glow-green: 0 0 20px hsla(153, 100%, 33%, 0.25);
+    --glow-green-strong: 0 0 30px hsla(153, 100%, 33%, 0.4);
 
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 0 0% 95%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 220 43% 11%;
     --sidebar-primary: 153 100% 33%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 20%;
+    --sidebar-accent: 210 14% 95%;
+    --sidebar-accent-foreground: 220 43% 11%;
+    --sidebar-border: 214 20% 90%;
     --sidebar-ring: 153 100% 33%;
   }
 }
@@ -65,27 +65,27 @@
 
 @layer utilities {
   .glow-green {
-    box-shadow: 0 0 20px hsla(153, 100%, 33%, 0.4);
+    box-shadow: 0 0 20px hsla(153, 100%, 33%, 0.25);
   }
   .glow-green-strong {
-    box-shadow: 0 0 30px hsla(153, 100%, 33%, 0.6);
+    box-shadow: 0 0 30px hsla(153, 100%, 33%, 0.4);
   }
   .glow-green-text {
-    text-shadow: 0 0 20px hsla(153, 100%, 33%, 0.5);
+    text-shadow: 0 0 20px hsla(153, 100%, 33%, 0.3);
   }
   .btn-hover {
     @apply transition-all duration-300 hover:brightness-110 active:scale-95;
   }
   .card-interactive {
-    @apply transition-all duration-300 hover:scale-105 hover:glow-green active:scale-95;
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95;
   }
   .gradient-hero {
-    background: linear-gradient(135deg, hsla(153, 100%, 33%, 0.15) 0%, hsla(0, 0%, 10%, 0.9) 50%, hsla(153, 100%, 33%, 0.1) 100%);
+    background: linear-gradient(135deg, hsla(210, 20%, 96%, 1) 0%, hsla(210, 14%, 93%, 1) 50%, hsla(210, 20%, 91%, 1) 100%);
   }
   .border-glow {
-    border: 1px solid hsla(153, 100%, 33%, 0.3);
+    border: 1px solid hsla(214, 20%, 88%, 1);
   }
   .border-glow-strong {
-    border: 2px solid hsla(153, 100%, 33%, 0.6);
+    border: 2px solid hsla(153, 100%, 33%, 0.5);
   }
 }

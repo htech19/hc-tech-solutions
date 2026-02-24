@@ -52,12 +52,12 @@ const FilmsTable = () => {
               placeholder="Buscar por modelo ou tipo..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-card border-glow rounded-xl py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+              className="w-full bg-card border border-border rounded-xl py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm transition-all"
             />
           </div>
 
           {/* Table */}
-          <div className="rounded-xl border-glow overflow-hidden">
+          <div className="rounded-xl border border-border overflow-hidden shadow-sm bg-card">
             <table className="w-full">
               <thead>
                 <tr className="bg-primary/10">

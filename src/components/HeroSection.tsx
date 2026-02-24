@@ -1,6 +1,5 @@
 import { MessageCircle, FileText } from "lucide-react";
 import { motion } from "framer-motion";
-import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
   return (
@@ -8,13 +7,8 @@ const HeroSection = () => {
       id="inicio"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroBg})` }}
-      />
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-background/60 gradient-hero" />
+      {/* Light gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[hsl(210,20%,96%)] via-[hsl(210,14%,93%)] to-[hsl(210,11%,91%)]" />
 
       <div className="relative z-10 container mx-auto px-4 text-center py-32">
         <motion.h1
@@ -24,8 +18,8 @@ const HeroSection = () => {
           className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 text-foreground"
         >
           Reparos Rápidos em{" "}
-          <span className="text-primary glow-green-text">Celulares</span> e{" "}
-          <span className="text-primary glow-green-text">Notebooks</span> em SP
+          <span className="text-primary">Celulares</span> e{" "}
+          <span className="text-primary">Notebooks</span> em SP
         </motion.h1>
 
         <motion.p
