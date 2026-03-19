@@ -1,4 +1,4 @@
-import { Instagram, MessageCircle, MapPin } from "lucide-react";
+import { Instagram, MessageCircle, MapPin, Store } from "lucide-react";
 
 const Footer = () => (
   <footer className="border-t border-border py-12">
@@ -22,6 +22,15 @@ const Footer = () => (
             aria-label="WhatsApp"
           >
             <MessageCircle size={22} />
+          </a>
+          <a
+            href="https://share.google/Uhrltzw839k8znCNa"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-primary hover:glow-green transition-all duration-300 p-2 rounded-full"
+            aria-label="Loja Google"
+          >
+            <Store size={22} />
           </a>
           <a
             href="https://instagram.com/hctechinfocell"
