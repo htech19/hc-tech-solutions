@@ -24,6 +24,15 @@ const Footer = () => (
             <MessageCircle size={22} />
           </a>
           <a
+            href="https://share.google/Uhrltzw839k8znCNa"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-primary hover:glow-green transition-all duration-300 p-2 rounded-full"
+            aria-label="Loja Google"
+          >
+            <Store size={22} />
+          </a>
+          <a
             href="https://instagram.com/hctechinfocell"
             target="_blank"
             rel="noopener noreferrer"
