@@ -48,13 +48,18 @@
      A imagem fica estática em TODAS as páginas durante qualquer rolagem.
      O overlay rgba no body garante o tom escuro sem sumir a foto.
   ──────────────────────────────────────────────────────────────────────── */
+  html, body, #root {
+    background-color: #1A1A1A !important;
+    color-scheme: dark;
+  }
+
   html {
     scroll-behavior: smooth;
 
-    background-image: url('/hero-bg.jpg');   /* arquivo: public/hero-bg.jpg */
+    background-image: url('/hero-bg.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;            /* ← fixa a imagem no scroll */
+    background-attachment: fixed;
     background-repeat: no-repeat;
   }
 
@@ -64,10 +69,6 @@
     margin: 0;
     min-height: 100vh;
 
-    /* Overlay escuro semitransparente sobre a imagem.
-       Ajuste a opacidade (0.82) conforme necessário:
-       - 0.70 → imagem mais visível
-       - 0.90 → quase sólido, imagem sutil */
     background-color: rgba(18, 18, 18, 0.82);
   }
 
