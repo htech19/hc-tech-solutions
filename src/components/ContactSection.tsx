@@ -26,7 +26,7 @@ const ContactSection = () => {
 
   return (
     <section id="contato" className="py-20 md:py-28 text-secondary-foreground bg-sidebar-foreground">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 bg-popover-foreground">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ const ContactSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-3 text-primary">
             Fale <span className="text-primary">Conosco</span>
           </h2>
-          <p className="text-muted-foreground">Preencha o formulário e envie direto pelo WhatsApp.</p>
+          <p className="text-muted-foreground text-base">Preencha o formulário e envie direto pelo WhatsApp.</p>
         </motion.div>
 
         <motion.form
