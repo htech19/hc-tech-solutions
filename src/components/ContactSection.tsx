@@ -25,7 +25,7 @@ const ContactSection = () => {
   "w-full bg-card border border-border rounded-xl py-3 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm transition-all";
 
   return (
-    <section id="contato" className="py-20 md:py-28 text-secondary-foreground bg-secondary-foreground">
+    <section id="contato" className="py-20 md:py-28 text-secondary-foreground bg-sidebar-foreground">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
