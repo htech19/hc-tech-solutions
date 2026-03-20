@@ -28,7 +28,7 @@ const HeroSection = () => {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
         >
-          Especialistas em Android, iPhone e Reparos Avançados em Placa de
+          Especialistas em Android, iPhone e Reparos em Placa de
           Notebook.
         </motion.p>
 
@@ -46,7 +46,7 @@ const HeroSection = () => {
             Solicitar Orçamento
           </a>
           <a
-            href="https://wa.me/5511999999999?text=Olá! Gostaria de solicitar um orçamento."
+            href="https://wa.me/5511940562933?text=Olá! Gostaria de solicitar um orçamento."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 border border-primary text-primary px-8 py-4 rounded-lg text-base font-semibold btn-hover hover:bg-primary/10"
