@@ -316,7 +316,7 @@ export default function ProductsSection() {
                   </div>
 
                   <a
-                    href={`https://wa.me/5511999999999?text=Olá! Tenho interesse no produto: ${selected.name}`}
+                    href={`https://wa.me/5511940562933?text=Olá! Tenho interesse no produto: ${selected.name}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center w-full py-3 rounded-xl font-bold text-sm transition-all duration-300"
