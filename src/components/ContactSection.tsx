@@ -25,7 +25,7 @@ const ContactSection = () => {
   "w-full bg-card border border-border rounded-xl py-3 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm transition-all";
 
   return (
-    <section id="contato" className="py-20 md:py-28 bg-muted/30 text-secondary-foreground">
+    <section id="contato" className="py-20 md:py-28 text-secondary-foreground bg-secondary-foreground">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -33,7 +33,7 @@ const ContactSection = () => {
           viewport={{ once: true }}
           className="text-center mb-10">
           
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-primary">
             Fale <span className="text-primary">Conosco</span>
           </h2>
           <p className="text-muted-foreground">Preencha o formulário e envie direto pelo WhatsApp.</p>
