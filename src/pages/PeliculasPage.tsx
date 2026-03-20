@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search, Smartphone, ArrowLeft, Cpu, Zap, Instagram, MessageCircle, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { peliculas } from "@/data/peliculas";
@@ -60,6 +60,21 @@ const fadeUp = {
 const PeliculasPage = () => {
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+
+  /* Força fundo escuro no html/body — evita override do tema Tailwind */
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    const prevHtml = root.style.backgroundColor;
+    const prevBody = body.style.backgroundColor;
+    root.style.backgroundColor = "#1A1A1A";
+    body.style.backgroundColor = "#1A1A1A";
+    root.style.colorScheme = "dark";
+    return () => {
+      root.style.backgroundColor = prevHtml;
+      body.style.backgroundColor = prevBody;
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     let list = peliculas;
