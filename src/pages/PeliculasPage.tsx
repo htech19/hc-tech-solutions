@@ -51,7 +51,7 @@ const allBrands = [...new Set(peliculas.map((p) => p.marca))].sort();
 ───────────────────────────────────────────── */
 const fadeUp = {
   hidden:  { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
 };
 
 /* ─────────────────────────────────────────────
@@ -538,7 +538,7 @@ const PeliculasPage = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 {/* Botão primário — WhatsApp */}
                 <a
-                  href="https://wa.me/5511950562933?text=Olá! Preciso de ajuda para encontrar minha película."
+                  href="https://wa.me/5511940562933?text=Olá! Preciso de ajuda para encontrar minha película."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-150 hover:scale-105 active:scale-95"
