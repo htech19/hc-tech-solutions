@@ -35,7 +35,7 @@ const FilmsTable = () => {
             Busca Inteligente I.A.
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-3 text-primary">
-            Tabela de <span className="text-primary glow-green-text">Compatibilidade</span>
+            Tabela de <span className="text-primary glow-green-text">Compatibilidade de Peliculas</span>
           </h2>
           <p className="text-muted-foreground text-sm md:text-base">
             Encontre a película ideal — <span className="text-primary font-semibold">{peliculas.length}+</span> modelos cadastrados.
