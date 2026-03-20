@@ -1,142 +1,200 @@
-import { useState } from "react";
-import { X, Star, Zap, TrendingUp, Smartphone, Shield, Wifi, Headphones, Cable, HardDrive, Monitor, Battery } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { X, Star, Zap, TrendingUp, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// ─── Paleta ───────────────────────────────────────────────
+const C = {
+  bg:      "#1A1A1A",
+  card:    "#212121",
+  card2:   "#2a2a2a",
+  border:  "#333",
+  green:   "#00A651",
+  silver:  "#C0C2C0",
+  white:   "#FFFFFF",
+  muted:   "#666",
+  dim:     "#444",
+};
+
+// ─── Dados ────────────────────────────────────────────────
 const categories = ["Todos","Capas","Películas","Carregadores","Fones","Cabos","Armazenamento","Informática"];
 
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  price: string;
-  oldPrice?: string;
-  description: string;
-  badge?: "top" | "oferta" | "novo";
-  image: string;
-  fallbackGradient: string;
-  CategoryIcon: React.ElementType;
-}
-
-// Imagens via dummyjson CDN (CORS aberto) + fallback com gradiente por categoria
-const IMG = {
-  phone1:   "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20iPhone%2014%20128GB%20Blue/1.webp",
-  phone2:   "https://cdn.dummyjson.com/products/images/smartphones/iPhone%2015%20Pro/1.webp",
-  phone3:   "https://cdn.dummyjson.com/products/images/smartphones/Samsung%20Galaxy%20S21%20Plus/1.webp",
-  head1:    "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20AirPods%20Max%20Silver/1.webp",
-  head2:    "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20Airpods/1.webp",
-  laptop1:  "https://cdn.dummyjson.com/products/images/laptops/Apple%20MacBook%20Pro%2014%20Inch%20Space%20Grey/1.webp",
-  laptop2:  "https://cdn.dummyjson.com/products/images/laptops/Asus%20Zenbook%20Pro%20Dual%20OLED%20UX8402/1.webp",
-  tablet1:  "https://cdn.dummyjson.com/products/images/tablets/Apple%20iPad%20Air%205%20Purple/1.webp",
-  watch1:   "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20Watch%20SE/1.webp",
-  power1:   "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20USB-C%20Charge%20Cable%20(1%20m)/1.webp",
-  power2:   "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20MagSafe%20Battery%20Pack/1.webp",
-  power3:   "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%2020W%20USB-C%20Power%20Adapter/1.webp",
-  case1:    "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20iPhone%2014%20Pro%20Case/1.webp",
-  watch2:   "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20Watch%20Series%208/1.webp",
-  mouse1:   "https://cdn.dummyjson.com/products/images/laptops/Huawei%20Matebook%20X%20Pro/1.webp",
-};
-
-const GREEN = "#00A651";
-const SILVER = "#C0C2C0";
-
-const products: Product[] = [
+const products = [
   // CAPAS
-  { id:1,  name:"Capa Anti-Impacto Samsung Galaxy A55", category:"Capas", price:"R$ 34,90", oldPrice:"R$ 49,90", badge:"top",    description:"Proteção militar grau A com bordas elevadas. Material TPU reforçado, compatível com carregamento sem fio.", image:IMG.case1,   fallbackGradient:"linear-gradient(135deg,#1f2a1f,#0d1a0d)", CategoryIcon:Shield },
-  { id:2,  name:"Capa MagSafe iPhone 15 Pro",            category:"Capas", price:"R$ 79,90",                      badge:"novo",   description:"Anel MagSafe integrado. Silicone premium com interior de microfibra. Compatível com todos acessórios magnéticos.", image:IMG.phone2, fallbackGradient:"linear-gradient(135deg,#1a1f1a,#0a1a10)", CategoryIcon:Shield },
-  { id:3,  name:"Capa Transparente Redmi Note 13",       category:"Capas", price:"R$ 24,90", oldPrice:"R$ 39,90", badge:"oferta", description:"Anti-amarelamento com reforço nas quinas. Exibe o design original sem perder a proteção.", image:IMG.phone3,  fallbackGradient:"linear-gradient(135deg,#1a1a2a,#0d0d1a)", CategoryIcon:Shield },
-  { id:4,  name:"Capa Carteira Motorola Moto G84",       category:"Capas", price:"R$ 54,90",                                      description:"Flip com compartimentos para cartões e dinheiro. Couro sintético premium com fechamento magnético.", image:IMG.phone1,  fallbackGradient:"linear-gradient(135deg,#2a1a0a,#1a0d00)", CategoryIcon:Shield },
-  { id:5,  name:"Capa Silicone iPhone 14",               category:"Capas", price:"R$ 44,90",                      badge:"top",    description:"Silicone líquido com interior de microfibra. Toque aveludado e bordas elevadas. Compatível com MagSafe.", image:IMG.phone2, fallbackGradient:"linear-gradient(135deg,#1a1f1a,#0a1a10)", CategoryIcon:Shield },
-
+  { id:1,  name:"Capa Anti-Impacto Samsung A55",      category:"Capas",        price:"R$ 34,90", oldPrice:"R$ 49,90", badge:"top",    desc:"Proteção militar grau A, bordas elevadas, TPU reforçado, compatível com carregamento sem fio.",        svgPrompt:"draw a dark smartphone protective case product, solid matte black material with green accent corners, top-down view, minimalist tech product photo style, dark background" },
+  { id:2,  name:"Capa MagSafe iPhone 15 Pro",         category:"Capas",        price:"R$ 79,90",                      badge:"novo",   desc:"Anel MagSafe integrado, silicone premium, microfibra interna, compatível com todos acessórios Apple.",  svgPrompt:"draw a premium silicone iPhone case with magnetic ring visible, sleek black with subtle green glow, product photography style, dark background" },
+  { id:3,  name:"Capa Transparente Redmi Note 13",    category:"Capas",        price:"R$ 24,90", oldPrice:"R$ 39,90", badge:"oferta", desc:"Anti-amarelamento, reforço nas quinas, exibe o design original do aparelho sem perder proteção.",       svgPrompt:"draw a transparent clear phone case product, showing phone outline inside, modern tech product style, dark background with subtle light reflection" },
+  { id:4,  name:"Capa Carteira Moto G84",             category:"Capas",        price:"R$ 54,90",                                      desc:"Flip com compartimentos para cartões, couro sintético premium, fechamento magnético.",                   svgPrompt:"draw a leather wallet flip phone case, dark brown leather texture, card slots visible, closed position, product photo dark background" },
   // PELÍCULAS
-  { id:6,  name:"Película 3D Vidro Samsung S24",          category:"Películas", price:"R$ 39,90", oldPrice:"R$ 59,90", badge:"top",    description:"Cobertura total 3D com cola UV. Dureza 9H, oleofóbica. Kit completo com aplicador e guia de posição.", image:IMG.phone3,  fallbackGradient:"linear-gradient(135deg,#001a0d,#002a14)", CategoryIcon:Smartphone },
-  { id:7,  name:"Película Hidrogel iPhone 15 Pro Max",    category:"Películas", price:"R$ 34,90",                                       description:"Flexível com auto-regeneração de microarranhões. Instalação sem bolhas com guia posicionador.", image:IMG.phone2,  fallbackGradient:"linear-gradient(135deg,#1a1a0d,#2a2a00)", CategoryIcon:Smartphone },
-  { id:8,  name:"Película Privacidade 180° Redmi Note 13",category:"Películas", price:"R$ 44,90",                      badge:"novo",   description:"Bloqueia visão lateral em 180°. Ideal para transporte público e ambientes corporativos. Dureza 9H.", image:IMG.phone1,  fallbackGradient:"linear-gradient(135deg,#1a001a,#2a002a)", CategoryIcon:Smartphone },
-  { id:9,  name:"Película Cerâmica Fosca Moto G73",       category:"Películas", price:"R$ 27,90", oldPrice:"R$ 39,90", badge:"oferta", description:"Acabamento fosco anti-reflexo. Reduz marcas de dedos. Excelente para jogos e digitação intensa.", image:IMG.phone3,  fallbackGradient:"linear-gradient(135deg,#1a0d00,#2a1400)", CategoryIcon:Smartphone },
-
+  { id:5,  name:"Película 3D Vidro Samsung S24",      category:"Películas",    price:"R$ 39,90", oldPrice:"R$ 59,90", badge:"top",    desc:"Cobertura total 3D, cola UV, dureza 9H, oleofóbica, kit completo com aplicador incluso.",               svgPrompt:"draw a tempered glass screen protector product, floating on dark background, glass reflection visible, 9H hardness label, tech product style" },
+  { id:6,  name:"Película Hidrogel iPhone 15 Pro Max",category:"Películas",    price:"R$ 34,90",                      badge:"novo",   desc:"Flexível com auto-regeneração de microarranhões, instalação sem bolhas, guia posicionador.",             svgPrompt:"draw a hydrogel flexible screen protector, semi-transparent, floating, showing flexibility, dark tech product background" },
+  { id:7,  name:"Película Privacidade 180°",          category:"Películas",    price:"R$ 44,90",                                      desc:"Bloqueia visão lateral em 180°, ideal para transporte público e uso corporativo, dureza 9H.",            svgPrompt:"draw a privacy screen protector product, showing blocked side view angles with dark gradient, smartphone screen visible only from front, dark background" },
+  { id:8,  name:"Película Cerâmica Fosca Moto G73",   category:"Películas",    price:"R$ 27,90", oldPrice:"R$ 39,90", badge:"oferta", desc:"Acabamento fosco anti-reflexo, reduz marcas de dedos, excelente para jogos e digitação.",               svgPrompt:"draw a matte ceramic screen protector, soft matte finish texture, dark grey product on dark background, minimal tech product photography" },
   // CARREGADORES
-  { id:10, name:"Carregador GaN 65W 3 Portas",        category:"Carregadores", price:"R$ 129,90", oldPrice:"R$ 189,90", badge:"top",    description:"Tecnologia GaN compacta: 2x USB-C + 1x USB-A. Carrega notebook, celular e tablet simultaneamente.", image:IMG.power3, fallbackGradient:"linear-gradient(135deg,#001a08,#003314)", CategoryIcon:Battery },
-  { id:11, name:"Carregador Turbo 67W Xiaomi",        category:"Carregadores", price:"R$ 89,90",                                        description:"Turbo 67W para Xiaomi, Redmi e POCO. Zero a 100% em apenas 40 minutos. Proteção múltipla.", image:IMG.power3, fallbackGradient:"linear-gradient(135deg,#1a0000,#330000)", CategoryIcon:Battery },
-  { id:12, name:"Carregador Veicular 45W USB-C",      category:"Carregadores", price:"R$ 54,90",  oldPrice:"R$ 79,90",  badge:"oferta", description:"Power Delivery 45W. USB-C + USB-A simultâneos. Proteção inteligente contra sobrecarga e superaquecimento.", image:IMG.power1, fallbackGradient:"linear-gradient(135deg,#001a1a,#003333)", CategoryIcon:Battery },
-  { id:13, name:"Base Carregamento Sem Fio 15W Qi2",  category:"Carregadores", price:"R$ 99,90",                        badge:"novo",   description:"Qi2 15W compatível com iPhone MagSafe e qualquer Android Qi. LED indicador de status de carga.", image:IMG.power2, fallbackGradient:"linear-gradient(135deg,#0d001a,#1a0033)", CategoryIcon:Battery },
-  { id:14, name:"Powerbank 20000mAh 22.5W PD",        category:"Carregadores", price:"R$ 149,90",                       badge:"top",    description:"20000mAh com Power Delivery 22.5W. 2x USB-A + USB-C + Micro-USB. Carrega notebooks slim.", image:IMG.power2, fallbackGradient:"linear-gradient(135deg,#001a0d,#002a14)", CategoryIcon:Battery },
-
+  { id:9,  name:"Carregador GaN 65W 3 Portas",        category:"Carregadores", price:"R$ 129,90",oldPrice:"R$ 189,90",badge:"top",    desc:"GaN compacto, 2× USB-C + 1× USB-A, carrega notebook + celular + tablet ao mesmo tempo.",              svgPrompt:"draw a compact GaN USB-C charger adapter product, white cube shape with 3 ports visible, green LED indicator, dark background product photo" },
+  { id:10, name:"Carregador Turbo 67W Xiaomi",        category:"Carregadores", price:"R$ 89,90",                                      desc:"Turbo 67W para Xiaomi, Redmi e POCO, de 0 a 100% em apenas 40 minutos.",                               svgPrompt:"draw a fast charging USB-C power adapter, compact rectangular shape, glowing orange speed indicator, dark product background" },
+  { id:11, name:"Carregador Veicular 45W USB-C",      category:"Carregadores", price:"R$ 54,90", oldPrice:"R$ 79,90", badge:"oferta", desc:"Power Delivery 45W, USB-C + USB-A simultâneos, proteção contra sobrecarga e superaquecimento.",        svgPrompt:"draw a car USB-C charger adapter, cylindrical metallic design, glowing green LED, dark product photo background" },
+  { id:12, name:"Base Sem Fio 15W Qi2",               category:"Carregadores", price:"R$ 99,90",                      badge:"novo",   desc:"Qi2 15W, compatível com iPhone MagSafe e Android, LED indicador de status.",                           svgPrompt:"draw a wireless charging pad, circular flat design, green LED ring glow, smartphone silhouette charging on top, dark background" },
+  { id:13, name:"Powerbank 20000mAh 22.5W PD",        category:"Carregadores", price:"R$ 149,90",                     badge:"top",    desc:"20000mAh com PD 22.5W, 2× USB-A + USB-C + Micro-USB, carrega notebooks slim.",                         svgPrompt:"draw a large power bank battery pack, rectangular matte black design, multiple ports, LED battery indicator, dark tech product background" },
   // FONES
-  { id:15, name:"Fone TWS ANC Bluetooth 5.3",   category:"Fones", price:"R$ 189,90", oldPrice:"R$ 259,90", badge:"top",    description:"Cancelamento ativo de ruído com modo transparência. Driver 12mm com graves potentes. 36h de bateria total.", image:IMG.head2,  fallbackGradient:"linear-gradient(135deg,#001a1a,#003333)", CategoryIcon:Headphones },
-  { id:16, name:"Fone Over-Ear ANC Premium",    category:"Fones", price:"R$ 349,90",                       badge:"novo",   description:"Over-ear com ANC adaptativo de alta precisão. Almofadas memory foam. Até 40h de reprodução contínua.", image:IMG.head1,  fallbackGradient:"linear-gradient(135deg,#1a1a00,#2a2a00)", CategoryIcon:Headphones },
-  { id:17, name:"Headset Gamer USB 7.1 Surround",category:"Fones", price:"R$ 159,90",                                     description:"Surround 7.1 virtual. Microfone retrátil com cancelamento de ruído. Almofadas memory foam ultra-macias.", image:IMG.head1,  fallbackGradient:"linear-gradient(135deg,#1a0000,#330a0a)", CategoryIcon:Headphones },
-  { id:18, name:"Fone com Fio USB-C Hi-Fi",     category:"Fones", price:"R$ 49,90",                       badge:"oferta", description:"DAC integrado USB-C. Frequência 20Hz–20kHz. Driver 10mm com graves encorpados e alta fidelidade.", image:IMG.head2,  fallbackGradient:"linear-gradient(135deg,#0d1a0d,#1a2a1a)", CategoryIcon:Headphones },
-
+  { id:14, name:"Fone TWS ANC Bluetooth 5.3",         category:"Fones",        price:"R$ 189,90",oldPrice:"R$ 259,90",badge:"top",    desc:"ANC com modo transparência, driver 12mm com graves potentes, 36h de bateria total com estojo.",         svgPrompt:"draw premium wireless earbuds with charging case open, white earbuds with green accent, dark background product photography" },
+  { id:15, name:"Fone Over-Ear ANC Premium",          category:"Fones",        price:"R$ 349,90",                     badge:"novo",   desc:"Over-ear com ANC adaptativo, almofadas memory foam, até 40h de reprodução contínua.",                   svgPrompt:"draw premium over-ear headphones, matte black design, cushioned ear cups, folded compact position, dark background product photo" },
+  { id:16, name:"Headset Gamer USB 7.1 Surround",     category:"Fones",        price:"R$ 159,90",                                     desc:"Surround 7.1 virtual, microfone retrátil com ANC, almofadas memory foam ultra-macias.",                 svgPrompt:"draw a gaming headset with RGB lighting, large ear cups, retractable microphone, matte black with green RGB accent, dark background" },
+  { id:17, name:"Fone com Fio USB-C Hi-Fi",           category:"Fones",        price:"R$ 49,90",                      badge:"oferta", desc:"DAC integrado USB-C, frequência 20Hz–20kHz, driver 10mm com graves encorpados.",                        svgPrompt:"draw wired in-ear earphones with USB-C connector, black cable, ear tips displayed, minimal product photography dark background" },
   // CABOS
-  { id:19, name:"Cabo USB-C 100W 2m Nylon Trançado", category:"Cabos", price:"R$ 49,90", oldPrice:"R$ 69,90", badge:"top",    description:"100W com revestimento nylon premium. Suporta carga rápida e transferência de dados em 480Mbps.", image:IMG.power1, fallbackGradient:"linear-gradient(135deg,#001a08,#003314)", CategoryIcon:Cable },
-  { id:20, name:"Cabo Lightning MFi 1m Apple",       category:"Cabos", price:"R$ 59,90",                                     description:"Certificado MFi pela Apple. Carregamento rápido para todos os iPhones. Revestimento PVC reforçado.", image:IMG.power1, fallbackGradient:"linear-gradient(135deg,#1a1a1a,#2a2a2a)", CategoryIcon:Cable },
-  { id:21, name:"Cabo Magnético 3 em 1 240W",        category:"Cabos", price:"R$ 79,90",                     badge:"novo",   description:"240W com pontas intercambiáveis USB-C, Lightning e Micro-USB. LED indicador de carga ativo.", image:IMG.power1, fallbackGradient:"linear-gradient(135deg,#1a000d,#2a0014)", CategoryIcon:Cable },
-  { id:22, name:"Cabo HDMI 2.1 8K 2m",              category:"Cabos", price:"R$ 89,90",                     badge:"oferta", description:"8K@60Hz e 4K@120Hz. Ideal para PS5, Xbox Series X e monitores gaming de alta taxa de atualização.", image:IMG.power1, fallbackGradient:"linear-gradient(135deg,#00001a,#00002a)", CategoryIcon:Cable },
-
+  { id:18, name:"Cabo USB-C 100W 2m Nylon",           category:"Cabos",        price:"R$ 49,90", oldPrice:"R$ 69,90", badge:"top",    desc:"100W, revestimento nylon premium, carga rápida + transferência 480Mbps, durável e flexível.",           svgPrompt:"draw a braided nylon USB-C cable coiled neatly, dark background, showing both USB-C connectors, premium product photo style" },
+  { id:19, name:"Cabo Lightning MFi 1m Apple",        category:"Cabos",        price:"R$ 59,90",                                      desc:"Certificado MFi Apple, carregamento rápido para todos os iPhones, PVC reforçado.",                      svgPrompt:"draw an Apple Lightning cable coiled, white cable on dark background, showing Lightning and USB-A connectors, product photography" },
+  { id:20, name:"Cabo Magnético 3 em 1 240W",         category:"Cabos",        price:"R$ 79,90",                      badge:"novo",   desc:"240W com pontas intercambiáveis USB-C + Lightning + Micro-USB, LED indicador de carga.",               svgPrompt:"draw a magnetic charging cable with 3 interchangeable tips floating, LED light on connector, dark tech product background" },
+  { id:21, name:"Cabo HDMI 2.1 8K 2m",               category:"Cabos",        price:"R$ 89,90",                      badge:"oferta", desc:"8K@60Hz e 4K@120Hz, ideal para PS5, Xbox Series X e monitores gaming de alta taxa de atualização.",     svgPrompt:"draw a premium HDMI cable with gold-plated connectors, dark braided cable coiled, showing 8K label badge, dark product background" },
   // ARMAZENAMENTO
-  { id:23, name:"Cartão MicroSD 256GB A2 V30 Samsung", category:"Armazenamento", price:"R$ 99,90",  oldPrice:"R$ 149,90", badge:"top",    description:"Classe A2 V30, leitura 160MB/s e gravação 120MB/s. Para fotos em 4K, jogos e apps exigentes.", image:IMG.tablet1, fallbackGradient:"linear-gradient(135deg,#001a0d,#003322)", CategoryIcon:HardDrive },
-  { id:24, name:"Pen Drive 128GB USB 3.2 Kingston",    category:"Armazenamento", price:"R$ 44,90",                                        description:"USB 3.2 Gen 1, leitura até 200MB/s. Carcaça metálica resistente. Compacto e durável.", image:IMG.tablet1, fallbackGradient:"linear-gradient(135deg,#1a1a00,#2a2a00)", CategoryIcon:HardDrive },
-  { id:25, name:"SSD Externo Portátil 1TB USB-C",      category:"Armazenamento", price:"R$ 299,90",                        badge:"novo",   description:"Leitura 1050MB/s e gravação 1000MB/s. Resistente a quedas. Compacto 8x4cm. USB-C reversível.", image:IMG.tablet1, fallbackGradient:"linear-gradient(135deg,#001a1a,#002a2a)", CategoryIcon:HardDrive },
-  { id:26, name:"Hub USB-C 8 em 1 HDMI 4K",           category:"Armazenamento", price:"R$ 149,90", oldPrice:"R$ 199,90", badge:"oferta", description:"HDMI 4K + 3x USB-A 3.0 + PD 100W + SD + MicroSD + Ethernet Gigabit. Para notebooks e iPads.", image:IMG.tablet1, fallbackGradient:"linear-gradient(135deg,#1a000d,#2a0019)", CategoryIcon:HardDrive },
-
+  { id:22, name:"Cartão MicroSD 256GB Samsung",       category:"Armazenamento",price:"R$ 99,90", oldPrice:"R$ 149,90",badge:"top",    desc:"A2 V30, leitura 160MB/s, gravação 120MB/s, para fotos 4K, jogos e apps exigentes.",                    svgPrompt:"draw a microSD memory card product, Samsung brand look, 256GB label, tiny card on dark background with subtle glow, tech product style" },
+  { id:23, name:"Pen Drive 128GB USB 3.2 Kingston",   category:"Armazenamento",price:"R$ 44,90",                                      desc:"USB 3.2 Gen 1, leitura 200MB/s, carcaça metálica resistente, compacto e durável.",                      svgPrompt:"draw a metallic USB flash drive, 128GB, cap removed showing connector, silver metallic finish, dark product photo background" },
+  { id:24, name:"SSD Externo Portátil 1TB USB-C",     category:"Armazenamento",price:"R$ 299,90",                     badge:"novo",   desc:"Leitura 1050MB/s, gravação 1000MB/s, resistente a quedas, compacto 8×4cm.",                            svgPrompt:"draw a portable external SSD drive, slim rectangular matte black design, USB-C port visible, 1TB label, dark tech background" },
+  { id:25, name:"Hub USB-C 8 em 1 HDMI 4K",          category:"Armazenamento",price:"R$ 149,90",oldPrice:"R$ 199,90",badge:"oferta", desc:"HDMI 4K + 3× USB-A + PD 100W + SD + MicroSD + Ethernet Gigabit, para notebooks e iPads.",              svgPrompt:"draw a USB-C hub adapter with multiple ports, slim aluminum design, showing all ports labeled, dark product background" },
   // INFORMÁTICA
-  { id:27, name:"Mouse Sem Fio Silencioso 2.4GHz",    category:"Informática", price:"R$ 59,90",                        badge:"top",    description:"Clique silencioso com receptor nano USB. DPI 800/1200/1600 ajustável. Bateria AA dura 12 meses.", image:IMG.laptop2, fallbackGradient:"linear-gradient(135deg,#001a08,#003314)", CategoryIcon:Monitor },
-  { id:28, name:"Teclado Mecânico TKL RGB ABNT2",     category:"Informática", price:"R$ 219,90", oldPrice:"R$ 289,90", badge:"oferta", description:"Switches Red lineares, retroiluminação RGB por tecla. Cabo USB-C removível. Layout ABNT2 completo.", image:IMG.laptop1, fallbackGradient:"linear-gradient(135deg,#1a0000,#330000)", CategoryIcon:Monitor },
-  { id:29, name:"Webcam Full HD 1080p 60fps",         category:"Informática", price:"R$ 189,90",                       badge:"novo",   description:"1080p a 60fps com microfone estéreo ANC. Auto-foco rápido e correção automática de iluminação.", image:IMG.laptop2, fallbackGradient:"linear-gradient(135deg,#001a1a,#003333)", CategoryIcon:Monitor },
-  { id:30, name:"Roteador Wi-Fi 6 AX3000 Dual Band",  category:"Informática", price:"R$ 329,90",                       badge:"top",    description:"Wi-Fi 6 AX3000 com OFDMA e MU-MIMO. Alcance de 200m². 4 antenas externas, porta WAN Gigabit.", image:IMG.laptop1, fallbackGradient:"linear-gradient(135deg,#000d1a,#001a33)", CategoryIcon:Wifi },
-  { id:31, name:"Suporte Notebook Alumínio Ajustável",category:"Informática", price:"R$ 89,90",  oldPrice:"R$ 119,90", badge:"oferta", description:"6 alturas ajustáveis em alumínio aeronáutico. Ventilação integrada reduz temperatura em até 4°C.", image:IMG.laptop2, fallbackGradient:"linear-gradient(135deg,#1a1a1a,#2a2a2a)", CategoryIcon:Monitor },
+  { id:26, name:"Mouse Sem Fio Silencioso 2.4GHz",    category:"Informática",  price:"R$ 59,90",                      badge:"top",    desc:"Clique silencioso, receptor nano USB, DPI 800/1200/1600 ajustável, bateria AA dura 12 meses.",           svgPrompt:"draw a sleek wireless computer mouse, matte black design, side view, subtle green LED DPI indicator, dark background product photo" },
+  { id:27, name:"Teclado Mecânico TKL RGB ABNT2",     category:"Informática",  price:"R$ 219,90",oldPrice:"R$ 289,90",badge:"oferta", desc:"Switches Red lineares, RGB por tecla, cabo USB-C removível, layout ABNT2 completo.",                   svgPrompt:"draw a compact TKL mechanical keyboard, RGB backlit keys, dark background, top-down slightly angled view, premium product photography" },
+  { id:28, name:"Webcam Full HD 1080p 60fps",         category:"Informática",  price:"R$ 189,90",                     badge:"novo",   desc:"1080p a 60fps, microfone estéreo ANC, auto-foco rápido, correção automática de iluminação.",            svgPrompt:"draw a premium webcam mounted on monitor, sleek cylindrical black design, front view showing lens, dark background" },
+  { id:29, name:"Roteador Wi-Fi 6 AX3000 Dual Band",  category:"Informática",  price:"R$ 329,90",                     badge:"top",    desc:"OFDMA + MU-MIMO, alcance de 200m², 4 antenas externas, porta WAN Gigabit.",                            svgPrompt:"draw a modern Wi-Fi 6 router with 4 antennas, dark matte design, green LED status lights, dark background product photo" },
+  { id:30, name:"Suporte Notebook Alumínio",          category:"Informática",  price:"R$ 89,90", oldPrice:"R$ 119,90",badge:"oferta", desc:"6 alturas ajustáveis, alumínio aeronáutico, ventilação integrada, reduz temperatura em até 4°C.",       svgPrompt:"draw an aluminum laptop stand, adjustable height, silver metallic finish, ventilation slots visible, dark background product photo" },
 ];
 
-const badgeConfig = {
-  top:    { label:"Mais Vendido", icon:TrendingUp, bg:"rgba(0,166,81,0.15)",  border:"rgba(0,166,81,0.4)",  text:"#00A651" },
-  oferta: { label:"Oferta",       icon:Zap,        bg:"rgba(220,38,38,0.15)", border:"rgba(220,38,38,0.4)", text:"#ef4444" },
-  novo:   { label:"Novo",         icon:Star,       bg:"rgba(192,194,192,0.15)",border:"rgba(192,194,192,0.4)",text:"#C0C2C0" },
+const badgeConfig: Record<string,{label:string,icon:any,bg:string,border:string,text:string}> = {
+  top:    { label:"+ Vendido", icon:TrendingUp, bg:"rgba(0,166,81,.18)",  border:"rgba(0,166,81,.5)",   text:"#00A651" },
+  oferta: { label:"Oferta",    icon:Zap,        bg:"rgba(220,38,38,.18)", border:"rgba(220,38,38,.5)",  text:"#f87171" },
+  novo:   { label:"Novo",      icon:Star,       bg:"rgba(192,194,192,.15)",border:"rgba(192,194,192,.4)",text:"#C0C2C0" },
 };
 
-export default function ProductsSection() {
-  const [filter, setFilter] = useState("Todos");
-  const [selected, setSelected] = useState<Product | null>(null);
-  const [imgErrors, setImgErrors] = useState<Record<number, boolean>>({});
+// ─── Componente de imagem gerada via IA ───────────────────
+function AIProductImage({ product, size="full" }: { product: any, size?: "card"|"full" }) {
+  const [svgContent, setSvgContent] = useState<string|null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const generated = useRef(false);
 
-  const filtered = filter === "Todos" ? products : products.filter((p) => p.category === filter);
-  const handleImgError = (id: number) => setImgErrors((prev) => ({ ...prev, [id]: true }));
+  useEffect(() => {
+    if (generated.current) return;
+    generated.current = true;
+    setLoading(true);
+
+    const systemPrompt = `You are an SVG product illustration artist. Create beautiful, realistic-looking SVG product illustrations for a dark-themed tech store.
+Rules:
+- Return ONLY raw SVG code, nothing else, no markdown, no explanation
+- SVG must be exactly: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">...</svg>
+- Use dark backgrounds (#1a1a1a, #111, #222)
+- Use #00A651 green as accent/glow color
+- Make it look like a real product photo: centered object, subtle shadows, slight glow
+- Use gradients, shadows and highlights to make it look 3D and photorealistic
+- Keep shapes clean and recognizable
+- No text labels inside the SVG`;
+
+    const userPrompt = `Create an SVG product illustration: ${product.svgPrompt}. Category: ${product.category}. Make it look premium, dark background, green (#00A651) accent lighting.`;
+
+    fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userPrompt }],
+      }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        const text = data?.content?.[0]?.text || "";
+        const match = text.match(/<svg[\s\S]*<\/svg>/i);
+        if (match) {
+          setSvgContent(match[0]);
+        } else {
+          setError(true);
+        }
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const containerStyle: React.CSSProperties = {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "#161616",
+    position: "relative",
+    overflow: "hidden",
+  };
+
+  if (loading) return (
+    <div style={containerStyle}>
+      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10 }}>
+        {/* Spinner */}
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#333" strokeWidth="3"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#00A651" strokeWidth="3"
+            strokeDasharray="22 66" strokeLinecap="round">
+            <animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="0.9s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+        <span style={{ color:"#444", fontSize:"10px", letterSpacing:"0.1em" }}>GERANDO</span>
+      </div>
+    </div>
+  );
+
+  if (error || !svgContent) return (
+    <div style={{ ...containerStyle, background:"#161616" }}>
+      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:8 }}>
+        <ShoppingBag size={32} style={{ color:"#00A651", opacity:0.6 }} />
+        <span style={{ color:"#444", fontSize:"10px" }}>{product.category}</span>
+      </div>
+    </div>
+  );
 
   return (
-    <section
-      id="produtos"
-      style={{ background: "#1A1A1A" }}
-      className="py-20 md:py-28"
-    >
-      <div className="container mx-auto px-4">
+    <div style={containerStyle}>
+      <div
+        style={{ width:"100%", height:"100%" }}
+        dangerouslySetInnerHTML={{ __html: svgContent
+          .replace(/<svg/, '<svg style="width:100%;height:100%"') }}
+      />
+    </div>
+  );
+}
+
+// ─── Seção principal ──────────────────────────────────────
+export default function ProductsSection() {
+  const [filter, setFilter] = useState("Todos");
+  const [selected, setSelected] = useState<any|null>(null);
+
+  const filtered = filter === "Todos" ? products : products.filter(p => p.category === filter);
+
+  return (
+    <section id="produtos" style={{ background:C.bg, padding:"80px 0" }}>
+      <div style={{ maxWidth:1280, margin:"0 auto", padding:"0 20px" }}>
+
         {/* Header */}
-        <motion.div
-          initial={{ opacity:0, y:20 }}
-          whileInView={{ opacity:1, y:0 }}
-          viewport={{ once:true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color:"#fff" }}>
-            <span style={{ color:"#00A651" }}>Produtos</span>{" "}
-            <span style={{ color:"#C0C2C0" }}>& Acessórios</span>
+        <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
+          style={{ textAlign:"center", marginBottom:48 }}>
+          <h2 style={{ fontSize:"clamp(28px,4vw,42px)", fontWeight:800, margin:"0 0 10px",
+            background:`linear-gradient(90deg, ${C.white} 40%, ${C.green})`,
+            WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+            Produtos & Acessórios
           </h2>
-          <p style={{ color:"#888" }}>Os mais buscados do mercado — preços imbatíveis.</p>
+          <p style={{ color:C.muted, fontSize:15 }}>Os mais buscados do mercado — imagens geradas por IA ✦</p>
         </motion.div>
 
         {/* Filtros */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {categories.map((cat) => {
+        <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:8, marginBottom:40 }}>
+          {categories.map(cat => {
             const active = filter === cat;
             return (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                style={{
-                  background: active ? "#00A651" : "transparent",
-                  color: active ? "#fff" : "#C0C2C0",
-                  border: `1.5px solid ${active ? "#00A651" : "#C0C2C0"}`,
-                  boxShadow: active ? "0 0 12px rgba(0,166,81,0.5)" : "none",
-                }}
-                className="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 active:scale-95"
-              >
+              <button key={cat} onClick={() => setFilter(cat)} style={{
+                padding:"7px 18px", borderRadius:99, fontSize:13, fontWeight:600, cursor:"pointer",
+                background: active ? C.green : "transparent",
+                color: active ? "#fff" : C.silver,
+                border: `1.5px solid ${active ? C.green : C.dim}`,
+                boxShadow: active ? `0 0 14px rgba(0,166,81,.5)` : "none",
+                transition:"all .25s",
+              }}>
                 {cat}
               </button>
             );
@@ -144,86 +202,55 @@ export default function ProductsSection() {
         </div>
 
         {/* Grid */}
-        <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <motion.div layout style={{
+          display:"grid",
+          gridTemplateColumns:"repeat(auto-fill, minmax(200px, 1fr))",
+          gap:16,
+        }}>
           <AnimatePresence mode="popLayout">
-            {filtered.map((product) => {
+            {filtered.map(product => {
               const badge = product.badge ? badgeConfig[product.badge] : null;
               const BadgeIcon = badge?.icon;
-              const hasErr = imgErrors[product.id];
-              const Icon = product.CategoryIcon;
-
               return (
-                <motion.div
-                  key={product.id}
-                  layout
-                  initial={{ opacity:0, scale:0.92 }}
-                  animate={{ opacity:1, scale:1 }}
-                  exit={{ opacity:0, scale:0.92 }}
-                  transition={{ duration:0.22 }}
+                <motion.div key={product.id} layout
+                  initial={{opacity:0,scale:.93}} animate={{opacity:1,scale:1}} exit={{opacity:0,scale:.93}}
+                  transition={{duration:.2}}
                   onClick={() => setSelected(product)}
-                  className="cursor-pointer group relative overflow-hidden"
+                  whileHover={{ y:-3, boxShadow:`0 8px 28px rgba(0,166,81,.22)` }}
                   style={{
-                    background:"#242424",
-                    border:"1px solid #333",
-                    borderRadius:"14px",
-                    transition:"border-color 0.3s, box-shadow 0.3s",
-                  }}
-                  whileHover={{
-                    borderColor:"#00A651",
-                    boxShadow:"0 0 18px rgba(0,166,81,0.25)",
+                    background:C.card, borderRadius:14, overflow:"hidden",
+                    border:`1px solid ${C.border}`, cursor:"pointer", position:"relative",
+                    transition:"border-color .25s",
                   }}
                 >
                   {/* Badge */}
                   {badge && BadgeIcon && (
-                    <span
-                      className="absolute top-2 right-2 z-10 flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
-                      style={{ background:badge.bg, border:`1px solid ${badge.border}`, color:badge.text }}
-                    >
-                      <BadgeIcon size={9} />
-                      {badge.label}
-                    </span>
+                    <div style={{
+                      position:"absolute", top:8, right:8, zIndex:2,
+                      display:"flex", alignItems:"center", gap:4,
+                      padding:"3px 8px", borderRadius:99, fontSize:10, fontWeight:700,
+                      background:badge.bg, border:`1px solid ${badge.border}`, color:badge.text,
+                    }}>
+                      <BadgeIcon size={9}/>{badge.label}
+                    </div>
                   )}
 
-                  {/* Imagem */}
-                  <div className="w-full aspect-square overflow-hidden relative" style={{ borderRadius:"14px 14px 0 0" }}>
-                    {!hasErr ? (
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        loading="lazy"
-                        onError={() => handleImgError(product.id)}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
-                        style={{ display:"block" }}
-                      />
-                    ) : (
-                      // Fallback: gradiente escuro temático + ícone grande
-                      <div
-                        className="w-full h-full flex flex-col items-center justify-center gap-3"
-                        style={{ background: product.fallbackGradient }}
-                      >
-                        <Icon size={44} style={{ color:"#00A651", opacity:0.85 }} />
-                        <span style={{ color:"#C0C2C0", fontSize:"11px", textAlign:"center", padding:"0 12px", lineHeight:1.3 }}>
-                          {product.category}
-                        </span>
-                      </div>
-                    )}
-                    {/* Overlay sutil no hover */}
-                    <div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                      style={{ background:"linear-gradient(to top, rgba(0,166,81,0.18) 0%, transparent 60%)" }}
-                    />
+                  {/* Imagem IA */}
+                  <div style={{ width:"100%", aspectRatio:"1/1", overflow:"hidden" }}>
+                    <AIProductImage product={product} size="card" />
                   </div>
 
                   {/* Info */}
-                  <div className="p-3">
-                    <h3 className="text-xs font-semibold mb-1 line-clamp-2 leading-snug" style={{ color:"#fff" }}>
+                  <div style={{ padding:"12px 12px 14px" }}>
+                    <p style={{ fontSize:11, color:C.muted, marginBottom:4 }}>{product.category}</p>
+                    <h3 style={{ fontSize:13, fontWeight:700, color:C.white, margin:"0 0 8px",
+                      display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
                       {product.name}
                     </h3>
-                    <p className="text-[10px] mb-2" style={{ color:"#666" }}>{product.category}</p>
-                    <div className="flex items-baseline gap-2">
-                      <p className="font-bold text-sm" style={{ color:"#00A651" }}>{product.price}</p>
+                    <div style={{ display:"flex", alignItems:"baseline", gap:8 }}>
+                      <span style={{ fontSize:15, fontWeight:800, color:C.green }}>{product.price}</span>
                       {product.oldPrice && (
-                        <p className="text-[10px] line-through" style={{ color:"#555" }}>{product.oldPrice}</p>
+                        <span style={{ fontSize:11, color:C.dim, textDecoration:"line-through" }}>{product.oldPrice}</span>
                       )}
                     </div>
                   </div>
@@ -236,98 +263,93 @@ export default function ProductsSection() {
         {/* Modal */}
         <AnimatePresence>
           {selected && (
-            <motion.div
-              initial={{ opacity:0 }}
-              animate={{ opacity:1 }}
-              exit={{ opacity:0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
-              style={{ background:"rgba(0,0,0,0.85)", backdropFilter:"blur(8px)" }}
+            <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
+              style={{
+                position:"fixed", inset:0, zIndex:50,
+                display:"flex", alignItems:"center", justifyContent:"center", padding:16,
+                background:"rgba(0,0,0,.88)", backdropFilter:"blur(10px)",
+              }}
               onClick={() => setSelected(null)}
             >
               <motion.div
-                initial={{ scale:0.88, opacity:0 }}
-                animate={{ scale:1, opacity:1 }}
-                exit={{ scale:0.88, opacity:0 }}
-                transition={{ type:"spring", damping:20 }}
-                onClick={(e) => e.stopPropagation()}
-                className="max-w-md w-full relative overflow-hidden"
+                initial={{scale:.88,opacity:0}} animate={{scale:1,opacity:1}} exit={{scale:.88,opacity:0}}
+                transition={{type:"spring",damping:22,stiffness:300}}
+                onClick={e => e.stopPropagation()}
                 style={{
-                  background:"#242424",
-                  border:"1px solid #00A651",
-                  borderRadius:"20px",
-                  boxShadow:"0 0 40px rgba(0,166,81,0.3)",
+                  background:C.card2, borderRadius:20, overflow:"hidden",
+                  maxWidth:420, width:"100%",
+                  border:`1.5px solid ${C.green}`,
+                  boxShadow:`0 0 50px rgba(0,166,81,.35)`,
                 }}
               >
-                {/* Fechar */}
-                <button
-                  onClick={() => setSelected(null)}
-                  className="absolute top-4 right-4 z-10 flex items-center justify-center rounded-full transition-colors"
-                  style={{ background:"rgba(0,0,0,0.5)", border:"1px solid #444", width:32, height:32, color:"#fff" }}
-                >
-                  <X size={15} />
+                {/* Botão fechar */}
+                <button onClick={() => setSelected(null)} style={{
+                  position:"absolute", zIndex:10,
+                  top:12, right:12,
+                  background:"rgba(0,0,0,.6)", border:`1px solid ${C.dim}`,
+                  borderRadius:"50%", width:32, height:32, color:C.white, cursor:"pointer",
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                }}>
+                  <X size={15}/>
                 </button>
 
-                {/* Imagem modal */}
-                <div className="w-full h-52 overflow-hidden" style={{ borderRadius:"20px 20px 0 0" }}>
-                  {!imgErrors[selected.id] ? (
-                    <img src={selected.image} alt={selected.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-3"
-                      style={{ background: selected.fallbackGradient }}>
-                      <selected.CategoryIcon size={56} style={{ color:"#00A651" }} />
-                      <span style={{ color:"#C0C2C0", fontSize:"13px" }}>{selected.category}</span>
-                    </div>
-                  )}
-                  {/* Linha verde embaixo da imagem */}
-                  <div style={{ height:"2px", background:"linear-gradient(90deg, transparent, #00A651, transparent)" }} />
+                {/* Imagem grande modal */}
+                <div style={{ width:"100%", height:220, position:"relative" }}>
+                  <AIProductImage product={selected} size="full" />
+                  <div style={{
+                    position:"absolute", bottom:0, left:0, right:0, height:2,
+                    background:`linear-gradient(90deg, transparent, ${C.green}, transparent)`,
+                  }}/>
                 </div>
 
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-3 flex-wrap">
-                    <span
-                      className="text-xs font-semibold px-3 py-1 rounded-full"
-                      style={{ background:"rgba(0,166,81,0.12)", color:"#00A651", border:"1px solid rgba(0,166,81,0.3)" }}
-                    >
-                      {selected.category}
-                    </span>
-                    {selected.badge && (
-                      <span
-                        className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full"
-                        style={{
-                          background: badgeConfig[selected.badge].bg,
-                          border: `1px solid ${badgeConfig[selected.badge].border}`,
-                          color: badgeConfig[selected.badge].text,
-                        }}
-                      >
-                        {(() => { const Icon = badgeConfig[selected.badge].icon; return <Icon size={10} />; })()}
-                        {badgeConfig[selected.badge].label}
-                      </span>
-                    )}
+                <div style={{ padding:"20px 24px 28px" }}>
+                  {/* Categoria + badge */}
+                  <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:12 }}>
+                    <span style={{
+                      fontSize:11, fontWeight:700, padding:"4px 12px", borderRadius:99,
+                      background:"rgba(0,166,81,.12)", color:C.green,
+                      border:"1px solid rgba(0,166,81,.3)",
+                    }}>{selected.category}</span>
+                    {selected.badge && (() => {
+                      const b = badgeConfig[selected.badge];
+                      const Icon = b.icon;
+                      return (
+                        <span style={{
+                          display:"flex", alignItems:"center", gap:4,
+                          fontSize:10, fontWeight:700, padding:"4px 10px", borderRadius:99,
+                          background:b.bg, color:b.text, border:`1px solid ${b.border}`,
+                        }}>
+                          <Icon size={10}/>{b.label}
+                        </span>
+                      );
+                    })()}
                   </div>
 
-                  <h3 className="text-xl font-bold mb-2" style={{ color:"#fff" }}>{selected.name}</h3>
-                  <p className="text-sm mb-5" style={{ color:"#999", lineHeight:1.6 }}>{selected.description}</p>
+                  <h3 style={{ fontSize:20, fontWeight:800, color:C.white, margin:"0 0 10px" }}>
+                    {selected.name}
+                  </h3>
+                  <p style={{ fontSize:13, color:"#888", lineHeight:1.7, margin:"0 0 18px" }}>
+                    {selected.desc}
+                  </p>
 
-                  <div className="flex items-baseline gap-3 mb-5">
-                    <p className="text-2xl font-bold" style={{ color:"#00A651" }}>{selected.price}</p>
+                  <div style={{ display:"flex", alignItems:"baseline", gap:12, marginBottom:20 }}>
+                    <span style={{ fontSize:26, fontWeight:900, color:C.green }}>{selected.price}</span>
                     {selected.oldPrice && (
-                      <p className="text-sm line-through" style={{ color:"#555" }}>{selected.oldPrice}</p>
+                      <span style={{ fontSize:14, color:C.dim, textDecoration:"line-through" }}>{selected.oldPrice}</span>
                     )}
                   </div>
 
                   <a
-                    href={`https://wa.me/5511940562933?text=Olá! Tenho interesse no produto: ${selected.name}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-full py-3 rounded-xl font-bold text-sm transition-all duration-300"
+                    href={`https://wa.me/5511940562933?text=Olá! Tenho interesse: ${selected.name}`}
+                    target="_blank" rel="noopener noreferrer"
                     style={{
-                      background:"#00A651",
-                      color:"#fff",
-                      boxShadow:"0 0 20px rgba(0,166,81,0.5)",
-                      letterSpacing:"0.03em",
+                      display:"flex", alignItems:"center", justifyContent:"center",
+                      width:"100%", padding:"14px 0", borderRadius:12,
+                      background:C.green, color:"#fff", fontWeight:800, fontSize:14,
+                      textDecoration:"none", letterSpacing:"0.04em",
+                      boxShadow:`0 0 24px rgba(0,166,81,.55)`,
+                      transition:"box-shadow .2s",
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 32px rgba(0,166,81,0.8)")}
-                    onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 20px rgba(0,166,81,0.5)")}
                   >
                     Comprar via WhatsApp
                   </a>
