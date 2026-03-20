@@ -79,7 +79,14 @@ const PeliculasPage = () => {
   const results = search || selectedBrand ? filtered : filtered.slice(0, 30);
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ background: C.bg }}>
+    <div
+      className="relative overflow-hidden"
+      style={{
+        minHeight: "100vh",
+        background: C.bg,
+        backgroundColor: "#1A1A1A",
+      }}
+    >
 
       {/* ── Fundo decorativo ── */}
       <div
