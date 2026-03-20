@@ -8,7 +8,7 @@ const ContactSection = () => {
     telefone: "",
     modelo: "",
     problema: "",
-    mensagem: "",
+    mensagem: ""
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -22,17 +22,17 @@ const ContactSection = () => {
   };
 
   const inputClasses =
-    "w-full bg-card border border-border rounded-xl py-3 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm transition-all";
+  "w-full bg-card border border-border rounded-xl py-3 px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm transition-all";
 
   return (
-    <section id="contato" className="py-20 md:py-28 bg-muted/30">
+    <section id="contato" className="py-20 md:py-28 bg-muted/30 text-secondary-foreground">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10"
-        >
+          className="text-center mb-10">
+          
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
             Fale <span className="text-primary">Conosco</span>
           </h2>
@@ -44,8 +44,8 @@ const ContactSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           onSubmit={handleSubmit}
-          className="max-w-lg mx-auto space-y-4"
-        >
+          className="max-w-lg mx-auto space-y-4">
+          
           <input name="nome" placeholder="Seu nome" value={form.nome} onChange={handleChange} required className={inputClasses} />
           <input name="telefone" placeholder="Telefone" value={form.telefone} onChange={handleChange} required className={inputClasses} />
           <input name="modelo" placeholder="Modelo do aparelho" value={form.modelo} onChange={handleChange} required className={inputClasses} />
@@ -65,19 +65,19 @@ const ContactSection = () => {
             value={form.mensagem}
             onChange={handleChange}
             rows={4}
-            className={inputClasses + " resize-none"}
-          />
+            className={inputClasses + " resize-none"} />
+          
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-xl font-semibold btn-hover glow-green"
-          >
+            className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-xl font-semibold btn-hover glow-green">
+            
             <Send size={18} />
             Enviar pelo WhatsApp
           </button>
         </motion.form>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default ContactSection;
