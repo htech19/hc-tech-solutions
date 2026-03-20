@@ -4,20 +4,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import { peliculas } from "@/data/peliculas";
 import { Link } from "react-router-dom";
 
-// ── PALETA HC TECH ─────────────────────────────────────────────
+/* ─────────────────────────────────────────────
+   Tokens de cor — HC Tech brand (sistema unificado)
+───────────────────────────────────────────── */
 const C = {
-  green:      "#00A651",
-  silver:     "#C0C2C0",
-  bg:         "#1A1A1A",
-  card:       "#222222",
-  border:     "rgba(192,194,192,0.12)",
-  muted:      "#6B7280",
-  foreground: "#F3F4F6",
-  greenDim:   "rgba(0,166,81,0.10)",
-  greenGlow:  "0 0 24px rgba(0,166,81,0.45)",
+  green:        "#00A651",
+  greenDim:     "rgba(0,166,81,0.10)",
+  greenBorder:  "rgba(0,166,81,0.25)",
+  greenHover:   "rgba(0,166,81,0.45)",
+  greenGlow:    "0 0 24px rgba(0,166,81,0.45)",
+  greenGlowStr: "0 0 40px rgba(0,166,81,0.70)",
+  silver:       "#C0C2C0",
+  silverMuted:  "rgba(192,194,192,0.55)",
+  bg:           "#1A1A1A",
+  card:         "#222222",
+  cardHover:    "#262626",
+  border:       "rgba(255,255,255,0.07)",
+  muted:        "#6B7280",
+  foreground:   "#F3F4F6",
 };
-// ───────────────────────────────────────────────────────────────
 
+/* ─────────────────────────────────────────────
+   Gradientes por marca
+───────────────────────────────────────────── */
 const brandColors: Record<string, string> = {
   Apple:    "from-[#3a3a3a] to-[#555]",
   Samsung:  "from-[#1a3a8f] to-[#2a5ac0]",
@@ -37,6 +46,17 @@ const getBrandGradient = (marca: string) =>
 
 const allBrands = [...new Set(peliculas.map((p) => p.marca))].sort();
 
+/* ─────────────────────────────────────────────
+   Animações
+───────────────────────────────────────────── */
+const fadeUp = {
+  hidden:  { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+/* ─────────────────────────────────────────────
+   PeliculasPage
+───────────────────────────────────────────── */
 const PeliculasPage = () => {
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
@@ -59,112 +79,129 @@ const PeliculasPage = () => {
   const results = search || selectedBrand ? filtered : filtered.slice(0, 30);
 
   return (
-    <div
-      className="min-h-screen relative overflow-hidden"
-      style={{ background: C.bg }}
-    >
-      {/* Grid sutil de fundo */}
+    <div className="min-h-screen relative overflow-hidden" style={{ background: C.bg }}>
+
+      {/* ── Fundo decorativo ── */}
       <div
-        className="fixed inset-0 pointer-events-none opacity-[0.03]"
+        className="fixed inset-0 pointer-events-none opacity-[0.025]"
         style={{
           backgroundImage: `linear-gradient(${C.green} 1px, transparent 1px), linear-gradient(90deg, ${C.green} 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
         }}
       />
-
-      {/* Glow orbs */}
       <div className="fixed top-20 -left-32 w-96 h-96 rounded-full blur-[120px] pointer-events-none"
-        style={{ background: "rgba(0,166,81,0.06)" }} />
+        style={{ background: "rgba(0,166,81,0.05)" }} />
       <div className="fixed bottom-20 -right-32 w-96 h-96 rounded-full blur-[120px] pointer-events-none"
-        style={{ background: "rgba(0,166,81,0.06)" }} />
+        style={{ background: "rgba(0,166,81,0.05)" }} />
 
-      {/* ── HEADER ── */}
+      {/* ────────────────────────────────────────
+          HEADER — glass morphism (sistema Menubar)
+      ──────────────────────────────────────── */}
       <header
         className="sticky top-0 z-50 backdrop-blur-xl"
         style={{
           background: "rgba(26,26,26,0.85)",
           borderBottom: `1px solid ${C.border}`,
+          boxShadow: "0 1px 12px rgba(0,0,0,0.4)",
         }}
       >
         <div className="container mx-auto px-4 flex items-center justify-between h-16">
+
+          {/* Esquerda: voltar + logo */}
           <div className="flex items-center gap-4">
             <Link
               to="/"
-              className="flex items-center gap-2 text-sm font-medium transition-colors"
+              className="flex items-center gap-1.5 text-sm font-medium rounded-md px-2 py-1 transition-colors duration-150"
               style={{ color: C.muted }}
-              onMouseEnter={e => (e.currentTarget.style.color = C.green)}
-              onMouseLeave={e => (e.currentTarget.style.color = C.muted)}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLAnchorElement).style.color = C.foreground;
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.05)";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLAnchorElement).style.color = C.muted;
+                (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
+              }}
             >
-              <ArrowLeft size={18} />
+              <ArrowLeft size={16} />
               Voltar
             </Link>
+
             <div className="h-5 w-px" style={{ background: C.border }} />
-            <span className="text-lg font-extrabold">
+
+            <span className="text-lg font-extrabold tracking-tight">
               <span style={{ color: C.green }}>HC</span>
               <span style={{ color: C.silver }}> Tech</span>
             </span>
           </div>
 
-          {/* Social buttons */}
+          {/* Direita: social chips */}
           <div className="flex items-center gap-2">
-            <a
-              href="https://wa.me/55119405629339?text=Olá! Vi a tabela de compatibilidade e gostaria de um orçamento."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300"
-              style={{ background: C.greenDim, color: C.green, border: `1px solid rgba(0,166,81,0.2)` }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = C.green;
-                (e.currentTarget as HTMLAnchorElement).style.color = "#fff";
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = C.greenDim;
-                (e.currentTarget as HTMLAnchorElement).style.color = C.green;
-              }}
-            >
-              <MessageCircle size={14} />
-              <span className="hidden sm:inline">WhatsApp</span>
-            </a>
-            <a
-              href="https://instagram.com/hctechinfocell"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300"
-              style={{ background: C.greenDim, color: C.green, border: `1px solid rgba(0,166,81,0.2)` }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = C.green;
-                (e.currentTarget as HTMLAnchorElement).style.color = "#fff";
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = C.greenDim;
-                (e.currentTarget as HTMLAnchorElement).style.color = C.green;
-              }}
-            >
-              <Instagram size={14} />
-              <span className="hidden sm:inline">Instagram</span>
-            </a>
+            {[
+              {
+                href: "https://wa.me/5511940562933?text=Olá! Vi a tabela de compatibilidade e gostaria de um orçamento.",
+                icon: <MessageCircle size={14} />,
+                label: "WhatsApp",
+              },
+              {
+                href: "https://instagram.com/hctechinfocell",
+                icon: <Instagram size={14} />,
+                label: "Instagram",
+              },
+            ].map(({ href, icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-150"
+                style={{
+                  background: C.greenDim,
+                  color: C.green,
+                  border: `1px solid ${C.greenBorder}`,
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLAnchorElement;
+                  el.style.background = C.green;
+                  el.style.color = "#fff";
+                  el.style.borderColor = C.green;
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLAnchorElement;
+                  el.style.background = C.greenDim;
+                  el.style.color = C.green;
+                  el.style.borderColor = C.greenBorder;
+                }}
+              >
+                {icon}
+                <span className="hidden sm:inline">{label}</span>
+              </a>
+            ))}
           </div>
         </div>
       </header>
 
+      {/* ────────────────────────────────────────
+          MAIN
+      ──────────────────────────────────────── */}
       <main className="container mx-auto px-4 py-10 md:py-16 relative z-10">
 
-        {/* ── HERO TITLE ── */}
+        {/* ── Hero ── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
           className="text-center mb-12"
         >
+          {/* Chip "Powered by IA" */}
           <div
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
             style={{
               background: C.greenDim,
-              border: `1px solid rgba(0,166,81,0.25)`,
+              border: `1px solid ${C.greenBorder}`,
               color: C.green,
             }}
           >
-            <Cpu size={14} className="animate-pulse" />
+            <Cpu size={13} className="animate-pulse" />
             Powered by I.A. — Busca Inteligente
           </div>
 
@@ -175,29 +212,47 @@ const PeliculasPage = () => {
             Tabela de{" "}
             <span style={{ color: C.green }}>Compatibilidade</span>
           </h1>
+
           <p className="max-w-2xl mx-auto text-sm md:text-base" style={{ color: C.muted }}>
             Encontre a película ideal para o seu aparelho. Nossa base inteligente cruza dados de{" "}
             <span style={{ color: C.green, fontWeight: 600 }}>{peliculas.length}+</span> modelos em tempo real.
           </p>
+
+          {/* Divisor verde (igual ao ServicesSection) */}
+          <div
+            style={{
+              width: "3rem",
+              height: "2px",
+              backgroundColor: C.green,
+              margin: "1.25rem auto 0",
+              borderRadius: "2px",
+              boxShadow: `0 0 8px ${C.green}`,
+            }}
+          />
         </motion.div>
 
-        {/* ── SEARCH ── */}
+        {/* ── Search ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.2, ease: "easeOut" }}
           className="max-w-2xl mx-auto mb-6"
         >
           <div className="relative group">
+            {/* Glow de foco */}
             <div
               className="absolute -inset-0.5 rounded-2xl blur-sm opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"
-              style={{ background: `linear-gradient(to right, rgba(0,166,81,0.4), rgba(0,166,81,0.1))` }}
+              style={{ background: `linear-gradient(to right, rgba(0,166,81,0.35), rgba(0,166,81,0.08))` }}
             />
             <div
-              className="relative flex items-center rounded-2xl shadow-sm overflow-hidden"
-              style={{ background: C.card, border: `1px solid ${C.border}` }}
+              className="relative flex items-center rounded-2xl overflow-hidden transition-colors duration-150"
+              style={{
+                background: C.card,
+                border: `1px solid ${C.border}`,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+              }}
             >
-              <Search size={20} className="ml-4 flex-shrink-0" style={{ color: C.muted }} />
+              <Search size={18} className="ml-4 flex-shrink-0" style={{ color: C.muted }} />
               <input
                 type="text"
                 placeholder="Digite o modelo do seu celular..."
@@ -209,7 +264,7 @@ const PeliculasPage = () => {
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="mr-3 px-2 py-1 text-xs transition-colors"
+                  className="mr-3 px-2.5 py-1 rounded-md text-xs font-medium transition-colors duration-150"
                   style={{ color: C.muted }}
                   onMouseEnter={e => (e.currentTarget.style.color = C.foreground)}
                   onMouseLeave={e => (e.currentTarget.style.color = C.muted)}
@@ -221,7 +276,7 @@ const PeliculasPage = () => {
           </div>
         </motion.div>
 
-        {/* ── BRAND FILTER CHIPS ── */}
+        {/* ── Brand Filter Chips ── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -229,50 +284,64 @@ const PeliculasPage = () => {
           className="max-w-3xl mx-auto mb-8"
         >
           <div className="flex flex-wrap justify-center gap-2">
-            {/* Todos */}
-            <button
-              onClick={() => setSelectedBrand(null)}
-              className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300"
-              style={
-                !selectedBrand
-                  ? { background: C.green, color: "#fff", boxShadow: C.greenGlow }
-                  : { background: C.card, border: `1px solid ${C.border}`, color: C.muted }
+            {[{ label: "Todos", value: null }, ...allBrands.map((b) => ({ label: b, value: b }))].map(
+              ({ label, value }) => {
+                const active = selectedBrand === value;
+                return (
+                  <button
+                    key={label}
+                    onClick={() => setSelectedBrand(value)}
+                    className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-150"
+                    style={
+                      active
+                        ? {
+                            background: C.green,
+                            color: "#fff",
+                            boxShadow: C.greenGlow,
+                            border: "1px solid transparent",
+                          }
+                        : {
+                            background: C.card,
+                            color: C.muted,
+                            border: `1px solid ${C.border}`,
+                          }
+                    }
+                    onMouseEnter={e => {
+                      if (!active) {
+                        (e.currentTarget as HTMLButtonElement).style.borderColor = C.greenBorder;
+                        (e.currentTarget as HTMLButtonElement).style.color = C.foreground;
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (!active) {
+                        (e.currentTarget as HTMLButtonElement).style.borderColor = C.border;
+                        (e.currentTarget as HTMLButtonElement).style.color = C.muted;
+                      }
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
               }
-            >
-              Todos
-            </button>
-            {allBrands.map((brand) => (
-              <button
-                key={brand}
-                onClick={() => setSelectedBrand(selectedBrand === brand ? null : brand)}
-                className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300"
-                style={
-                  selectedBrand === brand
-                    ? { background: C.green, color: "#fff", boxShadow: C.greenGlow }
-                    : { background: C.card, border: `1px solid ${C.border}`, color: C.muted }
-                }
-              >
-                {brand}
-              </button>
-            ))}
+            )}
           </div>
         </motion.div>
 
-        {/* ── RESULTS COUNTER ── */}
+        {/* ── Contador de resultados ── */}
         {(search || selectedBrand) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="max-w-2xl mx-auto mb-4 flex items-center gap-2"
           >
-            <Zap size={14} style={{ color: C.green }} />
+            <Zap size={13} style={{ color: C.green }} />
             <span className="text-sm" style={{ color: C.muted }}>
               <span style={{ color: C.foreground, fontWeight: 600 }}>{filtered.length}</span> resultado(s) encontrado(s)
             </span>
           </motion.div>
         )}
 
-        {/* ── CARDS ── */}
+        {/* ── Cards de resultado ── */}
         <div className="max-w-2xl mx-auto space-y-3">
           <AnimatePresence mode="popLayout">
             {filtered.length === 0 ? (
@@ -282,10 +351,14 @@ const PeliculasPage = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 className="text-center py-16 rounded-2xl"
-                style={{ background: C.card, border: `1px solid ${C.border}`, color: C.muted }}
+                style={{
+                  background: C.card,
+                  border: `1px solid ${C.border}`,
+                  color: C.muted,
+                }}
               >
-                <Smartphone size={40} className="mx-auto mb-4 opacity-30" />
-                <p className="font-medium">Nenhum modelo encontrado.</p>
+                <Smartphone size={40} className="mx-auto mb-4 opacity-20" />
+                <p className="font-medium" style={{ color: C.foreground }}>Nenhum modelo encontrado.</p>
                 <p className="text-sm mt-1">Tente buscar outro modelo ou marca.</p>
               </motion.div>
             ) : (
@@ -295,25 +368,35 @@ const PeliculasPage = () => {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
-                  transition={{ delay: i * 0.012 }}
+                  transition={{ delay: i * 0.012, ease: "easeOut" }}
                   layout
-                  className="group rounded-2xl p-4 md:p-5 shadow-sm transition-all duration-300"
-                  style={{ background: C.card, border: `1px solid ${C.border}` }}
+                  className="group rounded-2xl p-4 md:p-5 transition-all duration-150"
+                  style={{
+                    background: C.card,
+                    border: `1px solid ${C.border}`,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+                  }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(0,166,81,0.35)";
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.4)";
+                    const el = e.currentTarget as HTMLDivElement;
+                    el.style.borderColor = C.greenBorder;
+                    el.style.backgroundColor = C.cardHover;
+                    el.style.boxShadow = `0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px ${C.greenBorder}`;
                   }}
                   onMouseLeave={e => {
-                    (e.currentTarget as HTMLDivElement).style.borderColor = C.border;
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+                    const el = e.currentTarget as HTMLDivElement;
+                    el.style.borderColor = C.border;
+                    el.style.backgroundColor = C.card;
+                    el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
                   }}
                 >
                   <div className="flex items-start gap-3">
+                    {/* Avatar marca */}
                     <div
                       className={`w-10 h-10 rounded-xl bg-gradient-to-br ${getBrandGradient(f.marca)} flex items-center justify-center flex-shrink-0 shadow-sm`}
                     >
-                      <Smartphone size={18} className="text-white" />
+                      <Smartphone size={17} className="text-white" />
                     </div>
+
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <h2 className="font-bold text-sm md:text-base" style={{ color: C.foreground }}>
@@ -321,20 +404,26 @@ const PeliculasPage = () => {
                         </h2>
                         <span
                           className="text-[10px] px-2 py-0.5 rounded-full font-medium"
-                          style={{ background: "#2a2a2a", color: C.silver }}
+                          style={{
+                            background: "rgba(192,194,192,0.08)",
+                            color: C.silver,
+                            border: "1px solid rgba(192,194,192,0.15)",
+                          }}
                         >
                           {f.marca}
                         </span>
                       </div>
+
+                      {/* Tags de compatibilidade — verde translúcido */}
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {f.compatList.map((c, ci) => (
                           <span
                             key={ci}
-                            className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg font-medium"
+                            className="inline-flex items-center text-xs px-2.5 py-1 rounded-lg font-medium"
                             style={{
                               background: "rgba(0,166,81,0.08)",
                               color: C.green,
-                              border: "1px solid rgba(0,166,81,0.15)",
+                              border: `1px solid ${C.greenBorder}`,
                             }}
                           >
                             {c}
@@ -344,25 +433,27 @@ const PeliculasPage = () => {
                     </div>
                   </div>
 
-                  {/* Quick action (hover) */}
+                  {/* Quick actions — aparecem no hover */}
                   <div
-                    className="flex items-center gap-2 mt-3 pt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="flex items-center gap-3 mt-3 pt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     style={{ borderTop: `1px solid ${C.border}` }}
                   >
                     <a
                       href={`https://wa.me/5511940562933?text=Olá! Preciso de película para ${f.model}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs hover:underline"
+                      className="flex items-center gap-1.5 text-xs font-medium transition-colors duration-150"
                       style={{ color: C.green }}
+                      onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
+                      onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
                     >
                       <MessageCircle size={12} />
                       Solicitar orçamento
                     </a>
-                    <span style={{ color: C.border }}>•</span>
+                    <span style={{ color: C.border, fontSize: "0.75rem" }}>•</span>
                     <button
                       onClick={() => navigator.clipboard.writeText(`${f.model} — Compatível com: ${f.compat}`)}
-                      className="flex items-center gap-1.5 text-xs transition-colors"
+                      className="flex items-center gap-1.5 text-xs transition-colors duration-150"
                       style={{ color: C.muted }}
                       onMouseEnter={e => (e.currentTarget.style.color = C.foreground)}
                       onMouseLeave={e => (e.currentTarget.style.color = C.muted)}
@@ -377,7 +468,7 @@ const PeliculasPage = () => {
           </AnimatePresence>
         </div>
 
-        {/* Show more hint */}
+        {/* Hint: mostrar mais */}
         {!search && !selectedBrand && filtered.length > 30 && (
           <motion.p
             initial={{ opacity: 0 }}
@@ -392,21 +483,28 @@ const PeliculasPage = () => {
           </motion.p>
         )}
 
-        {/* ── CTA SOCIAL ── */}
+        {/* ── CTA Social ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           className="max-w-2xl mx-auto mt-16"
         >
           <div
             className="rounded-2xl p-6 md:p-8 text-center relative overflow-hidden"
-            style={{ background: C.card, border: `1px solid ${C.border}` }}
+            style={{
+              background: C.card,
+              border: `1px solid ${C.border}`,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+            }}
           >
+            {/* Gradient overlay */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{ background: "linear-gradient(135deg, rgba(0,166,81,0.06) 0%, transparent 60%)" }}
             />
+
             <div className="relative z-10">
               <h3 className="text-lg md:text-xl font-bold mb-2" style={{ color: C.foreground }}>
                 Não encontrou seu modelo?
@@ -414,45 +512,53 @@ const PeliculasPage = () => {
               <p className="text-sm mb-6" style={{ color: C.muted }}>
                 Fale com a gente! Temos milhares de películas em estoque.
               </p>
+
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                {/* Botão primário — WhatsApp */}
                 <a
                   href="https://wa.me/5511950562933?text=Olá! Preciso de ajuda para encontrar minha película."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-150 hover:scale-105 active:scale-95"
                   style={{
                     background: C.green,
                     color: "#fff",
                     boxShadow: C.greenGlow,
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 40px rgba(0,166,81,0.7)";
+                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = C.greenGlowStr;
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget as HTMLAnchorElement).style.boxShadow = C.greenGlow;
                   }}
                 >
-                  <MessageCircle size={18} />
+                  <MessageCircle size={17} />
                   Chamar no WhatsApp
                 </a>
+
+                {/* Botão secundário — Instagram */}
                 <a
                   href="https://instagram.com/hctechinfocell"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-150 hover:scale-105 active:scale-95"
                   style={{
                     background: "transparent",
                     color: C.green,
-                    border: `2px solid rgba(0,166,81,0.35)`,
+                    border: `2px solid ${C.greenBorder}`,
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLAnchorElement).style.background = C.greenDim;
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    el.style.background = C.greenDim;
+                    el.style.borderColor = C.greenHover;
                   }}
                   onMouseLeave={e => {
-                    (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    el.style.background = "transparent";
+                    el.style.borderColor = C.greenBorder;
                   }}
                 >
-                  <Instagram size={18} />
+                  <Instagram size={17} />
                   Seguir no Instagram
                 </a>
               </div>
@@ -461,7 +567,7 @@ const PeliculasPage = () => {
         </motion.div>
       </main>
 
-      {/* ── FOOTER ── */}
+      {/* ── Footer ── */}
       <footer
         className="py-6 mt-12"
         style={{ borderTop: `1px solid ${C.border}` }}
