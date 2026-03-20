@@ -143,7 +143,7 @@ const HeroSection = () => {
 
           {/* Secundário */}
           <a
-            href="https://wa.me/5511940562933?text=Olá! Gostaria de solicitar um orçamento."
+            href="https://wa.me/551190562933?text=Olá! Gostaria de solicitar um orçamento."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg text-base font-bold transition-all duration-300 hover:scale-105"
