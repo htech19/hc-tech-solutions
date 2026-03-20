@@ -6,10 +6,8 @@ import { motion } from "framer-motion";
 //   src/assets/logo-hctech.png    ← sua logo HC Tech
 // ──────────────────────────────────────────────────────────────────────────────
 import heroBg from "@/assets/hero-bg.jpg";
-import logoWatermarkSrc from "@/assets/logo-hctech.png";
 
 const bgImage = heroBg;
-const logoWatermark = logoWatermarkSrc;
 
 const stats = [
   { value: "5K+", label: "Reparos" },
@@ -34,19 +32,6 @@ const HeroSection = () => {
 
       {/* ── VINHETA nas bordas para profundidade ── */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_#1A1A1A_100%)]" />
-
-      {/* ── LOGO como marca d'água central ── */}
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-        aria-hidden="true"
-      >
-        <img
-          src={logoWatermark}
-          alt=""
-          className="w-[480px] max-w-[70vw] opacity-[0.06] saturate-0"
-          style={{ filter: "grayscale(1) brightness(2)" }}
-        />
-      </div>
 
       {/* ── LINHAS de circuito decorativas (SVG inline) ── */}
       <svg
@@ -122,7 +107,7 @@ const HeroSection = () => {
           className="text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed"
           style={{ color: "#9CA3AF" }}
         >
-          Conserto de smartphones, tablets e notebooks com peças originais.
+          Assistência técnica Especializada em smartphones, tablets e notebooks .
           <br />
           Atendimento rápido e <span style={{ color: "#C0C2C0" }}>garantia</span> em todos os serviços.
         </motion.p>
