@@ -32,7 +32,6 @@ const FilmsTable = () => {
           
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-4">
             <Cpu size={13} className="animate-pulse" />
-            Busca Inteligente I.A.
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-3 text-primary">
             Tabela de <span className="text-primary glow-green-text">Compatibilidade de Peliculas</span>
