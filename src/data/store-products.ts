@@ -1,16 +1,6 @@
+// 1. Definição de Tipos
 export type ProductBadge = "Novo" | "Oferta" | "+Vendido";
-
-export interface Product {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  originalPrice?: number;
-  badge?: ProductBadge;
-  image: string;
-  description: string;
-  compatibility?: string;
-}
+export type ProductStatus = "Disponível" | "Indisponível";
 
 export const categories = [
   "Capas & Proteção",
@@ -24,17 +14,34 @@ export const categories = [
   "Suportes & Organização",
 ] as const;
 
+export type Category = typeof categories[number];
+
+export interface Product {
+  id: string;
+  name: string;
+  category: Category;
+  price: number | "Indisponível"; // Preço como Indisponível se não definido
+  originalPrice?: number;
+  badge?: ProductBadge;
+  image: string;
+  description: string;
+  compatibility?: string;
+  status: ProductStatus;
+}
+
+// 2. Base de Dados de Produtos
 export const products: Product[] = [
-  // Capas & Proteção
+  // --- CAPAS & PROTEÇÃO ---
   {
     id: "capa-anti-impacto-a55",
     name: "Capa Anti-Impacto Samsung Galaxy A55",
     category: "Capas & Proteção",
     price: 34.9,
     badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&q=80",
-    description: "Capa anti-impacto com bordas reforçadas e proteção militar para Samsung Galaxy A55. Material TPU flexível com acabamento fosco anti-impressão digital.",
+    image: "",
+    description: "Capa anti-impacto com bordas reforçadas e proteção militar. Material TPU flexível com acabamento fosco anti-impressão digital.",
     compatibility: "Samsung Galaxy A55",
+    status: "Disponível"
   },
   {
     id: "capa-magsafe-iphone15pro",
@@ -42,344 +49,74 @@ export const products: Product[] = [
     category: "Capas & Proteção",
     price: 79.9,
     badge: "Novo",
-    image: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400&q=80",
-    description: "Capa com ímãs MagSafe integrados para iPhone 15 Pro. Compatível com carregamento wireless e acessórios MagSafe. Policarbonato rígido + silicone interno.",
+    image: "",
+    description: "Capa com ímãs MagSafe integrados. Compatível com carregamento wireless e acessórios magnéticos.",
     compatibility: "iPhone 15 Pro",
+    status: "Disponível"
   },
   {
-    id: "capa-transparente-redmi-note13",
-    name: "Capa Transparente Redmi Note 13",
+    id: "capa-premium-indisponivel",
+    name: "Capa Couro Legítimo S24 Ultra",
     category: "Capas & Proteção",
-    price: 24.9,
-    originalPrice: 39.9,
-    badge: "Oferta",
-    image: "https://images.unsplash.com/photo-1609081219671-a6d6b67498d7?w=400&q=80",
-    description: "Capa cristalina ultra-fina para Redmi Note 13. Silicone TPU premium com proteção anti-amarelamento e bordas elevadas para câmera e tela.",
-    compatibility: "Xiaomi Redmi Note 13",
+    price: "Indisponível",
+    image: "",
+    description: "Acabamento premium em couro legítimo com interior em microfibra.",
+    compatibility: "Samsung S24 Ultra",
+    status: "Indisponível"
   },
-  {
-    id: "capa-carteira-motog84",
-    name: "Capa Carteira Moto G84",
-    category: "Capas & Proteção",
-    price: 44.9,
-    image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400&q=80",
-    description: "Capa carteira em couro sintético com compartimentos para cartões e suporte horizontal. Fechamento magnético seguro.",
-    compatibility: "Motorola Moto G84",
-  },
-  {
-    id: "capa-anti-impacto-s24",
-    name: "Capa Anti-Impacto Samsung Galaxy S24",
-    category: "Capas & Proteção",
-    price: 49.9,
-    badge: "Novo",
-    image: "https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=400&q=80",
-    description: "Proteção militar certificada contra quedas de até 2m. Design slim com grip texturizado e botões responsivos.",
-    compatibility: "Samsung Galaxy S24",
-  },
-  // Películas
-  {
-    id: "pelicula-3d-s24",
-    name: "Película 3D Vidro Temperado Samsung S24",
-    category: "Películas",
-    price: 39.9,
-    badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=400&q=80",
-    description: "Película 3D cobertura total em vidro temperado 9H para Samsung Galaxy S24. Aplicação com kit de alinhamento incluso.",
-    compatibility: "Samsung Galaxy S24",
-  },
-  {
-    id: "pelicula-hidrogel-iphone15promax",
-    name: "Película Hidrogel iPhone 15 Pro Max",
-    category: "Películas",
-    price: 34.9,
-    image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400&q=80",
-    description: "Película hidrogel auto-regenerativa com proteção UV e anti-impressão digital. Flexível e resistente a riscos.",
-    compatibility: "iPhone 15 Pro Max",
-  },
-  {
-    id: "pelicula-privacidade-universal",
-    name: "Película Privacidade 180° Universal",
-    category: "Películas",
-    price: 44.9,
-    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&q=80",
-    description: "Película com filtro de privacidade 180°. Visível apenas de frente, impede a visualização lateral. Disponível em tamanhos universais.",
-    compatibility: "Universal (diversos modelos)",
-  },
-  {
-    id: "pelicula-fosca-iphone14",
-    name: "Película Fosca Anti-Reflexo iPhone 14",
-    category: "Películas",
-    price: 29.9,
-    originalPrice: 44.9,
-    badge: "Oferta",
-    image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&q=80",
-    description: "Película fosca anti-reflexo para jogos e uso externo. Toque suave tipo papel e proteção 9H contra riscos.",
-    compatibility: "iPhone 14",
-  },
-  // Fones & Áudio
+
+  // --- FONES & ÁUDIO ---
   {
     id: "fone-tws-anc",
     name: "Fone TWS Bluetooth 5.3 com ANC",
     category: "Fones & Áudio",
     price: 89.9,
     badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&q=80",
-    description: "Fone de ouvido true wireless com cancelamento ativo de ruído (ANC), Bluetooth 5.3, latência ultra-baixa para jogos e 30h de bateria total com estojo.",
+    image: "",
+    description: "Cancelamento ativo de ruído (ANC), Bluetooth 5.3 e 30h de bateria total.",
+    status: "Disponível"
   },
   {
     id: "headset-gamer-havit",
-    name: "Headset Gamer Havit Fuxi-H3 USB-C/Wireless",
+    name: "Headset Gamer Havit Fuxi-H3",
     category: "Fones & Áudio",
     price: 199.9,
     badge: "Novo",
-    image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400&q=80",
-    description: "Headset gamer wireless dual-mode (2.4GHz + Bluetooth). Driver 50mm, microfone destacável com noise-canceling, iluminação RGB e almofadas em memory foam.",
+    image: "",
+    description: "Wireless dual-mode (2.4GHz + Bluetooth) com drivers de 50mm e memory foam.",
+    status: "Disponível"
   },
-  {
-    id: "fone-philips-tat1209",
-    name: "Fone Philips TAT1209 TWS IPX4 18h bateria",
-    category: "Fones & Áudio",
-    price: 79.9,
-    image: "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=400&q=80",
-    description: "Fone TWS Philips com classificação IPX4 à prova de suor, 18h de autonomia total, Bluetooth 5.3 e design ergonômico ultra-leve.",
-  },
-  {
-    id: "fone-fio-usbc",
-    name: "Fone com Fio USB-C para iPhone/Android",
-    category: "Fones & Áudio",
-    price: 29.9,
-    originalPrice: 49.9,
-    badge: "Oferta",
-    image: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&q=80",
-    description: "Fone de ouvido com fio USB-C, compatível com smartphones sem entrada P2. Microfone inline com controle de volume e chamadas.",
-  },
-  // Carregadores & Cabos
+
+  // --- CARREGADORES ---
   {
     id: "carregador-65w-gan",
     name: "Carregador Turbo 65W GaN USB-C",
     category: "Carregadores & Cabos",
     price: 89.9,
     badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400&q=80",
-    description: "Carregador compacto GaN 65W com porta USB-C PD 3.0. Carrega notebooks, tablets e smartphones na velocidade máxima. Proteção contra sobrecarga.",
+    image: "",
+    description: "Tecnologia GaN de alta eficiência. Carrega notebooks e smartphones simultaneamente.",
+    status: "Disponível"
   },
-  {
-    id: "cabo-usbc-2m-100w",
-    name: "Cabo USB-C 2m Trançado 100W",
-    category: "Carregadores & Cabos",
-    price: 29.9,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=80",
-    description: "Cabo USB-C para USB-C de 2 metros em nylon trançado. Suporta até 100W de carga e transferência de dados a 480Mbps.",
-  },
-  {
-    id: "carregador-veicular-36w",
-    name: "Carregador Veicular Duplo USB-A + USB-C 36W",
-    category: "Carregadores & Cabos",
-    price: 49.9,
-    image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400&q=80",
-    description: "Carregador veicular com dupla saída (USB-A QC3.0 + USB-C PD 20W). Total de 36W para carregar dois dispositivos simultaneamente.",
-  },
-  {
-    id: "powerbank-20000mah",
-    name: "Power Bank 20.000mAh 22.5W carregamento rápido",
-    category: "Carregadores & Cabos",
-    price: 129.9,
-    badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&q=80",
-    description: "Bateria externa 20.000mAh com saída de 22.5W para carregamento super rápido. Display LED, 2x USB-A + 1x USB-C. Carrega até 4 vezes um smartphone.",
-  },
-  {
-    id: "carregador-wireless-15w",
-    name: "Carregador Wireless 15W MagSafe compatível",
-    category: "Carregadores & Cabos",
-    price: 69.9,
-    badge: "Novo",
-    image: "https://images.unsplash.com/photo-1586816879360-004f5b0c51e3?w=400&q=80",
-    description: "Base de carregamento wireless por indução 15W com alinhamento magnético MagSafe. LED indicador e proteção contra superaquecimento.",
-  },
-  // Armazenamento
-  {
-    id: "pendrive-128gb-usb3",
-    name: "Pendrive 128GB USB 3.0 alta velocidade",
-    category: "Armazenamento",
-    price: 59.9,
-    badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&q=80",
-    description: "Pendrive 128GB com interface USB 3.0 e leitura de até 150MB/s. Design metálico compacto com anel para chaveiro.",
-  },
-  {
-    id: "ssd-externo-480gb",
-    name: "SSD Externo 480GB USB 3.2",
-    category: "Armazenamento",
-    price: 189.9,
-    badge: "Novo",
-    image: "https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=400&q=80",
-    description: "SSD portátil 480GB com velocidade de leitura de até 520MB/s. Interface USB 3.2 Gen 2, resistente a quedas e compacto para levar onde quiser.",
-  },
-  {
-    id: "microsd-256gb",
-    name: "Cartão MicroSD 256GB Classe 10",
-    category: "Armazenamento",
-    price: 79.9,
-    image: "https://images.unsplash.com/photo-1620288627223-53302f4e8c74?w=400&q=80",
-    description: "Cartão MicroSD 256GB Classe 10 U3 A2 para smartphones, câmeras e drones. Velocidade de leitura até 170MB/s. Adaptador SD incluso.",
-  },
-  {
-    id: "pendrive-64gb-otg",
-    name: "Pendrive 64GB OTG USB-C + USB-A",
-    category: "Armazenamento",
-    price: 39.9,
-    originalPrice: 59.9,
-    badge: "Oferta",
-    image: "https://images.unsplash.com/photo-1618410320928-25228d811631?w=400&q=80",
-    description: "Pendrive dual 64GB com conectores USB-C e USB-A. Ideal para transferir arquivos entre celular e computador sem cabo.",
-  },
-  // Periféricos & Informática
-  {
-    id: "mouse-sem-fio-silent",
-    name: "Mouse Sem Fio Silent 1600DPI",
-    category: "Periféricos & Informática",
-    price: 69.9,
-    badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&q=80",
-    description: "Mouse wireless silencioso com sensor óptico de 1600DPI. Cliques silenciosos, design ergonômico e até 12 meses de bateria com 1 pilha AA.",
-  },
-  {
-    id: "teclado-bluetooth-slim",
-    name: "Teclado Slim Bluetooth Multi-Device",
-    category: "Periféricos & Informática",
-    price: 119.9,
-    badge: "Novo",
-    image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&q=80",
-    description: "Teclado Bluetooth ultra-fino com conexão multi-dispositivo (até 3 aparelhos). Compatível com Windows, macOS, iOS e Android. Bateria recarregável USB-C.",
-  },
-  {
-    id: "suporte-monitor-elg",
-    name: "Suporte Articulado Monitor 17''-35'' ELG",
-    category: "Periféricos & Informática",
-    price: 189.9,
-    image: "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=400&q=80",
-    description: "Suporte articulado para monitor de 17'' a 35''. Ajuste de altura, inclinação e rotação 360°. Fixação por grampo ou passante. Suporta até 9kg.",
-  },
-  {
-    id: "hub-usbc-7em1",
-    name: "Hub USB-C 7 em 1 HDMI + USB3.0 + SD",
-    category: "Periféricos & Informática",
-    price: 99.9,
-    badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1625723044792-44de16ccb4e8?w=400&q=80",
-    description: "Hub adaptador USB-C 7-em-1: HDMI 4K, 2x USB 3.0, USB-C PD 100W, leitor SD/MicroSD e Ethernet RJ45. Alumínio premium.",
-  },
-  {
-    id: "adaptador-bluetooth-usb",
-    name: "Adaptador Bluetooth 5.0 USB para PC",
-    category: "Periféricos & Informática",
-    price: 39.9,
-    originalPrice: 59.9,
-    badge: "Oferta",
-    image: "https://images.unsplash.com/photo-1563206767-5b18f218e8de?w=400&q=80",
-    description: "Dongle Bluetooth 5.0 USB para adicionar conectividade wireless ao PC. Alcance de até 20m, compatível com Windows 10/11. Plug and play.",
-  },
-  {
-    id: "webcam-fullhd-1080p",
-    name: "Webcam Full HD 1080p com Microfone",
-    category: "Periféricos & Informática",
-    price: 149.9,
-    badge: "Novo",
-    image: "https://images.unsplash.com/photo-1587826080692-f439cd0b70da?w=400&q=80",
-    description: "Webcam Full HD 1080p 30fps com microfone integrado com redução de ruído. Foco automático, clip universal para monitor e tripé. USB plug-and-play.",
-  },
-  {
-    id: "mousepad-gamer-xxl",
-    name: "Mousepad Gamer XXL 80x30cm",
-    category: "Periféricos & Informática",
-    price: 49.9,
-    image: "https://images.unsplash.com/photo-1616588589676-62b3d4ff6e04?w=400&q=80",
-    description: "Mousepad estendido 80x30cm em tecido speed com base emborrachada antiderrapante. Bordas costuradas para maior durabilidade. Espessura de 3mm.",
-  },
-  // Impressão
-  {
-    id: "cartucho-hp664-preto",
-    name: "Cartucho HP 664 Preto Original",
-    category: "Impressão",
-    price: 39.9,
-    badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&q=80",
-    description: "Cartucho de tinta HP 664 preto original. Rendimento de aproximadamente 120 páginas. Compatível com impressoras HP DeskJet 1115, 2136, 3636 e outras.",
-    compatibility: "HP DeskJet 1115, 2136, 3636, 3836",
-  },
-  {
-    id: "cartucho-hp667-preto",
-    name: "Cartucho HP 667 Preto Original",
-    category: "Impressão",
-    price: 44.9,
-    badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&q=80",
-    description: "Cartucho de tinta HP 667 preto original. Rendimento de aproximadamente 120 páginas. Compatível com HP DeskJet 2376, 2776, 6476.",
-    compatibility: "HP DeskJet 2376, 2776, 6476",
-  },
-  {
-    id: "refil-tinta-hp664-kit",
-    name: "Refil Tinta HP 664 Kit 4 cores",
-    category: "Impressão",
-    price: 89.9,
-    image: "https://images.unsplash.com/photo-1563199284-752b7b17578a?w=400&q=80",
-    description: "Kit refil de tinta compatível com cartucho HP 664. 4 cores (Preto, Ciano, Magenta, Amarelo) com 100ml cada. Inclui seringas e luvas.",
-    compatibility: "Cartuchos HP 664 / 664XL",
-  },
-  // Smartwatches & Wearables
-  {
-    id: "smartwatch-hw67pro",
-    name: "Smartwatch HW67 Pro 1.9'' NFC GPS",
-    category: "Smartwatches & Wearables",
-    price: 149.9,
-    badge: "Novo",
-    image: "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=400&q=80",
-    description: "Smartwatch com tela IPS 1.9'', NFC para pagamentos, GPS integrado, monitor cardíaco e SpO2. Resistente à água IP68. 100+ watch faces.",
-  },
+
+  // --- SMARTWATCHES ---
   {
     id: "pulseira-xiaomi-band8",
     name: "Pulseira Inteligente Xiaomi Band 8",
     category: "Smartwatches & Wearables",
     price: 179.9,
     badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400&q=80",
-    description: "Xiaomi Smart Band 8 com tela AMOLED 1.62'', 150+ modos esportivos, sensor de frequência cardíaca e oxigênio no sangue. Bateria de até 16 dias.",
+    image: "",
+    description: "Tela AMOLED 1.62'', 150+ modos esportivos e bateria de longa duração.",
+    status: "Disponível"
   },
   {
-    id: "smartwatch-w29max",
-    name: "Smartwatch W29 Max Series 9 45mm",
+    id: "smartwatch-premium-esgotado",
+    name: "Apple Watch Series 9 (Mock)",
     category: "Smartwatches & Wearables",
-    price: 129.9,
-    originalPrice: 199.9,
-    badge: "Oferta",
-    image: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=400&q=80",
-    description: "Smartwatch com design premium 45mm, tela HD Always-on, Bluetooth chamadas, monitor de saúde completo e pulseira de silicone intercambiável.",
-  },
-  // Suportes & Organização
-  {
-    id: "suporte-veicular-magnetico",
-    name: "Suporte Veicular Magnético para Celular",
-    category: "Suportes & Organização",
-    price: 34.9,
-    badge: "+Vendido",
-    image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400&q=80",
-    description: "Suporte magnético para celular com fixação na saída de ar do veículo. Ímã N52 super forte, rotação 360° e compatível com todos os smartphones.",
-  },
-  {
-    id: "tripe-flexivel-120cm",
-    name: "Tripé Flexível para Celular 1,20m",
-    category: "Suportes & Organização",
-    price: 49.9,
-    image: "https://images.unsplash.com/photo-1585298723682-7115561c51b7?w=400&q=80",
-    description: "Tripé com pernas flexíveis e altura ajustável até 1,20m. Suporte universal para celulares de 4.7'' a 7''. Bluetooth remoto para fotos incluso.",
-  },
-  {
-    id: "suporte-mesa-ajustavel",
-    name: "Suporte de Mesa Ajustável para Celular/Tablet",
-    category: "Suportes & Organização",
-    price: 39.9,
-    image: "https://images.unsplash.com/photo-1586953208270-767889fa9b0e?w=400&q=80",
-    description: "Suporte de mesa em alumínio com ângulo ajustável para celulares e tablets de até 12.9''. Base antiderrapante com proteção de silicone.",
-  },
+    price: "Indisponível",
+    image: "",
+    description: "Monitoramento avançado de saúde e integração total com ecossistema iOS.",
+    status: "Indisponível"
+  }
 ];
