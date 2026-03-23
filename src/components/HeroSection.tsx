@@ -10,22 +10,22 @@ import heroBg from "@/assets/hero-bg.jpg";
 const bgImage = heroBg;
 
 const stats = [
-  { value: "5K+", label: "Reparos" },
-  { value: "98%", label: "Satisfação" },
-  { value: "1h",  label: "Tempo Médio" },
-];
+{ value: "5K+", label: "Reparos" },
+{ value: "98%", label: "Satisfação" },
+{ value: "1h", label: "Tempo Médio" }];
+
 
 const HeroSection = () => {
   return (
     <section
       id="inicio"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-    >
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      
       {/* ── FUNDO: foto da placa/celular ── */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${bgImage})` }}
-      />
+        style={{ backgroundImage: `url(${bgImage})` }} />
+      
 
       {/* ── OVERLAY escuro sobre a foto ── */}
       <div className="absolute inset-0 bg-[#1A1A1A]/80" />
@@ -37,8 +37,8 @@ const HeroSection = () => {
       <svg
         className="absolute inset-0 w-full h-full opacity-[0.07] pointer-events-none"
         xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
+        
         <line x1="0" y1="30%" x2="35%" y2="30%" stroke="#00A651" strokeWidth="1" />
         <line x1="35%" y1="30%" x2="35%" y2="50%" stroke="#00A651" strokeWidth="1" />
         <circle cx="35%" cy="50%" r="3" fill="#00A651" />
@@ -57,21 +57,21 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-6"
-        >
+          className="mb-6">
+          
           <span
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase border"
             style={{
               color: "#00A651",
               borderColor: "#00A651",
               background: "rgba(0,166,81,0.08)",
-              letterSpacing: "0.12em",
-            }}
-          >
+              letterSpacing: "0.12em"
+            }}>
+            
             <span
               className="w-1.5 h-1.5 rounded-full animate-pulse"
-              style={{ background: "#00A651" }}
-            />
+              style={{ background: "#00A651" }} />
+            
             Assistência Técnica em SP
           </span>
         </motion.div>
@@ -82,8 +82,8 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4"
-          style={{ fontFamily: "'Rajdhani', 'Oswald', sans-serif" }}
-        >
+          style={{ fontFamily: "'Rajdhani', 'Oswald', sans-serif" }}>
+          
           <span style={{ color: "#FFFFFF" }}>Reparos </span>
           <span style={{ color: "#00A651" }}>Rápidos</span>
           <br />
@@ -93,8 +93,8 @@ const HeroSection = () => {
           <br />
           <span
             className="text-3xl md:text-4xl lg:text-5xl"
-            style={{ color: "#FFFFFF" }}
-          >
+            style={{ color: "#FFFFFF" }}>
+            
             em SP
           </span>
         </motion.h1>
@@ -105,8 +105,8 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.25 }}
           className="text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed"
-          style={{ color: "#9CA3AF" }}
-        >
+          style={{ color: "#9CA3AF" }}>
+          
           Assistência técnica Especializada em smartphones, tablets e notebooks .
           <br />
           Atendimento rápido e <span style={{ color: "#C0C2C0" }}>garantia</span> em todos os serviços.
@@ -117,8 +117,8 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-        >
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          
           {/* Primário */}
           <a
             href="#contato"
@@ -126,41 +126,41 @@ const HeroSection = () => {
             style={{
               background: "#00A651",
               color: "#FFFFFF",
-              boxShadow: "0 0 24px rgba(0,166,81,0.45)",
+              boxShadow: "0 0 24px rgba(0,166,81,0.45)"
             }}
-            onMouseEnter={e => {
+            onMouseEnter={(e) => {
               (e.currentTarget as HTMLAnchorElement).style.boxShadow =
-                "0 0 40px rgba(0,166,81,0.7)";
+              "0 0 40px rgba(0,166,81,0.7)";
             }}
-            onMouseLeave={e => {
+            onMouseLeave={(e) => {
               (e.currentTarget as HTMLAnchorElement).style.boxShadow =
-                "0 0 24px rgba(0,166,81,0.45)";
-            }}
-          >
+              "0 0 24px rgba(0,166,81,0.45)";
+            }}>
+            
             <Smartphone size={18} />
             Solicitar Orçamento
           </a>
 
           {/* Secundário */}
           <a
-            href="https://wa.me/551190562933?text=Olá! Gostaria de solicitar um orçamento."
+
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg text-base font-bold transition-all duration-300 hover:scale-105"
             style={{
               background: "rgba(192,194,192,0.08)",
               color: "#C0C2C0",
-              border: "1.5px solid #C0C2C0",
+              border: "1.5px solid #C0C2C0"
             }}
-            onMouseEnter={e => {
+            onMouseEnter={(e) => {
               (e.currentTarget as HTMLAnchorElement).style.background =
-                "rgba(192,194,192,0.18)";
+              "rgba(192,194,192,0.18)";
             }}
-            onMouseLeave={e => {
+            onMouseLeave={(e) => {
               (e.currentTarget as HTMLAnchorElement).style.background =
-                "rgba(192,194,192,0.08)";
-            }}
-          >
+              "rgba(192,194,192,0.08)";
+            }} href="https://wa.me/5511940562933?text=Ol\xE1! Gostaria de solicitar um or\xE7amento.">
+            
             <MessageCircle size={18} />
             Falar no WhatsApp
           </a>
@@ -171,24 +171,24 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.6 }}
-          className="flex gap-10 md:gap-16 justify-center"
-        >
-          {stats.map((s, i) => (
-            <div key={i} className="flex flex-col items-center">
+          className="flex gap-10 md:gap-16 justify-center">
+          
+          {stats.map((s, i) =>
+          <div key={i} className="flex flex-col items-center">
               <span
-                className="text-3xl md:text-4xl font-extrabold"
-                style={{ color: "#00A651" }}
-              >
+              className="text-3xl md:text-4xl font-extrabold"
+              style={{ color: "#00A651" }}>
+              
                 {s.value}
               </span>
               <span
-                className="text-xs uppercase tracking-widest mt-1"
-                style={{ color: "#9CA3AF" }}
-              >
+              className="text-xs uppercase tracking-widest mt-1"
+              style={{ color: "#9CA3AF" }}>
+              
                 {s.label}
               </span>
             </div>
-          ))}
+          )}
         </motion.div>
       </div>
 
@@ -197,16 +197,16 @@ const HeroSection = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+        
         <ChevronDown
           size={28}
           className="animate-bounce"
-          style={{ color: "#00A651" }}
-        />
+          style={{ color: "#00A651" }} />
+        
       </motion.div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default HeroSection;
