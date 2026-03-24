@@ -43,7 +43,8 @@ const ProductPage = () => {
     setTimeout(() => setAdded(false), 1000);
   };
 
-  const whatsappLink = `https://wa.me/5511940562933?text=${encodeURIComponent(`Olá! Tenho interesse no produto: ${product.name} - R$${product.price.toFixed(2).replace(".", ",")} (Quantidade: ${quantity})`)}`;
+  const priceLabel = typeof product.price === "number" ? `R$${product.price.toFixed(2).replace(".", ",")}` : "Indisponível";
+  const whatsappLink = `https://wa.me/5511940562933?text=${encodeURIComponent(`Olá! Tenho interesse no produto: ${product.name} - ${priceLabel} (Quantidade: ${quantity})`)}`;
 
   const related = products
     .filter((p) => p.category === product.category && p.id !== product.id)
