@@ -1,122 +1,66 @@
-// 1. Definição de Tipos
-export type ProductBadge = "Novo" | "Oferta" | "+Vendido";
-export type ProductStatus = "Disponível" | "Indisponível";
-
-export const categories = [
-  "Capas & Proteção",
-  "Películas",
-  "Fones & Áudio",
-  "Carregadores & Cabos",
-  "Armazenamento",
-  "Periféricos & Informática",
-  "Impressão",
-  "Smartwatches & Wearables",
-  "Suportes & Organização",
-] as const;
-
-export type Category = typeof categories[number];
-
 export interface Product {
   id: string;
   name: string;
-  category: Category;
-  price: number | "Indisponível"; // Preço como Indisponível se não definido
+  category: string;
+  price: number | "Indisponível";
   originalPrice?: number;
-  badge?: ProductBadge;
   image: string;
-  description: string;
-  compatibility?: string;
-  status: ProductStatus;
+  badge?: "+Vendido" | "Novo" | "Oferta";
 }
 
-// 2. Base de Dados de Produtos
 export const products: Product[] = [
-  // --- CAPAS & PROTEÇÃO ---
   {
-    id: "capa-anti-impacto-a55",
-    name: "Capa Anti-Impacto Samsung Galaxy A55",
-    category: "Capas & Proteção",
-    price: 34.9,
-    badge: "+Vendido",
-    image: "",
-    description: "Capa anti-impacto com bordas reforçadas e proteção militar. Material TPU flexível com acabamento fosco anti-impressão digital.",
-    compatibility: "Samsung Galaxy A55",
-    status: "Disponível"
-  },
-  {
-    id: "capa-magsafe-iphone15pro",
-    name: "Capa MagSafe iPhone 15 Pro",
-    category: "Capas & Proteção",
-    price: 79.9,
-    badge: "Novo",
-    image: "",
-    description: "Capa com ímãs MagSafe integrados. Compatível com carregamento wireless e acessórios magnéticos.",
-    compatibility: "iPhone 15 Pro",
-    status: "Disponível"
-  },
-  {
-    id: "capa-premium-indisponivel",
-    name: "Capa Couro Legítimo S24 Ultra",
-    category: "Capas & Proteção",
+    id: "1",
+    name: "SSD NVMe 1TB Kingston NV2 - Ultra Velocidade",
+    category: "Armazenamento",
     price: "Indisponível",
-    image: "",
-    description: "Acabamento premium em couro legítimo com interior em microfibra.",
-    compatibility: "Samsung S24 Ultra",
-    status: "Indisponível"
-  },
-
-  // --- FONES & ÁUDIO ---
-  {
-    id: "fone-tws-anc",
-    name: "Fone TWS Bluetooth 5.3 com ANC",
-    category: "Fones & Áudio",
-    price: 89.9,
-    badge: "+Vendido",
-    image: "",
-    description: "Cancelamento ativo de ruído (ANC), Bluetooth 5.3 e 30h de bateria total.",
-    status: "Disponível"
+    image: "https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=800",
+    badge: "+Vendido"
   },
   {
-    id: "headset-gamer-havit",
-    name: "Headset Gamer Havit Fuxi-H3",
-    category: "Fones & Áudio",
-    price: 199.9,
-    badge: "Novo",
-    image: "",
-    description: "Wireless dual-mode (2.4GHz + Bluetooth) com drivers de 50mm e memory foam.",
-    status: "Disponível"
+    id: "2",
+    name: "Manutenção Preventiva: Limpeza + Pasta Térmica Silver",
+    category: "Assistência Técnica",
+    price: "Indisponível",
+    image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?q=80&w=800",
+    badge: "Novo"
   },
-
-  // --- CARREGADORES ---
   {
-    id: "carregador-65w-gan",
-    name: "Carregador Turbo 65W GaN USB-C",
+    id: "3",
+    name: "Mouse Gamer Pro RGB 16000 DPI Sensor Óptico",
+    category: "Periféricos & Informática",
+    price: "Indisponível",
+    image: "https://images.unsplash.com/photo-1527814732934-94a857bd8629?q=80&w=800",
+    badge: "Oferta"
+  },
+  {
+    id: "4",
+    name: "Troca de Tela Smartphone (Original / Premium)",
+    category: "Assistência Técnica",
+    price: "Indisponível",
+    image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=800",
+  },
+  {
+    id: "5",
+    name: "Memória RAM 16GB DDR4 3200MHz HyperX",
+    category: "Armazenamento",
+    price: "Indisponível",
+    image: "https://images.unsplash.com/photo-1562976540-1502c2145186?q=80&w=800",
+  },
+  {
+    id: "6",
+    name: "Carregador Rápido 20W USB-C Premium",
     category: "Carregadores & Cabos",
-    price: 89.9,
-    badge: "+Vendido",
-    image: "",
-    description: "Tecnologia GaN de alta eficiência. Carrega notebooks e smartphones simultaneamente.",
-    status: "Disponível"
-  },
-
-  // --- SMARTWATCHES ---
-  {
-    id: "pulseira-xiaomi-band8",
-    name: "Pulseira Inteligente Xiaomi Band 8",
-    category: "Smartwatches & Wearables",
-    price: 179.9,
-    badge: "+Vendido",
-    image: "",
-    description: "Tela AMOLED 1.62'', 150+ modos esportivos e bateria de longa duração.",
-    status: "Disponível"
-  },
-  {
-    id: "smartwatch-premium-esgotado",
-    name: "Apple Watch Series 9 (Mock)",
-    category: "Smartwatches & Wearables",
     price: "Indisponível",
-    image: "",
-    description: "Monitoramento avançado de saúde e integração total com ecossistema iOS.",
-    status: "Indisponível"
+    image: "https://images.unsplash.com/photo-1625517406127-7c1f23c9ceb1?q=80&w=800",
+    badge: "+Vendido"
   }
+];
+
+export const categories = [
+  "Assistência Técnica",
+  "Armazenamento",
+  "Periféricos & Informática",
+  "Carregadores & Cabos",
+  "Capas & Proteção"
 ];
