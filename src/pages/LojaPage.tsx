@@ -165,7 +165,7 @@ const LojaPage = () => {
                             </span>
                           )}
                           <span className="text-lg font-bold text-primary">
-                            R${product.price.toFixed(2).replace(".", ",")}
+                            {formatPrice(product.price)}
                           </span>
                         </div>
 
