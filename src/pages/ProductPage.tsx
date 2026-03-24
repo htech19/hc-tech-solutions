@@ -1,208 +1,138 @@
-import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowLeft, ShoppingCart, MessageCircle, Minus, Plus, Shield, Truck, Star } from "lucide-react";
-import { products } from "@/data/store-products";
-import { useCart } from "@/contexts/CartContext";
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, MessageCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { products, categories, Product } from "@/data/store-products";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import CartDrawer from "@/components/CartDrawer";
 
-const badgeColors: Record<string, string> = {
-  "+Vendido": "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  "Novo": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  "Oferta": "bg-red-500/20 text-red-400 border-red-500/30",
-};
+const LojaPage = () => {
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-const ProductPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const product = products.find((p) => p.id === id);
-  const { addToCart } = useCart();
-  const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
+  const filtered = useMemo(() => {
+    return products.filter((p) => {
+      const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory = !selectedCategory || p.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [search, selectedCategory]);
 
-  if (!product) {
-    return (
-      <>
-        <Header />
-        <main className="pt-24 min-h-screen container mx-auto px-4 text-center">
-          <p className="text-xl text-muted-foreground">Produto não encontrado.</p>
-          <Link to="/loja" className="text-primary hover:underline mt-4 inline-block">Voltar à loja</Link>
-        </main>
-        <Footer />
-      </>
-    );
-  }
-
-  const handleAdd = () => {
-    for (let i = 0; i < quantity; i++) addToCart(product);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1000);
-  };
-
-  const priceLabel = typeof product.price === "number" ? `R$${product.price.toFixed(2).replace(".", ",")}` : "Indisponível";
-  const whatsappLink = `https://wa.me/5511940562933?text=${encodeURIComponent(`Olá! Tenho interesse no produto: ${product.name} - ${priceLabel} (Quantidade: ${quantity})`)}`;
-
-  const related = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+  const whatsappLink = (p: Product) =>
+    `https://wa.me/5511940562933?text=${encodeURIComponent(
+      `Olá! Vi o produto ${p.name} no site. Está disponível em stock?`
+    )}`;
 
   return (
-    <>
+    <div className="bg-[#080808] text-white min-h-screen">
       <Header />
-      <CartDrawer />
-      <main className="pt-20 min-h-screen">
-        <div className="container mx-auto px-4 py-8 md:py-12">
-          <Link
-            to="/loja"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors text-sm"
-          >
-            <ArrowLeft size={16} /> Voltar à loja
-          </Link>
+      <main className="pt-24 pb-20 container mx-auto px-2 md:px-4">
+        
+        {/* Branding HC TECH */}
+        <div className="mb-10 text-center">
+           <h1 className="text-3xl md:text-5xl font-black tracking-tighter mb-1 uppercase italic italic">
+            HC TECH <span className="text-emerald-500">CATÁLOGO</span>
+           </h1>
+           <p className="text-zinc-600 font-bold uppercase tracking-[0.2em] text-[10px]">Consultoria em Tecnologia e Acessórios</p>
+        </div>
 
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {/* Image */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="relative aspect-square rounded-2xl overflow-hidden bg-card/50 border border-border/50"
-            >
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-              {product.badge && (
-                <span className={`absolute top-4 left-4 px-3 py-1.5 rounded-full text-sm font-semibold border ${badgeColors[product.badge]}`}>
-                  {product.badge === "+Vendido" && <><Star size={12} className="inline mr-1" />+Vendido</>}
-                  {product.badge === "Novo" && "Novo"}
-                  {product.badge === "Oferta" && "🔥 Oferta"}
-                </span>
-              )}
-            </motion.div>
-
-            {/* Details */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex flex-col"
-            >
-              <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium mb-2">
-                {product.category}
-              </span>
-              <h1 className="text-2xl md:text-3xl font-bold mb-4">{product.name}</h1>
-
-              {/* Price */}
-              <div className="flex items-baseline gap-3 mb-6">
-                {product.originalPrice && (
-                  <span className="text-lg text-muted-foreground line-through">
-                    R${product.originalPrice.toFixed(2).replace(".", ",")}
-                  </span>
-                )}
-                <span className="text-3xl font-bold text-primary">
-                  {priceLabel}
-                </span>
-                {product.originalPrice && typeof product.price === "number" && (
-                  <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
-                    -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
-                  </Badge>
-                )}
-              </div>
-
-              <p className="text-muted-foreground leading-relaxed mb-6">{product.description}</p>
-
-              {product.compatibility && (
-                <div className="mb-6 p-3 rounded-lg bg-accent/10 border border-border/30">
-                  <span className="text-xs text-muted-foreground font-medium uppercase">Compatibilidade:</span>
-                  <p className="text-sm font-medium mt-1">{product.compatibility}</p>
-                </div>
-              )}
-
-              {/* Quantity */}
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-sm text-muted-foreground">Quantidade:</span>
-                <div className="flex items-center border border-border/50 rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-3 py-2 hover:bg-accent/20 transition-colors"
-                  >
-                    <Minus size={14} />
-                  </button>
-                  <span className="px-4 py-2 text-sm font-semibold min-w-[40px] text-center">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-3 py-2 hover:bg-accent/20 transition-colors"
-                  >
-                    <Plus size={14} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 mb-8">
-                <Button
-                  size="lg"
-                  onClick={handleAdd}
-                  className={`flex-1 transition-all ${added ? "bg-emerald-600 scale-95" : ""}`}
-                >
-                  <ShoppingCart size={18} />
-                  {added ? "Adicionado!" : "Adicionar ao carrinho"}
-                </Button>
-                <Button size="lg" variant="outline" className="flex-1" asChild>
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle size={18} />
-                    Pedir via WhatsApp
-                  </a>
-                </Button>
-              </div>
-
-              {/* Trust badges */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-card/40 border border-border/30">
-                  <Shield size={18} className="text-primary" />
-                  <span className="text-xs text-muted-foreground">Garantia de qualidade</span>
-                </div>
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-card/40 border border-border/30">
-                  <Truck size={18} className="text-primary" />
-                  <span className="text-xs text-muted-foreground">Entrega na região ABC</span>
-                </div>
-              </div>
-            </motion.div>
+        {/* Barra de Pesquisa e Categorias */}
+        <div className="flex flex-col gap-4 mb-12 max-w-4xl mx-auto">
+          <div className="relative group">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-emerald-500 transition-colors" size={18} />
+            <Input 
+              placeholder="Pesquisar fones, cabos, carregadores..." 
+              className="bg-zinc-900/40 border-zinc-800/50 h-11 rounded-xl pl-10 focus:border-emerald-500/50 text-sm"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar py-1">
+            {["Todos", ...categories].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat === "Todos" ? null : cat)}
+                className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all border whitespace-nowrap ${
+                  (selectedCategory === cat || (cat === "Todos" && !selectedCategory))
+                    ? "bg-emerald-500 border-emerald-500 text-black shadow-lg shadow-emerald-500/10"
+                    : "bg-zinc-900 border-zinc-800 text-zinc-500"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
 
-          {/* Related */}
-          {related.length > 0 && (
-            <section className="mt-16">
-              <h2 className="text-xl font-bold mb-6">Produtos relacionados</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {related.map((p) => (
-                  <Link
-                    key={p.id}
-                    to={`/loja/${p.id}`}
-                    className="bg-card/60 rounded-xl border border-border/50 overflow-hidden hover:border-primary/30 transition-colors group"
-                  >
-                    <div className="aspect-square overflow-hidden">
-                      <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+        {/* Grelha de Produtos Otimizada (2 Mobile / 4 Desktop) */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((product) => (
+              <motion.div
+                key={product.id}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="group relative bg-zinc-900/20 rounded-2xl border border-zinc-800/40 overflow-hidden flex flex-col hover:border-emerald-500/20 transition-all duration-500"
+              >
+                {/* Contentor da Imagem */}
+                <div className="relative aspect-square overflow-hidden bg-zinc-950">
+                  <img
+                    src={product.image}
+                    className="w-full h-full object-cover grayscale opacity-30 group-hover:scale-110 transition-all duration-700"
+                  />
+                  {product.badge && (
+                    <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded-sm text-[8px] font-black uppercase bg-emerald-500 text-black z-10">
+                      {product.badge}
+                    </span>
+                  )}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                     <span className="text-[8px] font-bold text-zinc-400 uppercase tracking-widest border border-zinc-700 px-2 py-1 bg-black/40 backdrop-blur-sm">
+                        Sob Consulta
+                     </span>
+                  </div>
+                </div>
+
+                {/* Detalhes do Produto */}
+                <div className="p-4 flex flex-col flex-1">
+                  <span className="text-[7px] md:text-[8px] font-black text-emerald-500/40 uppercase mb-1 tracking-widest">{product.category}</span>
+                  <h3 className="text-[11px] md:text-sm font-bold text-zinc-300 leading-tight mb-4 line-clamp-2 h-8 md:h-10">
+                    {product.name}
+                  </h3>
+                  
+                  <div className="mt-auto">
+                    <div className="mb-4 flex flex-col">
+                      <span className="text-[9px] text-zinc-700 line-through">
+                        Ref: R$ {product.originalPrice?.toFixed(2).replace(".", ",")}
+                      </span>
+                      <span className="text-[11px] font-black text-zinc-500 uppercase italic tracking-tighter">
+                         Produto Indisponível
+                      </span>
                     </div>
-                    <div className="p-3">
-                      <p className="text-xs text-muted-foreground">{p.category}</p>
-                      <p className="text-sm font-semibold line-clamp-2 mt-1">{p.name}</p>
-                      <p className="text-primary font-bold mt-2">{typeof p.price === "number" ? `R$${p.price.toFixed(2).replace(".", ",")}` : "Indisponível"}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
+
+                    <Button 
+                      className="w-full h-9 rounded-lg font-black uppercase tracking-widest text-[9px] bg-zinc-800 text-zinc-400 hover:bg-emerald-500 hover:text-black border border-zinc-800 hover:border-emerald-400 transition-colors shadow-lg shadow-black"
+                      asChild
+                    >
+                      <a href={whatsappLink(product)} target="_blank" rel="noopener noreferrer">
+                        <MessageCircle size={12} className="mr-1.5" />
+                        Disponibilidade
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </main>
       <Footer />
       <WhatsAppButton />
-    </>
+    </div>
   );
 };
 
-export default ProductPage;
+export default LojaPage;
