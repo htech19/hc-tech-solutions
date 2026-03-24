@@ -103,7 +103,7 @@ const ProductPage = () => {
                   </span>
                 )}
                 <span className="text-3xl font-bold text-primary">
-                  R${product.price.toFixed(2).replace(".", ",")}
+                  {priceLabel}
                 </span>
                 {product.originalPrice && (
                   <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
