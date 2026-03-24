@@ -43,7 +43,8 @@ const ProductPage = () => {
     setTimeout(() => setAdded(false), 1000);
   };
 
-  const whatsappLink = `https://wa.me/5511940562933?text=${encodeURIComponent(`Olá! Tenho interesse no produto: ${product.name} - R$${product.price.toFixed(2).replace(".", ",")} (Quantidade: ${quantity})`)}`;
+  const priceLabel = typeof product.price === "number" ? `R$${product.price.toFixed(2).replace(".", ",")}` : "Indisponível";
+  const whatsappLink = `https://wa.me/5511940562933?text=${encodeURIComponent(`Olá! Tenho interesse no produto: ${product.name} - ${priceLabel} (Quantidade: ${quantity})`)}`;
 
   const related = products
     .filter((p) => p.category === product.category && p.id !== product.id)
@@ -102,9 +103,9 @@ const ProductPage = () => {
                   </span>
                 )}
                 <span className="text-3xl font-bold text-primary">
-                  R${product.price.toFixed(2).replace(".", ",")}
+                  {priceLabel}
                 </span>
-                {product.originalPrice && (
+                {product.originalPrice && typeof product.price === "number" && (
                   <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
                     -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
                   </Badge>
@@ -189,7 +190,7 @@ const ProductPage = () => {
                     <div className="p-3">
                       <p className="text-xs text-muted-foreground">{p.category}</p>
                       <p className="text-sm font-semibold line-clamp-2 mt-1">{p.name}</p>
-                      <p className="text-primary font-bold mt-2">R${p.price.toFixed(2).replace(".", ",")}</p>
+                      <p className="text-primary font-bold mt-2">{typeof p.price === "number" ? `R$${p.price.toFixed(2).replace(".", ",")}` : "Indisponível"}</p>
                     </div>
                   </Link>
                 ))}

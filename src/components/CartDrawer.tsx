@@ -9,7 +9,7 @@ const CartDrawer = () => {
 
   const whatsappCheckout = () => {
     const lines = items.map(
-      (i) => `• ${i.product.name} (x${i.quantity}) — R$${(i.product.price * i.quantity).toFixed(2).replace(".", ",")}`
+      (i) => `• ${i.product.name} (x${i.quantity}) — R$${(typeof i.product.price === "number" ? (i.product.price * i.quantity) : 0).toFixed(2).replace(".", ",")}`
     );
     const total = `\n\n💰 Total: R$${subtotal.toFixed(2).replace(".", ",")}`;
     const text = `Olá! Gostaria de finalizar meu pedido:\n\n${lines.join("\n")}${total}`;
@@ -54,7 +54,7 @@ const CartDrawer = () => {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium leading-snug line-clamp-2">{item.product.name}</p>
                       <p className="text-primary font-bold text-sm mt-1">
-                        R${item.product.price.toFixed(2).replace(".", ",")}
+                        {typeof item.product.price === "number" ? `R$${item.product.price.toFixed(2).replace(".", ",")}` : "Indisponível"}
                       </p>
                       <div className="flex items-center gap-2 mt-2">
                         <button
