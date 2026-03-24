@@ -9,7 +9,7 @@ const CartDrawer = () => {
 
   const whatsappCheckout = () => {
     const lines = items.map(
-      (i) => `• ${i.product.name} (x${i.quantity}) — R$${(i.product.price * i.quantity).toFixed(2).replace(".", ",")}`
+      (i) => `• ${i.product.name} (x${i.quantity}) — R$${(typeof i.product.price === "number" ? (i.product.price * i.quantity) : 0).toFixed(2).replace(".", ",")}`
     );
     const total = `\n\n💰 Total: R$${subtotal.toFixed(2).replace(".", ",")}`;
     const text = `Olá! Gostaria de finalizar meu pedido:\n\n${lines.join("\n")}${total}`;
