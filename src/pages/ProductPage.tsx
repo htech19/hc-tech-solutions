@@ -105,7 +105,7 @@ const ProductPage = () => {
                 <span className="text-3xl font-bold text-primary">
                   {priceLabel}
                 </span>
-                {product.originalPrice && (
+                {product.originalPrice && typeof product.price === "number" && (
                   <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
                     -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
                   </Badge>
