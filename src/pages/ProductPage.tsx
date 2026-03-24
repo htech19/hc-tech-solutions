@@ -190,7 +190,7 @@ const ProductPage = () => {
                     <div className="p-3">
                       <p className="text-xs text-muted-foreground">{p.category}</p>
                       <p className="text-sm font-semibold line-clamp-2 mt-1">{p.name}</p>
-                      <p className="text-primary font-bold mt-2">R${p.price.toFixed(2).replace(".", ",")}</p>
+                      <p className="text-primary font-bold mt-2">{typeof p.price === "number" ? `R$${p.price.toFixed(2).replace(".", ",")}` : "Indisponível"}</p>
                     </div>
                   </Link>
                 ))}

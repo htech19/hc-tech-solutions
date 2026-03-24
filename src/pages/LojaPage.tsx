@@ -170,25 +170,29 @@ const LojaPage = () => {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            onClick={() => handleAdd(product)}
-                            className={`flex-1 text-xs transition-all ${
-                              addedId === product.id
-                                ? "bg-emerald-600 scale-95"
-                                : ""
-                            }`}
-                          >
-                            <ShoppingCart size={14} />
-                            {addedId === product.id ? "Adicionado!" : "Carrinho"}
-                          </Button>
-                          <Button size="sm" variant="outline" className="text-xs" asChild>
-                            <a href={whatsappLink(product)} target="_blank" rel="noopener noreferrer">
-                              <MessageCircle size={14} />
-                            </a>
-                          </Button>
-                        </div>
+                        {typeof product.price === "number" ? (
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              onClick={() => handleAdd(product)}
+                              className={`flex-1 text-xs transition-all ${
+                                addedId === product.id
+                                  ? "bg-emerald-600 scale-95"
+                                  : ""
+                              }`}
+                            >
+                              <ShoppingCart size={14} />
+                              {addedId === product.id ? "Adicionado!" : "Carrinho"}
+                            </Button>
+                            <Button size="sm" variant="outline" className="text-xs" asChild>
+                              <a href={whatsappLink(product)} target="_blank" rel="noopener noreferrer">
+                                <MessageCircle size={14} />
+                              </a>
+                            </Button>
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground font-medium">Indisponível</p>
+                        )}
                       </div>
                     </div>
                   </motion.div>
