@@ -35,13 +35,17 @@ const LojaPage = () => {
   }, [search, selectedCategory]);
 
   const handleAdd = (product: Product) => {
+    if (typeof product.price !== "number") return;
     addToCart(product);
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 600);
   };
 
+  const formatPrice = (price: number | "Indisponível") =>
+    typeof price === "number" ? `R$${price.toFixed(2).replace(".", ",")}` : "Indisponível";
+
   const whatsappLink = (p: Product) =>
-    `https://wa.me/5511940562933?text=${encodeURIComponent(`Olá! Tenho interesse no produto: ${p.name} - R$${p.price.toFixed(2).replace(".", ",")}`)}`
+    `https://wa.me/5511940562933?text=${encodeURIComponent(`Olá! Tenho interesse no produto: ${p.name} - ${formatPrice(p.price)}`)}`
 
   return (
     <>
