@@ -87,7 +87,7 @@ const Header = () => {
       <div className="container mx-auto px-4 flex items-center justify-between h-16 md:h-20">
         <Link to="/" className="text-2xl font-bold tracking-tight">
           <span className="text-primary">HC</span>
-          <span className="text-primary"> Tech</span>
+          <span className="text-primary"> Tech Infocell </span>
         </Link>
 
         {/* Desktop nav */}
