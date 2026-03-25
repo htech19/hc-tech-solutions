@@ -4,9 +4,9 @@
 
 @layer base {
   body {
-    @apply bg-[#050505] text-slate-50 antialiased;
-    /* Etapa 1: Fundo Global */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('/hero-bg.jpg');
+    @apply bg-[#050505] text-slate-50 antialiased font-sans;
+    /* Etapa 1: Fundo Global Fixo */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('/hero-bg.jpg');
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
@@ -14,11 +14,18 @@
 }
 
 @layer components {
+  /* Cartão com efeito de vidro embaçado */
   .glass-card {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl hover:border-[#00A651]/50 transition-all duration-300;
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl hover:border-[#00A651]/40 transition-all duration-300 shadow-xl;
   }
   
+  /* Botão principal verde */
   .btn-primary {
-    @apply bg-[#00A651] text-white px-8 py-4 rounded-2xl font-black flex items-center gap-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(0,166,81,0.4)] transition-all uppercase tracking-tighter;
+    @apply bg-[#00A651] text-white px-8 py-4 rounded-2xl font-black flex items-center gap-2 hover:scale-105 hover:shadow-[0_0_25px_rgba(0,166,81,0.4)] transition-all uppercase tracking-tighter active:scale-95;
+  }
+
+  /* Brilho neon sutil no texto verde */
+  .text-glow-green {
+    text-shadow: 0 0 15px rgba(0, 166, 81, 0.5);
   }
 }
