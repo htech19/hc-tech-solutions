@@ -1,95 +1,140 @@
-import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, MessageCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { products } from "@/data/store-products";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import React from "react";
 
-const ProductPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const product = products.find((p) => p.id === id);
+type Product = {
+  name: string;
+  category: string;
+};
 
-  if (!product) {
-    return (
-      <div className="bg-[#050505] text-white min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Produto não encontrado</h1>
-            <Button asChild variant="outline">
-              <Link to="/loja">Voltar ao catálogo</Link>
-            </Button>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+const products: Product[] = [
+  // FONES BLUETOOTH / HEADSETS
+  { name: "Fone Bluetooth KD-790", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth KD-788", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth Knc-4219", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth Knc-5601", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth Knc-5602", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth Knc-5603", category: "Fones Bluetooth" },
+  { name: "Headphone Bluetooth KD-750", category: "Fones Bluetooth" },
+  { name: "Headset Bluetooth Kaidi KD-752", category: "Fones Bluetooth" },
+  { name: "Headset Gamer Kaidi KD-632", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth LE-366B", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth LE-362", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth LE-391-1", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth Le-365", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth J-90 Pro", category: "Fones Bluetooth" },
+  { name: "Fone de Ouvido Bluetooth P9", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth St-158", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth ST-159", category: "Fones Bluetooth" },
+  { name: "Fone Bluetooth ST-160", category: "Fones Bluetooth" },
 
-  const related = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+  // CABOS
+  { name: "Cabo Usb/V8 (2 Metros)", category: "Cabos" },
+  { name: "Usb/V8 (Com Silicone)", category: "Cabos" },
+  { name: "Usb/V8 (Sem Silicone)", category: "Cabos" },
+  { name: "Usb/Micro (3 Metros)", category: "Cabos" },
+  { name: "Usb/Tipo-C", category: "Cabos" },
+  { name: "Usb/Lightning", category: "Cabos" },
+  { name: "Cabo HDMI (5 Metros)", category: "Cabos" },
+
+  // CARREGADORES
+  { name: "Fonte de Carregamento Duplo USB", category: "Carregadores" },
+  { name: "Carregador Rápido Tipo-C", category: "Carregadores" },
+  { name: "Carregador Turbo Tipo-C", category: "Carregadores" },
+  { name: "Carregador iPhone Lightning", category: "Carregadores" },
+
+  // POWER BANK
+  { name: "Power Bank 5000mah", category: "Power Bank" },
+  { name: "Power Bank 10000mah", category: "Power Bank" },
+  { name: "Power Bank 20000mah", category: "Power Bank" },
+
+  // CAIXAS DE SOM
+  { name: "Caixa de Som KD-850", category: "Caixas de Som" },
+  { name: "Caixa de Som KD-833", category: "Caixas de Som" },
+  { name: "Caixinha de Som Knc-826", category: "Caixas de Som" },
+  { name: "Boombox 50W", category: "Caixas de Som" },
+
+  // PERIFÉRICOS
+  { name: "Teclado Gamer RGB", category: "Periféricos" },
+  { name: "Mouse com Fio", category: "Periféricos" },
+  { name: "Teclado e Mouse Kit", category: "Periféricos" },
+
+  // SUPORTES
+  { name: "Suporte Celular Carro", category: "Suportes" },
+  { name: "Suporte Celular Moto", category: "Suportes" },
+
+  // MEMÓRIA
+  { name: "Cartão de Memória 32GB", category: "Memória" },
+  { name: "Pendrive 64GB", category: "Memória" },
+
+  // SMARTWATCH
+  { name: "Smartwatch KW51", category: "Smartwatch" },
+  { name: "Smartwatch S10 Pro", category: "Smartwatch" },
+];
+
+const ProductPage: React.FC = () => {
+  const handleWhatsApp = (productName: string) => {
+    const message = `Olá, quero informações sobre ${productName}`;
+    const url = `https://wa.me/5511940562933?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  };
 
   return (
-    <div className="bg-[#050505] text-white min-h-screen">
-      <Header />
-      <main className="pt-28 pb-20 container mx-auto px-4">
-        <Link to="/loja" className="inline-flex items-center gap-2 text-zinc-400 hover:text-emerald-500 transition-colors mb-8 text-sm">
-          <ArrowLeft size={16} /> Voltar ao catálogo
-        </Link>
+    <div style={{ padding: "20px" }}>
+      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+        🚚 Entrega no mesmo dia para região do ABC
+      </h2>
 
-        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          <div className="relative aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800/40">
-            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-            {product.badge && (
-              <span className="absolute top-6 left-6 bg-emerald-500 text-black px-3 py-1 rounded text-xs font-black uppercase">
-                {product.badge}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col justify-center">
-            <span className="text-[10px] font-black text-emerald-500/60 uppercase tracking-widest mb-2">{product.category}</span>
-            <h1 className="text-3xl md:text-4xl font-black mb-4">{product.name}</h1>
-            <p className="text-zinc-400 text-sm mb-8">
-              Produto disponível sob consulta. Entre em contato para verificar disponibilidade e condições especiais.
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+          gap: "16px",
+        }}
+      >
+        {products.map((product, index) => (
+          <div
+            key={index}
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "12px",
+              padding: "16px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              transition: "0.3s",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget.style.transform = "scale(1.03)"),
+              (e.currentTarget.style.boxShadow =
+                "0 4px 16px rgba(0,0,0,0.2)"))
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget.style.transform = "scale(1)"),
+              (e.currentTarget.style.boxShadow =
+                "0 2px 8px rgba(0,0,0,0.1)"))
+            }
+          >
+            <h3 style={{ fontSize: "16px" }}>{product.name}</h3>
+            <p style={{ fontSize: "12px", color: "#666" }}>
+              {product.category}
             </p>
 
-            <div className="bg-zinc-900/50 border border-zinc-800/40 rounded-2xl p-6 mb-6">
-              <span className="text-zinc-500 text-xs uppercase tracking-widest font-bold">Preço</span>
-              <p className="text-2xl font-black text-emerald-500 mt-1">Sob Consulta</p>
-            </div>
-
-            <Button className="w-full h-14 rounded-xl font-black uppercase tracking-widest text-sm bg-white text-black hover:bg-emerald-500 transition-all" asChild>
-              <a href={`https://wa.me/5511940562933?text=Olá Harrison! Tenho interesse no ${product.name}. Pode me passar o valor?`} target="_blank">
-                <MessageCircle size={18} className="mr-2" />
-                Consultar via WhatsApp
-              </a>
-            </Button>
+            <button
+              style={{
+                marginTop: "10px",
+                width: "100%",
+                padding: "10px",
+                background: "#25D366",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+              onClick={() => handleWhatsApp(product.name)}
+            >
+              Consultar via WhatsApp
+            </button>
           </div>
-        </div>
-
-        {related.length > 0 && (
-          <div className="mt-20">
-            <h2 className="text-xl font-black uppercase tracking-widest mb-8 text-zinc-400">Produtos Relacionados</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {related.map((r) => (
-                <Link key={r.id} to={`/loja/${r.id}`} className="group bg-zinc-900/20 rounded-2xl border border-zinc-800/40 overflow-hidden hover:border-emerald-500/30 transition-all">
-                  <div className="aspect-square overflow-hidden bg-zinc-950">
-                    <img src={r.image} alt={r.name} className="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity" />
-                  </div>
-                  <div className="p-4">
-                    <p className="text-xs font-bold text-zinc-300 line-clamp-2">{r.name}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </main>
-      <Footer />
-      <WhatsAppButton />
+        ))}
+      </div>
     </div>
   );
 };
