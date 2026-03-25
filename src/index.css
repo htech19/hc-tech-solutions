@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer components {
   /* Efeito de brilho neon no texto verde */
   .text-glow-green {
@@ -30,7 +34,7 @@
   }
 }
 
-/* Botão Flutuante de WhatsApp com "Atenção" */
+/* Botão Flutuante de WhatsApp */
 .whatsapp-float {
   position: fixed;
   bottom: 30px;
@@ -51,22 +55,4 @@
 .whatsapp-float:hover {
   transform: scale(1.1) translateY(-5px);
   background-color: #128c7e;
-}
-
-/* Badge de notificação no botão de WhatsApp */
-.whatsapp-float::after {
-  content: '1';
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: #ff0000;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  font-size: 10px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #050505;
 }
