@@ -1,173 +1,130 @@
-import React, { useState } from "react";
+import { useState, useMemo } from "react";
+import { products, categories } from "@/data/store-products";
+import { Search, MessageCircle, Package, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
-type Product = {
-  name: string;
-  category: string;
-};
-
-const products: Product[] = [
-  { name: "Fone Bluetooth KD-790", category: "Fones" },
-  { name: "Fone Bluetooth KD-788", category: "Fones" },
-  { name: "Headphone Bluetooth KD-750", category: "Fones" },
-  { name: "Cabo USB Tipo-C", category: "Cabos" },
-  { name: "Carregador Turbo Tipo-C", category: "Carregadores" },
-  { name: "Power Bank 10000mah", category: "Power Bank" },
-  { name: "Caixa de Som KD-850", category: "Som" },
-  { name: "Teclado Gamer RGB", category: "Periféricos" },
-  { name: "Smartwatch S10 Pro", category: "Smartwatch" },
-];
-
-const categories = ["Todos", ...Array.from(new Set(products.map(p => p.category)))];
-
-const ProductPage: React.FC = () => {
+const ProductPage = () => {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Todos");
+  const [activeCategory, setActiveCategory] = useState("Todos");
 
-  const filtered = products.filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase()) &&
-    (category === "Todos" || p.category === category)
-  );
+  const allCategories = useMemo(() => ["Todos", ...categories], []);
+
+  const filtered = useMemo(() => {
+    return products.filter((p) => {
+      const matchName = p.name.toLowerCase().includes(search.toLowerCase());
+      const matchCategory = activeCategory === "Todos" || p.category === activeCategory;
+      return matchName && matchCategory;
+    });
+  }, [search, activeCategory]);
 
   const handleWhatsApp = (name: string) => {
-    const url = `https://wa.me/5511940562933?text=${encodeURIComponent(
-      `Olá, quero informações sobre ${name}`
-    )}`;
-    window.open(url, "_blank");
+    const text = `Olá, tenho interesse em ${name}`;
+    window.open(`https://wa.me/5511940562933?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   return (
-    <div style={{ background: "#f5f6f8", minHeight: "100vh", padding: "20px" }}>
-
-      {/* HEADER */}
-      <div style={{
-        background: "#fff",
-        padding: "20px",
-        borderRadius: "12px",
-        marginBottom: "20px",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
-      }}>
-        <h1 style={{ margin: 0 }}>HCTECH Store</h1>
-        <p style={{ color: "#666", marginTop: "5px" }}>
-          🚚 Entrega no mesmo dia para região do ABC
-        </p>
+    <div className="min-h-screen bg-background">
+      {/* HEADER DE CONVERSÃO */}
+      <div className="bg-gradient-to-r from-primary/20 via-primary/10 to-background border-b border-border/40">
+        <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
+          <Link to="/" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm mb-4 transition-colors">
+            <ArrowLeft size={14} />
+            Voltar
+          </Link>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
+            Acessórios e Eletrônicos com Entrega Rápida
+          </h1>
+          <p className="text-muted-foreground mt-2 flex items-center gap-2">
+            🚚 Entrega no mesmo dia para região do ABC
+          </p>
+        </div>
       </div>
 
-      {/* BUSCA */}
-      <input
-        placeholder="🔍 Buscar produtos..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "12px",
-          borderRadius: "10px",
-          border: "1px solid #ddd",
-          marginBottom: "15px"
-        }}
-      />
-
-      {/* FILTROS */}
-      <div style={{
-        display: "flex",
-        gap: "10px",
-        flexWrap: "wrap",
-        marginBottom: "20px"
-      }}>
-        {categories.map(cat => (
-          <button
-            key={cat}
-            onClick={() => setCategory(cat)}
-            style={{
-              padding: "8px 14px",
-              borderRadius: "20px",
-              border: "none",
-              cursor: "pointer",
-              background: category === cat ? "#22c55e" : "#e5e7eb",
-              color: category === cat ? "#fff" : "#000",
-              fontSize: "12px"
-            }}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* GRID */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-        gap: "16px"
-      }}>
-        {filtered.map((product, i) => (
-          <div key={i} style={{
-            background: "#fff",
-            borderRadius: "12px",
-            overflow: "hidden",
-            boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            transition: "0.2s"
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-4px)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-          }}
-          >
-
-            {/* IMAGEM FAKE */}
-            <div style={{
-              height: "140px",
-              background: "linear-gradient(135deg, #e2e8f0, #cbd5f5)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "12px",
-              color: "#555"
-            }}>
-              📦 {product.category}
-            </div>
-
-            <div style={{ padding: "12px" }}>
-              
-              {/* BADGE */}
-              <span style={{
-                fontSize: "10px",
-                background: "#22c55e",
-                color: "#fff",
-                padding: "3px 6px",
-                borderRadius: "6px"
-              }}>
-                Entrega Rápida
-              </span>
-
-              <h3 style={{
-                fontSize: "14px",
-                margin: "8px 0"
-              }}>
-                {product.name}
-              </h3>
-
-              <button
-                onClick={() => handleWhatsApp(product.name)}
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  border: "none",
-                  background: "#25D366",
-                  color: "#fff",
-                  fontWeight: "bold",
-                  cursor: "pointer"
-                }}
-              >
-                💬 Consultar
-              </button>
-
-            </div>
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        {/* BUSCA + CONTADOR */}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-6">
+          <div className="relative w-full sm:max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+            <Input
+              placeholder="Buscar produtos..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9 bg-card border-border/50"
+            />
           </div>
-        ))}
-      </div>
+          <span className="text-sm text-muted-foreground shrink-0">
+            {filtered.length} {filtered.length === 1 ? "produto" : "produtos"}
+          </span>
+        </div>
 
+        {/* FILTROS */}
+        <div className="flex gap-2 flex-wrap mb-8">
+          {allCategories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                activeCategory === cat
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* GRID */}
+        {filtered.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <Package size={48} className="text-muted-foreground/30 mb-4" />
+            <p className="text-muted-foreground">Nenhum produto encontrado</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+            {filtered.map((product) => (
+              <div
+                key={product.id}
+                className="group rounded-xl border border-border/40 bg-card overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              >
+                {/* IMAGEM */}
+                <div className="relative h-40 overflow-hidden bg-muted">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  {product.badge && (
+                    <Badge className="absolute top-2 left-2 text-[10px]">
+                      {product.badge}
+                    </Badge>
+                  )}
+                </div>
+
+                {/* INFO */}
+                <div className="p-4 space-y-3">
+                  <p className="text-xs text-muted-foreground">{product.category}</p>
+                  <h3 className="text-sm font-semibold text-foreground leading-snug line-clamp-2 min-h-[2.5rem]">
+                    {product.name}
+                  </h3>
+                  <Button
+                    size="sm"
+                    className="w-full gap-2"
+                    onClick={() => handleWhatsApp(product.name)}
+                  >
+                    <MessageCircle size={14} />
+                    Consultar no WhatsApp
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
