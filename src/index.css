@@ -1,31 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  body {
-    @apply bg-[#050505] text-slate-50 antialiased font-sans;
-    /* Etapa 1: Fundo Global Fixo */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('/hero-bg.jpg');
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
-  }
+/* RESET BÁSICO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@layer components {
-  /* Cartão com efeito de vidro embaçado */
-  .glass-card {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl hover:border-[#00A651]/40 transition-all duration-300 shadow-xl;
-  }
-  
-  /* Botão principal verde */
-  .btn-primary {
-    @apply bg-[#00A651] text-white px-8 py-4 rounded-2xl font-black flex items-center gap-2 hover:scale-105 hover:shadow-[0_0_25px_rgba(0,166,81,0.4)] transition-all uppercase tracking-tighter active:scale-95;
-  }
+/* BACKGROUND GLOBAL */
+body {
+  font-family: Arial, sans-serif;
+  background: url('/hero-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
 
-  /* Brilho neon sutil no texto verde */
-  .text-glow-green {
-    text-shadow: 0 0 15px rgba(0, 166, 81, 0.5);
-  }
+/* OVERLAY PARA LEITURA */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: -1;
+}
+
+/* SCROLL SUAVE */
+html {
+  scroll-behavior: smooth;
 }
