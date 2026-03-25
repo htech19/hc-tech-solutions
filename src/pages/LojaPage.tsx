@@ -1,129 +1,123 @@
 import { useState, useMemo } from "react";
-import { Search, ShoppingBag, Package, ArrowRight, X, Smartphone, Laptop, Zap } from "lucide-react";
+import { Search, ShoppingBag, Smartphone, Laptop, Headphones, MousePointer2, Watch, Camera } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
-import Header from "@/components/Header";
 
-// Mock de produtos - Você pode expandir esta lista
-const products = [
-  { id: 1, name: "Tela iPhone 13 Pro Max OLED", price: "1.250", category: "Telas", image: "https://images.unsplash.com/photo-1601784551446-20c9e07cdbea?w=500", badge: "Premium" },
-  { id: 2, name: "Bateria MacBook Air M1 A2337", price: "580", category: "Baterias", image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500", badge: "Original" },
-  { id: 3, name: "Carregador 20W Apple USB-C", price: "149", category: "Acessórios", image: "https://images.unsplash.com/photo-1583860812120-4f29b77a06a3?w=500" },
-  { id: 4, name: "SSD NVMe 1TB High Performance", price: "420", category: "Hardware", image: "https://images.unsplash.com/photo-1597872200370-49633939e60a?w=500", badge: "Promo" },
+// Etapa 4 & 5: Processamento do Catálogo 
+const rawProducts = [
+  { id: 1, name: "Fone Bluetooth KD-790", category: "Fones" },
+  { id: 2, name: "Headset Gamer Kaidi KD-632", category: "Fones" },
+  { id: 3, name: "Cabo USB-C/Lightning Turbo", category: "Cabos" },
+  { id: 4, name: "Carregador Turbo 33W iPhone", category: "Carregadores" },
+  { id: 5, name: "Power Bank 20000mah KD-922", category: "Energia" },
+  { id: 6, name: "Caixa de Som Boombox 50w", category: "Som" },
+  { id: 7, name: "Teclado Mecânico RGB Ley-2080", category: "Periféricos" },
+  { id: 8, name: "Suporte de Celular para Carro", category: "Suportes" },
+  { id: 9, name: "Smartwatch Ultra 4 Pro", category: "Smartwatches" },
+  { id: 10, name: "Câmera Altomex 5 Antenas", category: "Câmeras" },
+  // Adicionar outros itens do catálogo seguindo este padrão...
 ];
 
-const categories = ["Todos", "Telas", "Baterias", "Acessórios", "Hardware"];
+const categoryIcons: any = {
+  "Todos": <ShoppingBag size={14} />,
+  "Fones": <Headphones size={14} />,
+  "Cabos": <Zap size={14} />,
+  "Carregadores": <Zap size={14} />,
+  "Som": <ShoppingBag size={14} />,
+  "Periféricos": <MousePointer2 size={14} />,
+  "Smartwatches": <Watch size={14} />,
+  "Câmeras": <Camera size={14} />
+};
 
 const LojaPage = () => {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
 
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const matchName = p.name.toLowerCase().includes(search.toLowerCase());
-      const matchCategory = activeCategory === "Todos" || p.category === activeCategory;
-      return matchName && matchCategory;
+  const categories = ["Todos", ...Array.from(new Set(rawProducts.map(p => p.category)))];
+
+  const filteredProducts = useMemo(() => {
+    return rawProducts.filter(p => {
+      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+      const matchCat = activeCategory === "Todos" || p.category === activeCategory;
+      return matchSearch && matchCat;
     });
   }, [search, activeCategory]);
 
-  const handleWhatsApp = (name: string) => {
-    const text = `Olá! Tenho interesse no produto: *${name}*`;
-    window.open(`https://wa.me/5511940562933?text=${encodeURIComponent(text)}`, "_blank");
-  };
-
   return (
-    <div className="min-h-screen bg-[#050505] text-white pt-24 pb-12 font-sans">
-      <Header />
-
-      {/* BANNER DE CABEÇALHO */}
-      <div className="relative border-b border-white/5 bg-[#080808]/50 backdrop-blur-xl mb-12 overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#00A651]/5 blur-[120px] rounded-full" />
+    <div className="min-h-screen pt-32 pb-20 px-4 max-w-7xl mx-auto">
+      <header className="mb-12 space-y-6">
+        <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter">
+          Nossa <span className="text-[#00A651]">Loja</span>
+        </h1>
         
-        <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-3 mb-4">
-            <div className="h-[1px] w-8 bg-[#00A651]" />
-            <span className="text-[#00A651] font-black uppercase tracking-[0.3em] text-[10px]">Catálogo Oficial</span>
-          </motion.div>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-none uppercase">
-            HC TECH <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.3)]">STORE</span>
-          </h1>
-          <p className="text-gray-500 max-w-lg font-medium">Componentes de alta qualidade e acessórios premium para seus dispositivos Apple e Android.</p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4">
-        {/* FILTROS E BUSCA */}
-        <div className="flex flex-col md:flex-row gap-6 mb-12 items-center justify-between">
-          <div className="relative w-full md:w-96 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-[#00A651] transition-colors" size={20} />
-            <input
-              type="text"
-              placeholder="O que você procura?"
-              value={search}
+        {/* Etapa 7: Busca e Filtros */}
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+          <div className="relative w-full md:max-w-md">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            <input 
+              type="text" 
+              placeholder="Buscar produto..."
+              className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-[#00A651] outline-none transition-all"
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:border-[#00A651]/50 focus:bg-black transition-all"
             />
           </div>
-
-          <div className="flex gap-3 overflow-x-auto w-full md:w-auto pb-2 no-scrollbar">
-            {categories.map((cat) => (
+          <div className="flex gap-2 overflow-x-auto w-full pb-2 no-scrollbar">
+            {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-                  activeCategory === cat ? "bg-[#00A651] text-white shadow-[0_0_20px_rgba(0,166,81,0.4)]" : "bg-white/5 text-gray-500 border border-white/5 hover:border-white/20"
-                }`}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${activeCategory === cat ? 'bg-[#00A651] text-white shadow-lg shadow-[#00A651]/20' : 'bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10'}`}
               >
-                {cat}
+                {categoryIcons[cat] || <ShoppingBag size={14} />} {cat}
               </button>
             ))}
           </div>
         </div>
+      </header>
 
-        {/* GRID DE PRODUTOS */}
-        <AnimatePresence mode="popLayout">
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filtered.map((product) => (
-              <motion.div
-                key={product.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                whileHover={{ y: -10 }}
-                className="group relative bg-[#0c0c0c] rounded-[32px] border border-white/5 overflow-hidden hover:border-[#00A651]/40 transition-all duration-500"
-              >
-                <div className="aspect-[4/5] overflow-hidden relative bg-black">
-                  {product.badge && (
-                    <span className="absolute top-4 left-4 z-20 bg-[#00A651] text-white text-[9px] font-black px-3 py-1 rounded-full uppercase">
-                      {product.badge}
-                    </span>
-                  )}
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+      {/* Etapa 9: Grid de Performance */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <AnimatePresence>
+          {filteredProducts.map((p) => (
+            <motion.div 
+              key={p.id}
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="glass-card group overflow-hidden"
+            >
+              <div className="aspect-square bg-black/40 relative flex items-center justify-center group-hover:bg-black/20 transition-all">
+                {/* Etapa 5: Placeholders visuais */}
+                <Smartphone size={48} className="text-white/10 group-hover:text-[#00A651]/40 transition-all duration-500" />
+                <div className="absolute top-4 left-4 bg-[#00A651] text-white text-[8px] font-black px-2 py-1 rounded uppercase tracking-tighter shadow-xl">Original</div>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <span className="text-[#00A651] text-[9px] font-black uppercase tracking-widest">{p.category}</span>
+                  <h3 className="text-white font-bold leading-tight line-clamp-2 mt-1">{p.name}</h3>
                 </div>
-
-                <div className="p-6 relative">
-                  <span className="text-[#00A651] text-[9px] font-black uppercase tracking-[0.2em]">{product.category}</span>
-                  <h3 className="text-white font-bold text-lg mt-1 mb-4 leading-tight group-hover:text-[#00A651] transition-colors">{product.name}</h3>
-                  
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex flex-col">
-                      <span className="text-gray-500 text-[10px] uppercase font-bold">A partir de</span>
-                      <span className="text-2xl font-black text-white italic">R$ {product.price}</span>
-                    </div>
-                    <button 
-                      onClick={() => handleWhatsApp(product.name)}
-                      className="bg-white text-black p-4 rounded-2xl hover:bg-[#00A651] hover:text-white transition-all shadow-xl active:scale-95"
-                    >
-                      <ArrowRight size={20} />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                {/* Etapa 6: Link Dinâmico WhatsApp */}
+                <a 
+                  href={`https://wa.me/5511940562933?text=Olá, tenho interesse no produto: ${p.name}`}
+                  target="_blank"
+                  className="flex items-center justify-between w-full bg-white/5 group-hover:bg-[#00A651] px-4 py-3 rounded-xl transition-all duration-300"
+                >
+                  <span className="text-[10px] font-black uppercase tracking-widest group-hover:text-white text-gray-400">Consultar</span>
+                  <MessageCircle size={16} className="text-[#00A651] group-hover:text-white" />
+                </a>
+              </div>
+            </motion.div>
+          ))}
         </AnimatePresence>
+      </div>
+
+      {/* Etapa 8: Elemento de Conversão Final */}
+      <div className="mt-20 glass-card p-12 text-center border-[#00A651]/30">
+        <h2 className="text-3xl font-black uppercase italic italic mb-4 tracking-tighter">Não encontrou o que procurava?</h2>
+        <p className="text-gray-400 mb-8 max-w-md mx-auto">Temos centenas de outros itens em estoque. Fale agora com um especialista.</p>
+        <a href="https://wa.me/5511940562933" className="btn-primary inline-flex mx-auto">
+          Clique e fale agora
+        </a>
       </div>
     </div>
   );
