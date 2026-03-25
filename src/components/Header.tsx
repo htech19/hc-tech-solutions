@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, MessageCircle, ShoppingCart } from "lucide-react";
+import { Menu, X, MessageCircle, ShoppingCart, Smartphone } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 
@@ -7,7 +7,6 @@ const navItems = [
   { label: "Início", href: "#inicio" },
   { label: "Serviços", href: "#servicos" },
   { label: "Produtos", href: "#produtos" },
-  { label: "Películas", href: "#peliculas" },
   { label: "Loja", href: "/loja", isRoute: true },
   { label: "Contato", href: "#contato" },
 ];
@@ -20,57 +19,24 @@ const Header = () => {
   const isHome = location.pathname === "/";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const renderNavLink = (item: typeof navItems[0]) => {
+    const commonClass = "text-sm font-semibold text-gray-300 hover:text-[#00A651] transition-all duration-300";
+    
     if (item.isRoute) {
       return (
-        <Link
-          key={item.href}
-          to={item.href}
-          className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
-        >
-          {item.label}
-        </Link>
-      );
-    }
-    // If not on home page, link to home with hash
-    const href = isHome ? item.href : `/${item.href}`;
-    return (
-      <a
-        key={item.href}
-        href={href}
-        className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
-      >
-        {item.label}
-      </a>
-    );
-  };
-
-  const renderMobileNavLink = (item: typeof navItems[0]) => {
-    if (item.isRoute) {
-      return (
-        <Link
-          key={item.href}
-          to={item.href}
-          onClick={() => setMenuOpen(false)}
-          className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
-        >
+        <Link key={item.href} to={item.href} className={commonClass}>
           {item.label}
         </Link>
       );
     }
     const href = isHome ? item.href : `/${item.href}`;
     return (
-      <a
-        key={item.href}
-        href={href}
-        onClick={() => setMenuOpen(false)}
-        className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
-      >
+      <a key={item.href} href={href} className={commonClass}>
         {item.label}
       </a>
     );
@@ -78,87 +44,99 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-card/70 backdrop-blur-md border-b border-border shadow-sm"
-          : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled || menuOpen
+          ? "bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/10 py-3"
+          : "bg-transparent py-5"
       }`}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="text-2xl font-bold tracking-tight">
-          <span className="text-primary">HC</span>
-          <span className="text-primary"> Tech Infocell </span>
+      <div className="container mx-auto px-4 flex items-center justify-between">
+        
+        {/* LOGO ADAPTÁVEL */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="bg-[#00A651] p-1.5 rounded-lg shadow-[0_0_15px_rgba(0,166,81,0.3)] group-hover:scale-110 transition-transform">
+            <Smartphone className="text-white" size={18} />
+          </div>
+          <span className="text-xl md:text-2xl font-black tracking-tighter text-white">
+            HC TECH <span className="hidden xs:inline text-[#00A651]">INFOCELL</span>
+          </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* DESKTOP NAV */}
+        <nav className="hidden lg:flex items-center gap-8">
           {navItems.map(renderNavLink)}
+          
+          <div className="h-6 w-px bg-white/10 mx-2" />
 
-          {/* Cart icon */}
           <button
             onClick={() => setIsOpen(true)}
-            className="relative p-2 text-muted-foreground hover:text-primary transition-colors"
-            aria-label="Carrinho"
+            className="relative p-2 text-white hover:text-[#00A651] transition-colors"
           >
-            <ShoppingCart size={20} />
+            <ShoppingCart size={22} />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#00A651] text-white text-[10px] font-black rounded-full w-5 h-5 flex items-center justify-center border-2 border-[#0a0a0a]">
                 {totalItems}
               </span>
             )}
           </button>
 
           <a
-            href="https://wa.me/5511940562933?text=Olá! Gostaria de solicitar um orçamento."
+            href="https://wa.me/5511940562933"
             target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-semibold btn-hover glow-green"
+            className="bg-[#00A651] text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-[0_0_20px_rgba(0,166,81,0.2)] hover:scale-105 transition-all"
           >
-            <MessageCircle size={16} />
-            Orçamento via WhatsApp
+            ORÇAMENTO
           </a>
         </nav>
 
-        {/* Mobile toggle + cart */}
-        <div className="md:hidden flex items-center gap-2">
+        {/* MOBILE ACTIONS */}
+        <div className="lg:hidden flex items-center gap-3">
           <button
             onClick={() => setIsOpen(true)}
-            className="relative p-2 text-foreground"
-            aria-label="Carrinho"
+            className="relative p-2 text-white"
           >
-            <ShoppingCart size={22} />
+            <ShoppingCart size={24} />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-0 -right-0 bg-[#00A651] text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-[#0a0a0a]">
                 {totalItems}
               </span>
             )}
           </button>
+          
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-foreground p-2"
-            aria-label="Menu"
+            className="text-white p-2 bg-white/5 rounded-lg"
           >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            {menuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* MOBILE MENU OVERLAY */}
       {menuOpen && (
-        <div className="md:hidden bg-card/95 backdrop-blur-md border-t border-border shadow-sm">
-          <nav className="flex flex-col p-4 gap-4">
-            {navItems.map(renderMobileNavLink)}
-            <a
-              href="https://wa.me/5511940562933?text=Olá! Gostaria de solicitar um orçamento."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-5 py-3 rounded-lg text-sm font-semibold btn-hover"
-            >
-              <MessageCircle size={16} />
-              Orçamento via WhatsApp
-            </a>
-          </nav>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="lg:hidden bg-[#0a0a0a] border-t border-white/5 px-6 py-8 flex flex-col gap-6 shadow-2xl"
+        >
+          {navItems.map((item) => (
+             <div key={item.href} onClick={() => setMenuOpen(false)}>
+                {item.isRoute ? (
+                  <Link to={item.href} className="text-xl font-bold text-white block">{item.label}</Link>
+                ) : (
+                  <a href={isHome ? item.href : `/${item.href}`} className="text-xl font-bold text-white block">{item.label}</a>
+                )}
+             </div>
+          ))}
+          
+          <a
+            href="https://wa.me/5511940562933"
+            className="flex items-center justify-center gap-3 bg-[#00A651] text-white py-4 rounded-xl font-black mt-4"
+          >
+            <MessageCircle size={20} />
+            WHATSAPP
+          </a>
+        </motion.div>
       )}
     </header>
   );
