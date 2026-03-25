@@ -1,28 +1,97 @@
-export interface Product {
-  id: string;
-  name: string;
-  category: string;
-  image: string;
-  badge?: "Mais Vendido" | "Lançamento" | "Oferta" | "Premium";
-}
+import { useParams, Link } from "react-router-dom";
+import { ArrowLeft, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { products } from "@/data/store-products";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
-export const products: Product[] = [
-  // ÁUDIO & PERFORMANCE
-  { id: "kd799", name: "Fone Kaidi KD-799 TWS Crystal Audio", category: "Áudio", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=400", badge: "Mais Vendido" },
-  { id: "kdg1", name: "Fone Gamer Kaidi KD-G1 Low Latency", category: "Áudio", image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=400", badge: "Premium" },
-  { id: "kd7102", name: "Fone Kaidi KD-7102 Smart Touch V5.3", category: "Áudio", image: "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?q=80&w=400", badge: "Lançamento" },
-  
-  // ENERGIA & CARREGAMENTO
-  { id: "kd922", name: "Power Bank Kaidi 20.000mAh Ultra Fast", category: "Energia", image: "https://images.unsplash.com/photo-1609091839311-d5364f9bc271?q=80&w=400", badge: "Mais Vendido" },
-  { id: "kd671a", name: "Carregador 20W PD Turbo Edition", category: "Energia", image: "https://images.unsplash.com/photo-1625517406127-7c1f23c9ceb1?q=80&w=400" },
-  
-  // GAMER & PERIFÉRICOS
-  { id: "lef1211", name: "Headset Lehmox LEF-1211 Pro Surround", category: "Gamer", image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=400", badge: "Premium" },
-  { id: "lef1210", name: "Fone Gamer LEF-1210 RGB X-Series", category: "Gamer", image: "https://images.unsplash.com/photo-1614149162883-504ce4d13909?q=80&w=400" },
+const ProductPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const product = products.find((p) => p.id === id);
 
-  // SOM & AMBIENTE
-  { id: "kd850", name: "Caixa de Som Kaidi KD-850 Bluetooth Pro", category: "Som", image: "https://images.unsplash.com/photo-1608155613957-30f03d29994b?q=80&w=400" },
-  { id: "boombox", name: "Boombox Eletromex 50W Extreme Bass", category: "Som", image: "https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=400", badge: "Oferta" }
-];
+  if (!product) {
+    return (
+      <div className="bg-[#050505] text-white min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Produto não encontrado</h1>
+            <Button asChild variant="outline">
+              <Link to="/loja">Voltar ao catálogo</Link>
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
-export const categories = ["Áudio", "Gamer", "Energia", "Som"];
+  const related = products
+    .filter((p) => p.category === product.category && p.id !== product.id)
+    .slice(0, 4);
+
+  return (
+    <div className="bg-[#050505] text-white min-h-screen">
+      <Header />
+      <main className="pt-28 pb-20 container mx-auto px-4">
+        <Link to="/loja" className="inline-flex items-center gap-2 text-zinc-400 hover:text-emerald-500 transition-colors mb-8 text-sm">
+          <ArrowLeft size={16} /> Voltar ao catálogo
+        </Link>
+
+        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          <div className="relative aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800/40">
+            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+            {product.badge && (
+              <span className="absolute top-6 left-6 bg-emerald-500 text-black px-3 py-1 rounded text-xs font-black uppercase">
+                {product.badge}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col justify-center">
+            <span className="text-[10px] font-black text-emerald-500/60 uppercase tracking-widest mb-2">{product.category}</span>
+            <h1 className="text-3xl md:text-4xl font-black mb-4">{product.name}</h1>
+            <p className="text-zinc-400 text-sm mb-8">
+              Produto disponível sob consulta. Entre em contato para verificar disponibilidade e condições especiais.
+            </p>
+
+            <div className="bg-zinc-900/50 border border-zinc-800/40 rounded-2xl p-6 mb-6">
+              <span className="text-zinc-500 text-xs uppercase tracking-widest font-bold">Preço</span>
+              <p className="text-2xl font-black text-emerald-500 mt-1">Sob Consulta</p>
+            </div>
+
+            <Button className="w-full h-14 rounded-xl font-black uppercase tracking-widest text-sm bg-white text-black hover:bg-emerald-500 transition-all" asChild>
+              <a href={`https://wa.me/5511940562933?text=Olá Harrison! Tenho interesse no ${product.name}. Pode me passar o valor?`} target="_blank">
+                <MessageCircle size={18} className="mr-2" />
+                Consultar via WhatsApp
+              </a>
+            </Button>
+          </div>
+        </div>
+
+        {related.length > 0 && (
+          <div className="mt-20">
+            <h2 className="text-xl font-black uppercase tracking-widest mb-8 text-zinc-400">Produtos Relacionados</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {related.map((r) => (
+                <Link key={r.id} to={`/loja/${r.id}`} className="group bg-zinc-900/20 rounded-2xl border border-zinc-800/40 overflow-hidden hover:border-emerald-500/30 transition-all">
+                  <div className="aspect-square overflow-hidden bg-zinc-950">
+                    <img src={r.image} alt={r.name} className="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity" />
+                  </div>
+                  <div className="p-4">
+                    <p className="text-xs font-bold text-zinc-300 line-clamp-2">{r.name}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+      <Footer />
+      <WhatsAppButton />
+    </div>
+  );
+};
+
+export default ProductPage;
