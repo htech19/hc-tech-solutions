@@ -1,24 +1,23 @@
-import { ShoppingCart, Trash2, Minus, Plus, MessageCircle, X } from "lucide-react";
+import { ShoppingCart, Trash2, Minus, Plus, MessageCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const CartDrawer = () => {
-  const { items, removeFromCart, updateQuantity, clearCart, subtotal, totalItems, isOpen, setIsOpen } = useCart();
+  const { items, removeFromCart, updateQuantity, clearCart, totalItems, isOpen, setIsOpen } = useCart();
 
   const whatsappCheckout = () => {
     const lines = items.map(
-      (i) => `• ${i.product.name} (x${i.quantity}) — R$${(typeof i.product.price === "number" ? (i.product.price * i.quantity) : 0).toFixed(2).replace(".", ",")}`
+      (i) => `• ${i.product.name} (x${i.quantity})`
     );
-    const total = `\n\n💰 Total: R$${subtotal.toFixed(2).replace(".", ",")}`;
-    const text = `Olá! Gostaria de finalizar meu pedido:\n\n${lines.join("\n")}${total}`;
+    const text = `Olá! Gostaria de informações sobre:\n\n${lines.join("\n")}`;
     window.open(`https://wa.me/5511940562933?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent side="right" className="w-full sm:max-w-md bg-[#1e1e1e] border-border/50 flex flex-col">
+      <SheetContent side="right" className="w-full sm:max-w-md bg-card border-border/50 flex flex-col">
         <SheetHeader className="pb-4 border-b border-border/30">
           <SheetTitle className="flex items-center gap-2 text-foreground">
             <ShoppingCart size={20} className="text-primary" />
@@ -44,7 +43,7 @@ const CartDrawer = () => {
                 {items.map((item) => (
                   <div
                     key={item.product.id}
-                    className="flex gap-3 p-3 rounded-lg bg-card/40 border border-border/20"
+                    className="flex gap-3 p-3 rounded-lg bg-muted/40 border border-border/20"
                   >
                     <img
                       src={item.product.image}
@@ -53,9 +52,7 @@ const CartDrawer = () => {
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium leading-snug line-clamp-2">{item.product.name}</p>
-                      <p className="text-primary font-bold text-sm mt-1">
-                        {typeof item.product.price === "number" ? `R$${item.product.price.toFixed(2).replace(".", ",")}` : "Indisponível"}
-                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">{item.product.category}</p>
                       <div className="flex items-center gap-2 mt-2">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
@@ -72,7 +69,7 @@ const CartDrawer = () => {
                         </button>
                         <button
                           onClick={() => removeFromCart(item.product.id)}
-                          className="ml-auto p-1 text-muted-foreground hover:text-red-400 transition-colors"
+                          className="ml-auto p-1 text-muted-foreground hover:text-destructive transition-colors"
                         >
                           <Trash2 size={14} />
                         </button>
@@ -83,17 +80,10 @@ const CartDrawer = () => {
               </div>
             </ScrollArea>
 
-            {/* Footer */}
             <div className="border-t border-border/30 pt-4 space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground text-sm">Subtotal</span>
-                <span className="text-xl font-bold text-primary">
-                  R${subtotal.toFixed(2).replace(".", ",")}
-                </span>
-              </div>
               <Button className="w-full" size="lg" onClick={whatsappCheckout}>
                 <MessageCircle size={18} />
-                Finalizar pelo WhatsApp
+                Consultar pelo WhatsApp
               </Button>
               <Button variant="ghost" size="sm" className="w-full text-muted-foreground" onClick={clearCart}>
                 Limpar carrinho
