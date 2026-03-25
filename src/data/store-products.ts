@@ -1,63 +1,118 @@
-export interface Product {
-  id: string;
-  name: string;
-  category: string;
-  image: string;
-  badge?: "Mais Vendido" | "Lançamento" | "Premium" | "Novo" | "Oferta" | "Entrega Rápida";
-}
+import { useState, useMemo } from "react";
+import { Search, ShoppingBag, Zap, MessageCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import Header from "@/components/Header";
+import { products, categories } from "@/data/store-products";
 
-export const products: Product[] = [
-  // FONES
-  { id: "fone-kd-790", name: "Fone Bluetooth KD-790", category: "Fones", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=400", badge: "Mais Vendido" },
-  { id: "fone-kd-788", name: "Fone Bluetooth KD-788", category: "Fones", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=400" },
-  { id: "fone-knc-4219", name: "Fone Bluetooth Knc-4219", category: "Fones", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=400" },
-  { id: "headphone-kd-750", name: "Headphone Bluetooth KD-750", category: "Fones", image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=400" },
-  { id: "headset-kd-632", name: "Headset Gamer Kaidi KD-632", category: "Fones", image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=400", badge: "Entrega Rápida" },
-  { id: "fone-le-366b", name: "Fone Bluetooth LE-366B", category: "Fones", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=400" },
-  { id: "fone-p9", name: "Fone Bluetooth P9", category: "Fones", image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=400" },
-  { id: "fone-kd-799", name: "Fone Kaidi KD-799 TWS Crystal Audio", category: "Fones", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=400", badge: "Novo" },
-  { id: "fone-gamer-kdg1", name: "Fone Gamer Kaidi KD-G1 Low Latency", category: "Fones", image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=400", badge: "Entrega Rápida" },
-  { id: "headset-lef-1211", name: "Headset Lehmox LEF-1211 Pro Surround", category: "Fones", image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=400" },
+const LojaPage = () => {
+  const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Todos");
 
-  // CABOS
-  { id: "cabo-v8-2m", name: "Cabo USB V8 2 Metros", category: "Cabos", image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=400" },
-  { id: "cabo-tipo-c", name: "Cabo USB Tipo-C", category: "Cabos", image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=400" },
-  { id: "cabo-lightning", name: "Cabo Lightning", category: "Cabos", image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=400" },
-  { id: "cabo-hdmi-5m", name: "Cabo HDMI 5 Metros", category: "Cabos", image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=400" },
+  const filteredProducts = useMemo(() => {
+    return products.filter(p => {
+      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+      const matchCat = activeCategory === "Todos" || p.category === activeCategory;
+      return matchSearch && matchCat;
+    });
+  }, [search, activeCategory]);
 
-  // CARREGADORES
-  { id: "carregador-rapido-c", name: "Carregador Rápido Tipo-C", category: "Carregadores", image: "https://images.unsplash.com/photo-1609091839311-d5364f9bc271?q=80&w=400" },
-  { id: "carregador-turbo-c", name: "Carregador Turbo Tipo-C", category: "Carregadores", image: "https://images.unsplash.com/photo-1609091839311-d5364f9bc271?q=80&w=400", badge: "Mais Vendido" },
-  { id: "carregador-iphone", name: "Carregador iPhone Lightning", category: "Carregadores", image: "https://images.unsplash.com/photo-1609091839311-d5364f9bc271?q=80&w=400" },
+  return (
+    <div className="min-h-screen pb-20">
+      <Header />
+      
+      <section className="pt-48 pb-12 px-4">
+        <div className="max-w-7xl mx-auto text-center space-y-6">
+          <motion.h1 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter text-glow-green"
+          >
+            HC TECH STORE
+          </motion.h1>
 
-  // POWER BANK
-  { id: "pb-5000", name: "Power Bank 5000mAh", category: "Power Bank", image: "https://images.unsplash.com/photo-1609091839311-d5364f9bc271?q=80&w=400" },
-  { id: "pb-10000", name: "Power Bank 10000mAh", category: "Power Bank", image: "https://images.unsplash.com/photo-1609091839311-d5364f9bc271?q=80&w=400" },
-  { id: "pb-20000", name: "Power Bank 20000mAh Kaidi Ultra Fast", category: "Power Bank", image: "https://images.unsplash.com/photo-1609091839311-d5364f9bc271?q=80&w=400", badge: "Mais Vendido" },
+          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#00A651]/10 border border-[#00A651]/20">
+            <Zap size={14} className="text-[#00A651]" />
+            <span className="text-[#00A651] text-[10px] font-black uppercase tracking-widest">Entrega no mesmo dia no ABC</span>
+          </div>
 
-  // CAIXAS DE SOM
-  { id: "som-kd-850", name: "Caixa de Som Kaidi KD-850 Bluetooth", category: "Caixas de Som", image: "https://images.unsplash.com/photo-1608155613957-30f03d29994b?q=80&w=400" },
-  { id: "som-kd-833", name: "Caixa de Som KD-833", category: "Caixas de Som", image: "https://images.unsplash.com/photo-1608155613957-30f03d29994b?q=80&w=400" },
-  { id: "boombox-50w", name: "Boombox 50W", category: "Caixas de Som", image: "https://images.unsplash.com/photo-1608155613957-30f03d29994b?q=80&w=400", badge: "Premium" },
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-center pt-8">
+            <div className="relative w-full md:max-w-md">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <input 
+                type="text" 
+                placeholder={`Buscar em ${products.length} produtos...`}
+                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-[#00A651] outline-none transition-all text-white"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 no-scrollbar px-4">
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${
+                    activeCategory === cat 
+                    ? 'bg-[#00A651] text-white shadow-lg shadow-[#00A651]/20' 
+                    : 'bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-  // PERIFÉRICOS
-  { id: "teclado-gamer-rgb", name: "Teclado Gamer RGB", category: "Periféricos", image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=400" },
-  { id: "mouse-com-fio", name: "Mouse com Fio", category: "Periféricos", image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=400" },
-  { id: "kit-teclado-mouse", name: "Kit Teclado + Mouse", category: "Periféricos", image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=400", badge: "Oferta" },
+      <main className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <AnimatePresence mode="popLayout">
+            {filteredProducts.map((p) => (
+              <motion.div 
+                key={p.id}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="glass-card group flex flex-col h-full overflow-hidden"
+              >
+                <div className="aspect-square relative overflow-hidden bg-black/20">
+                  {p.badge && (
+                    <div className="absolute top-4 left-4 z-10 bg-[#00A651] text-white text-[8px] font-black px-2 py-1 rounded uppercase tracking-tighter">
+                      {p.badge}
+                    </div>
+                  )}
+                  <img 
+                    src={p.image} 
+                    alt={p.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                  />
+                </div>
 
-  // SMARTWATCH
-  { id: "smartwatch-kw51", name: "Smartwatch KW51", category: "Smartwatch", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400" },
-  { id: "smartwatch-s10-pro", name: "Smartwatch S10 Pro", category: "Smartwatch", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400", badge: "Lançamento" },
+                <div className="p-6 flex flex-col flex-grow">
+                  <span className="text-[#00A651] text-[9px] font-black uppercase tracking-widest mb-1">{p.category}</span>
+                  <h3 className="text-white font-bold text-lg leading-tight mb-6 line-clamp-2">
+                    {p.name}
+                  </h3>
 
-  // ARMAZENAMENTO
-  { id: "ssd-nvme-1tb", name: "SSD NVMe 1TB Kingston NV2", category: "Armazenamento", image: "https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=400", badge: "Mais Vendido" },
+                  <div className="mt-auto">
+                    <a 
+                      href={`https://wa.me/5511940562933?text=Olá, tenho interesse no produto: ${p.name}`}
+                      target="_blank"
+                      className="flex items-center justify-between w-full bg-white/5 border border-white/10 group-hover:bg-[#00A651] group-hover:border-[#00A651] px-5 py-4 rounded-2xl transition-all duration-300"
+                    >
+                      <span className="text-[10px] font-black uppercase tracking-widest text-white">Consultar</span>
+                      <MessageCircle size={16} className="text-[#00A651] group-hover:text-white" />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </main>
+    </div>
+  );
+};
 
-  // ASSISTÊNCIA
-  { id: "manutencao-limpeza", name: "Limpeza + Pasta Térmica Silver", category: "Assistência", image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?q=80&w=400", badge: "Novo" },
-  { id: "reparo-placa-mae", name: "Reparo de Placa Mãe (Micro-soldagem)", category: "Assistência", image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=400" },
-
-  // PROTEÇÃO
-  { id: "pelicula-ceramica-9d", name: "Película de Cerâmica 9D Privativa", category: "Proteção", image: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=400" },
-];
-
-export const categories = Array.from(new Set(products.map(p => p.category)));
+export default LojaPage;
