@@ -1,28 +1,75 @@
-/* RESET BÁSICO */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Evita saltos de layout em sistemas com scrollbar visível */
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-[#050505] text-slate-50 antialiased font-sans min-h-screen;
+    
+    /* ETAPA 1: Fundo Global Fixo (Circuit Board) */
+    /* Overlay de 0.75 para dar profundidade sem esconder os detalhes da imagem */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/hero-bg.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Personaliza a cor de seleção de texto para o verde da marca */
+  ::selection {
+    @apply bg-[#00A651]/30 text-white;
+  }
 }
 
-/* BACKGROUND GLOBAL */
-body {
-  font-family: Arial, sans-serif;
-  background: url('/hero-bg.jpg') no-repeat center center fixed;
-  background-size: cover;
-  color: #fff;
+@layer components {
+  /* Cartão com efeito de vidro (Glassmorphism) */
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl 
+           hover:border-[#00A651]/40 transition-all duration-500 shadow-2xl;
+  }
+  
+  /* Botão de Alta Conversão */
+  .btn-primary {
+    @apply bg-[#00A651] text-white px-8 py-4 rounded-2xl font-black 
+           flex items-center gap-2 hover:scale-105 
+           hover:shadow-[0_0_30px_rgba(0,166,81,0.4)] transition-all 
+           uppercase tracking-tighter active:scale-95;
+  }
+
+  /* Efeito Neon em Textos e Títulos */
+  .text-glow-green {
+    text-shadow: 0 0 20px rgba(0, 166, 81, 0.6);
+  }
+
+  /* Remove barras de scroll feias em menus de categorias */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Animação suave para imagens de produto (Zoom) */
+  .img-pan-effect {
+    @apply transition-transform duration-700 ease-in-out group-hover:scale-110;
+  }
 }
 
-/* OVERLAY PARA LEITURA */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  z-index: -1;
+/* Ajustes para o Botão Flutuante de WhatsApp (Opcional, caso queira usar fora do React) */
+.whatsapp-pulse {
+  box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  animation: pulse-whatsapp 2s infinite cubic-bezier(0.66, 0, 0, 1);
 }
 
-/* SCROLL SUAVE */
-html {
-  scroll-behavior: smooth;
+@keyframes pulse-whatsapp {
+  to {
+    box-shadow: 0 0 0 20px rgba(37, 211, 102, 0);
+  }
 }
