@@ -23,7 +23,7 @@ const HomePage = () => {
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00A651]/10 border border-[#00A651]/20 mb-8">
           <Zap size={14} className="text-[#00A651]" />
-          <span className="text-[#00A651] text-[10px] font-black uppercase tracking-widest">Atendimento Rápido no ABC</span>
+          <span className="text-[#00A651] font-black uppercase tracking-widest text-xs font-serif">Atendimento Rápido no ABC -<br/>Retirara/envio na sua empresa ou no conforte da sua casa .</span>
         </div>
 
         <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase italic mb-6">
