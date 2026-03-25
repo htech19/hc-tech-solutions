@@ -1,130 +1,92 @@
 import { useState, useMemo } from "react";
-import { products, categories } from "@/data/store-products";
-import { Search, MessageCircle, Package, ArrowLeft } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Search, ShoppingBag, MessageCircle, ArrowLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import Header from "@/components/Header";
+import { products, categories } from "@/data/store-products";
 
 const ProductPage = () => {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
 
-  const allCategories = useMemo(() => ["Todos", ...categories], []);
-
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const matchName = p.name.toLowerCase().includes(search.toLowerCase());
-      const matchCategory = activeCategory === "Todos" || p.category === activeCategory;
-      return matchName && matchCategory;
+  const filteredProducts = useMemo(() => {
+    return products.filter(p => {
+      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+      const matchCat = activeCategory === "Todos" || p.category === activeCategory;
+      return matchSearch && matchCat;
     });
   }, [search, activeCategory]);
 
-  const handleWhatsApp = (name: string) => {
-    const text = `Olá, tenho interesse em ${name}`;
-    window.open(`https://wa.me/5511940562933?text=${encodeURIComponent(text)}`, "_blank");
-  };
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* HEADER DE CONVERSÃO */}
-      <div className="bg-gradient-to-r from-primary/20 via-primary/10 to-background border-b border-border/40">
-        <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
-          <Link to="/" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm mb-4 transition-colors">
-            <ArrowLeft size={14} />
-            Voltar
-          </Link>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-            Acessórios e Eletrônicos com Entrega Rápida
-          </h1>
-          <p className="text-muted-foreground mt-2 flex items-center gap-2">
-            🚚 Entrega no mesmo dia para região do ABC
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen pb-20 bg-transparent">
+      <Header />
+      
+      <main className="max-w-7xl mx-auto px-4 pt-40">
+        <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-[#00A651] transition-colors mb-8 font-bold uppercase text-[10px] tracking-widest">
+          <ArrowLeft size={14} /> Voltar ao Início
+        </Link>
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        {/* BUSCA + CONTADOR */}
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-6">
-          <div className="relative w-full sm:max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-            <Input
-              placeholder="Buscar produtos..."
-              value={search}
+        <div className="flex flex-col md:flex-row gap-6 items-center justify-between mb-12">
+          <div className="relative w-full md:max-w-md">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+            <input 
+              type="text" 
+              placeholder="O que você procura?"
+              className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-[#00A651] outline-none transition-all text-white"
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 bg-card border-border/50"
             />
           </div>
-          <span className="text-sm text-muted-foreground shrink-0">
-            {filtered.length} {filtered.length === 1 ? "produto" : "produtos"}
-          </span>
-        </div>
-
-        {/* FILTROS */}
-        <div className="flex gap-2 flex-wrap mb-8">
-          {allCategories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
-                activeCategory === cat
-                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* GRID */}
-        {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Package size={48} className="text-muted-foreground/30 mb-4" />
-            <p className="text-muted-foreground">Nenhum produto encontrado</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {filtered.map((product) => (
-              <div
-                key={product.id}
-                className="group rounded-xl border border-border/40 bg-card overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+          
+          <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 no-scrollbar">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+                  activeCategory === cat 
+                  ? 'bg-[#00A651] text-white' 
+                  : 'bg-white/5 border border-white/10 text-gray-500 hover:text-white'
+                }`}
               >
-                {/* IMAGEM */}
-                <div className="relative h-40 overflow-hidden bg-muted">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  {product.badge && (
-                    <Badge className="absolute top-2 left-2 text-[10px]">
-                      {product.badge}
-                    </Badge>
-                  )}
-                </div>
-
-                {/* INFO */}
-                <div className="p-4 space-y-3">
-                  <p className="text-xs text-muted-foreground">{product.category}</p>
-                  <h3 className="text-sm font-semibold text-foreground leading-snug line-clamp-2 min-h-[2.5rem]">
-                    {product.name}
-                  </h3>
-                  <Button
-                    size="sm"
-                    className="w-full gap-2"
-                    onClick={() => handleWhatsApp(product.name)}
-                  >
-                    <MessageCircle size={14} />
-                    Consultar no WhatsApp
-                  </Button>
-                </div>
-              </div>
+                {cat}
+              </button>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <AnimatePresence>
+            {filteredProducts.map((p) => (
+              <motion.div 
+                key={p.id}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="glass-card group overflow-hidden"
+              >
+                <div className="aspect-square relative">
+                  <img src={p.image} alt={p.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                  {p.badge && (
+                    <span className="absolute top-4 left-4 bg-[#00A651] text-white text-[8px] font-black px-2 py-1 rounded uppercase">
+                      {p.badge}
+                    </span>
+                  )}
+                </div>
+                <div className="p-6">
+                  <p className="text-[#00A651] text-[9px] font-black uppercase tracking-widest mb-1">{p.category}</p>
+                  <h3 className="text-white font-bold mb-6 line-clamp-2 h-12">{p.name}</h3>
+                  <a 
+                    href={`https://wa.me/5511940562933?text=Olá, tenho interesse no: ${p.name}`}
+                    className="flex items-center justify-center gap-2 w-full bg-[#00A651] py-3 rounded-xl text-white font-black text-[10px] uppercase tracking-tighter hover:scale-105 transition-all"
+                  >
+                    <MessageCircle size={14} /> Consultar
+                  </a>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </main>
     </div>
   );
 };
