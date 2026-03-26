@@ -28,7 +28,7 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] bg-black/90 backdrop-blur-md border-b border-white/10">
       {/* Barra de redes sociais */}
-      <div className="hidden md:flex justify-center gap-4 py-2 border-b border-white/5 bg-black/60">
+      <div className="hidden md:flex justify-center gap-3 py-1 border-b border-white/5 bg-black/60">
         {socialLinks.map((social, i) => (
           <a
             key={i}
