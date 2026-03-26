@@ -6,17 +6,18 @@ import Footer from "@/components/Footer";
 import { products } from "@/data/store-products"; 
 
 const Index = () => {
+  // Filtra produtos para o carrossel (prioriza os que têm badge)
   const topVendas = products.filter(p => p.badge).length > 0 
     ? products.filter(p => p.badge) 
     : products.slice(0, 10);
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-black">
+    <div className="relative flex flex-col min-h-screen bg-black overflow-x-hidden">
       
-      {/* BACKGROUND - MARCA D'ÁGUA SUTIL */}
+      {/* BACKGROUND IMAGE - VISÍVEL E AJUSTADA (Como na foto) */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute inset-0 opacity-[0.08]" // Ajuste aqui para mais ou menos visibilidade (0.08 = 8%)
+          className="absolute inset-0 opacity-25" // Aumentado para 25% de opacidade para visibilidade nítida
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
             backgroundSize: 'cover',
@@ -24,11 +25,11 @@ const Index = () => {
             backgroundAttachment: 'fixed',
           }}
         />
-        {/* Gradiente para suavizar e garantir legibilidade */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+        {/* Suavização sutil apenas no topo e no rodapé */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black/80" />
       </div>
 
-      {/* CONTEÚDO DO SITE */}
+      {/* CONTEÚDO DO SITE (Acima do fundo) */}
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
 
@@ -39,7 +40,7 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00A651]/10 border border-[#00A651]/20 mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00A651]/10 border border-[#00A651]/20 mb-8 backdrop-blur-sm">
               <Zap size={14} className="text-[#00A651]" />
               <span className="text-[#00A651] font-black uppercase tracking-[0.3em] text-[10px]">SÃO BERNARDO DO CAMPO • SP</span>
             </div>
@@ -50,15 +51,15 @@ const Index = () => {
               <span className="text-white/90">CELULARES & NOTEBOOKS</span>
             </h1>
             
-            <p className="mt-10 text-gray-400 font-bold uppercase tracking-widest text-sm md:text-base max-w-2xl mx-auto">
+            <p className="mt-10 text-gray-400 font-bold uppercase tracking-widest text-sm md:text-base max-w-3xl mx-auto">
               Reparos especializados em Apple, Samsung, Xiaomi e Notebooks de todas as marcas.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 mt-14 justify-center">
-              <a href="https://wa.me/5511940562933" target="_blank" className="flex items-center justify-center gap-3 px-10 py-5 bg-[#00A651] text-white font-black uppercase italic rounded-2xl hover:scale-105 transition-all">
+              <a href="https://wa.me/5511940562933" target="_blank" className="btn-primary flex items-center justify-center gap-3 px-10 py-5 bg-[#00A651] text-white font-black uppercase italic rounded-2xl hover:scale-105 transition-all">
                 <MessageCircle size={22} /> ORÇAMENTO RÁPIDO
               </a>
-              <Link to="/loja" className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 px-10 py-5 rounded-2xl font-black uppercase text-sm text-white hover:bg-white/10 transition-all">
+              <Link to="/loja" className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 px-10 py-5 rounded-2xl font-black uppercase text-sm text-white hover:bg-white/10 transition-all backdrop-blur-sm">
                 <ShoppingBag size={22} /> ACESSAR LOJA
               </Link>
             </div>
@@ -66,8 +67,8 @@ const Index = () => {
         </section>
 
         {/* CARROSSEL INFINITO */}
-        <section className="py-24 bg-black/40 backdrop-blur-sm border-y border-white/5 overflow-hidden">
-          <div className="max-w-7xl mx-auto mb-12 px-8 flex justify-between items-end">
+        <section className="py-24 bg-[#050505]/60 backdrop-blur-md border-y border-white/5 overflow-hidden relative">
+          <div className="max-w-7xl mx-auto mb-12 px-8 flex justify-between items-end relative z-10">
             <div>
               <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Vitrine Tech</span>
               <h2 className="text-4xl font-black uppercase italic tracking-tighter text-white mt-2">
@@ -77,7 +78,7 @@ const Index = () => {
             <Link to="/loja" className="text-[10px] font-black text-gray-500 hover:text-[#00A651] uppercase tracking-widest transition-colors border-b border-gray-800 pb-1">Ver todos</Link>
           </div>
 
-          <div className="relative flex overflow-x-hidden">
+          <div className="relative flex overflow-x-hidden z-10">
             <motion.div 
               className="flex gap-8 whitespace-nowrap"
               animate={{ x: ["0%", "-50%"] }}
@@ -107,8 +108,8 @@ const Index = () => {
         </section>
 
         {/* SEÇÃO DE SERVIÇOS */}
-        <section id="servicos" className="py-32 px-8">
-          <div className="max-w-7xl mx-auto">
+        <section id="servicos" className="py-32 px-8 relative">
+          <div className="max-w-7xl mx-auto relative z-10">
             <div className="mb-20 text-center">
               <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Expertise Técnica</span>
               <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4">
@@ -117,8 +118,9 @@ const Index = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[/* Mantenha os cards de serviço aqui, adicionei backdrop-blur neles */].map(() => null)}
               {/* ANDROID */}
-              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-white/[0.02] hover:border-[#00A651]/30 transition-all group backdrop-blur-md">
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
                 <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
                   <Smartphone size={28} className="text-[#00A651]" />
                 </div>
@@ -132,7 +134,7 @@ const Index = () => {
               </div>
 
               {/* IPHONE */}
-              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-white/[0.02] hover:border-[#00A651]/30 transition-all group backdrop-blur-md">
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
                 <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
                   <Zap size={28} className="text-[#00A651]" />
                 </div>
@@ -146,7 +148,7 @@ const Index = () => {
               </div>
 
               {/* NOTEBOOK */}
-              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-white/[0.02] hover:border-[#00A651]/30 transition-all group backdrop-blur-md">
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
                 <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
                   <Laptop size={28} className="text-[#00A651]" />
                 </div>
@@ -160,7 +162,7 @@ const Index = () => {
               </div>
 
               {/* HARDWARE PRO */}
-              <div className="glass-card p-8 border border-[#00A651]/30 rounded-3xl bg-[#00A651]/5 transition-all group backdrop-blur-md">
+              <div className="glass-card p-8 border border-[#00A651]/30 rounded-3xl bg-[#00A651]/10 transition-all group backdrop-blur-sm">
                 <div className="bg-[#00A651] w-14 h-14 rounded-2xl flex items-center justify-center mb-8 shadow-[0_0_15px_rgba(0,166,81,0.4)]">
                   <Monitor size={28} className="text-white" />
                 </div>
@@ -177,9 +179,9 @@ const Index = () => {
         </section>
 
         {/* FORMULÁRIO FALE CONOSCO */}
-        <section id="contato" className="py-32 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="glass-card p-12 border-[#00A651]/20 relative overflow-hidden bg-white/[0.02] rounded-3xl backdrop-blur-lg">
+        <section id="contato" className="py-32 px-6 relative">
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="glass-card p-12 border-[#00A651]/20 relative overflow-hidden bg-[#050505]/60 rounded-3xl backdrop-blur-lg">
               <h2 className="text-4xl font-black text-white uppercase italic tracking-tighter mb-4 text-center">Iniciar Atendimento</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 mb-8">
                 <input type="text" placeholder="SEU NOME" className="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-[#00A651] text-white font-black text-xs" />
