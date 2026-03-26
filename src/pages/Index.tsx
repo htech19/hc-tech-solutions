@@ -1,31 +1,37 @@
-// ... (mantenha os imports iguais)
+import { MessageCircle, ShoppingBag, Zap, Send, Smartphone, Laptop, Monitor, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { products } from "@/data/store-products"; 
 
 const Index = () => {
-  // ... (mantenha a lógica de produtos igual)
+  const topVendas = products.filter(p => p.badge).length > 0 
+    ? products.filter(p => p.badge) 
+    : products.slice(0, 10);
 
   return (
-    // Adicionamos o fundo aqui para que ele pegue a página toda
     <div className="relative flex flex-col min-h-screen bg-black">
       
-      {/* BACKGROUND IMAGE FIXO */}
-      <div 
-        className="fixed inset-0 z-0 opacity-40"
-        style={{
-          backgroundImage: "url('/hero-bg.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed' // Faz a imagem ficar parada enquanto o site rola
-        }}
-      />
+      {/* BACKGROUND - MARCA D'ÁGUA SUTIL */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute inset-0 opacity-[0.08]" // Ajuste aqui para mais ou menos visibilidade (0.08 = 8%)
+          style={{
+            backgroundImage: "url('/hero-bg.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }}
+        />
+        {/* Gradiente para suavizar e garantir legibilidade */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+      </div>
 
-      {/* Camada de Gradiente para garantir leitura do texto */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-b from-black/60 via-black/80 to-black pointer-events-none" />
+      {/* CONTEÚDO DO SITE */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Header />
 
-      <Header />
-
-      {/* O conteúdo agora precisa de z-10 para ficar acima do fundo fixo */}
-      <div className="relative z-10">
-        
         {/* HERO SECTION */}
         <section id="inicio" className="min-h-screen flex items-center justify-center px-6 text-center pt-20">
           <motion.div 
@@ -45,7 +51,7 @@ const Index = () => {
             </h1>
             
             <p className="mt-10 text-gray-400 font-bold uppercase tracking-widest text-sm md:text-base max-w-2xl mx-auto">
-              Reparos avançados em hardware, micro-soldagem e software com garantia de excelência.
+              Reparos especializados em Apple, Samsung, Xiaomi e Notebooks de todas as marcas.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 mt-14 justify-center">
@@ -59,11 +65,136 @@ const Index = () => {
           </motion.div>
         </section>
 
-        {/* Mantenha o restante das seções (Carrossel, Serviços, Contato) aqui dentro da div z-10 */}
-        
-      </div> {/* Fim da div z-10 */}
-      
-      <Footer />
+        {/* CARROSSEL INFINITO */}
+        <section className="py-24 bg-black/40 backdrop-blur-sm border-y border-white/5 overflow-hidden">
+          <div className="max-w-7xl mx-auto mb-12 px-8 flex justify-between items-end">
+            <div>
+              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Vitrine Tech</span>
+              <h2 className="text-4xl font-black uppercase italic tracking-tighter text-white mt-2">
+                DESTAQUES <span className="text-[#00A651]">HC TECH</span>
+              </h2>
+            </div>
+            <Link to="/loja" className="text-[10px] font-black text-gray-500 hover:text-[#00A651] uppercase tracking-widest transition-colors border-b border-gray-800 pb-1">Ver todos</Link>
+          </div>
+
+          <div className="relative flex overflow-x-hidden">
+            <motion.div 
+              className="flex gap-8 whitespace-nowrap"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ ease: "linear", duration: 40, repeat: Infinity }}
+            >
+              {[...topVendas, ...topVendas, ...topVendas].map((p, i) => (
+                <div key={i} className="inline-block w-72 md:w-96 glass-card p-6 shrink-0 group border border-white/5 rounded-3xl bg-white/[0.02]">
+                  <div className="relative h-56 md:h-72 mb-6 overflow-hidden rounded-2xl bg-black">
+                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
+                    {p.badge && (
+                      <span className="absolute top-4 left-4 bg-[#00A651] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter shadow-xl">
+                        {p.badge}
+                      </span>
+                    )}
+                  </div>
+                  <div className="space-y-1 px-2">
+                    <span className="text-[#00A651] text-[10px] font-black uppercase tracking-[0.2em]">{p.category}</span>
+                    <h4 className="text-white font-black text-lg truncate uppercase italic tracking-tighter">{p.name}</h4>
+                    <a href={`https://wa.me/5511940562933?text=Olá! Tenho interesse no item: ${p.name}`} target="_blank" className="mt-6 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[11px] font-black text-center block hover:bg-[#00A651] hover:text-white transition-all uppercase tracking-widest">
+                      CONSULTAR PREÇO
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* SEÇÃO DE SERVIÇOS */}
+        <section id="servicos" className="py-32 px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-20 text-center">
+              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Expertise Técnica</span>
+              <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4">
+                NOSSAS <span className="text-[#00A651]">SOLUÇÕES</span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* ANDROID */}
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-white/[0.02] hover:border-[#00A651]/30 transition-all group backdrop-blur-md">
+                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
+                  <Smartphone size={28} className="text-[#00A651]" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-6">Android</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Troca de Tela e Vidro</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Conector de Carga</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Troca de Bateria</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Softwares/Atualização</li>
+                </ul>
+              </div>
+
+              {/* IPHONE */}
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-white/[0.02] hover:border-[#00A651]/30 transition-all group backdrop-blur-md">
+                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
+                  <Zap size={28} className="text-[#00A651]" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-6">iPhone</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Telas Originais/Premium</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Reparo de Face ID</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Bateria (Sem Mensagem)</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Reparo de Placa</li>
+                </ul>
+              </div>
+
+              {/* NOTEBOOK */}
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-white/[0.02] hover:border-[#00A651]/30 transition-all group backdrop-blur-md">
+                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
+                  <Laptop size={28} className="text-[#00A651]" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-6">Notebook & PC</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Formatação e Backup</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Upgrade SSD e RAM</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Limpeza e Térmica</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Telas e Teclados</li>
+                </ul>
+              </div>
+
+              {/* HARDWARE PRO */}
+              <div className="glass-card p-8 border border-[#00A651]/30 rounded-3xl bg-[#00A651]/5 transition-all group backdrop-blur-md">
+                <div className="bg-[#00A651] w-14 h-14 rounded-2xl flex items-center justify-center mb-8 shadow-[0_0_15px_rgba(0,166,81,0.4)]">
+                  <Monitor size={28} className="text-white" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-6">Hardware Pro</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Reparo em Placa-Mãe</li>
+                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Reballing & Chipsets</li>
+                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Troca de Chipset</li>
+                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Montagem PC Gamer</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FORMULÁRIO FALE CONOSCO */}
+        <section id="contato" className="py-32 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-card p-12 border-[#00A651]/20 relative overflow-hidden bg-white/[0.02] rounded-3xl backdrop-blur-lg">
+              <h2 className="text-4xl font-black text-white uppercase italic tracking-tighter mb-4 text-center">Iniciar Atendimento</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 mb-8">
+                <input type="text" placeholder="SEU NOME" className="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-[#00A651] text-white font-black text-xs" />
+                <input type="text" placeholder="MODELO DO APARELHO" className="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-[#00A651] text-white font-black text-xs" />
+              </div>
+              <textarea placeholder="DESCREVA O PROBLEMA" rows={4} className="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-[#00A651] text-white font-black text-xs mb-8"></textarea>
+              <button className="w-full py-6 bg-[#00A651] hover:scale-[1.02] transition-all text-white rounded-2xl flex items-center justify-center gap-3 text-sm font-black tracking-[0.2em]">
+                <Send size={18} /> ENVIAR VIA WHATSAPP
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
     </div>
   );
 };
