@@ -28,7 +28,7 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] bg-black/90 backdrop-blur-md border-b border-white/10">
       {/* Barra de redes sociais */}
-      <div className="hidden md:flex justify-center gap-4 py-2 border-b border-white/5 bg-black/60">
+      <div className="hidden md:flex justify-center gap-3 py-1 border-b border-white/5 bg-black/60">
         {socialLinks.map((social, i) => (
           <a
             key={i}
@@ -42,9 +42,9 @@ export default function Header() {
         ))}
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* LOGO */}
-        <Link to="/" className="text-3xl font-black italic tracking-tighter">
+        <Link to="/" className="text-2xl font-black italic tracking-tighter">
           HC<span className="text-[#00A651]">TECH</span>
         </Link>
 
