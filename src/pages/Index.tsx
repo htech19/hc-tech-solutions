@@ -136,4 +136,61 @@ const Index = () => {
                 <ul className="space-y-4">
                   <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Telas Originais/Premium</li>
                   <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Reparo de Face ID</li>
-                  <li className="flex items-center gap-
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Bateria (Sem Mensagem)</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Reparo de Placa</li>
+                </ul>
+              </div>
+
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
+                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
+                  <Laptop size={28} className="text-[#00A651]" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-6">Notebook & PC</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Formatação e Backup</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Upgrade SSD e RAM</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Limpeza e Térmica</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Telas e Teclados</li>
+                </ul>
+              </div>
+
+              <div className="glass-card p-8 border border-[#00A651]/30 rounded-3xl bg-[#00A651]/10 transition-all group backdrop-blur-sm">
+                <div className="bg-[#00A651] w-14 h-14 rounded-2xl flex items-center justify-center mb-8 shadow-[0_0_15px_rgba(0,166,81,0.4)]">
+                  <Monitor size={28} className="text-white" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-6">Hardware Pro</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Reparo em Placa-Mãe</li>
+                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Reballing & Chipsets</li>
+                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Troca de Chipset</li>
+                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Montagem PC Gamer</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FORMULÁRIO FALE CONOSCO */}
+        <section id="contato" className="py-32 px-6 relative">
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="glass-card p-12 border-[#00A651]/20 relative overflow-hidden bg-[#050505]/60 rounded-3xl backdrop-blur-lg">
+              <h2 className="text-4xl font-black text-white uppercase italic tracking-tighter mb-4 text-center">Iniciar Atendimento</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 mb-8">
+                <input type="text" placeholder="SEU NOME" className="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-[#00A651] text-white font-black text-xs" />
+                <input type="text" placeholder="MODELO DO APARELHO" className="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-[#00A651] text-white font-black text-xs" />
+              </div>
+              <textarea placeholder="DESCREVA O PROBLEMA" rows={4} className="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-[#00A651] text-white font-black text-xs mb-8"></textarea>
+              <button className="w-full py-6 bg-[#00A651] hover:scale-[1.02] transition-all text-white rounded-2xl flex items-center justify-center gap-3 text-sm font-black tracking-[0.2em]">
+                <Send size={18} /> ENVIAR VIA WHATSAPP
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default Index;
