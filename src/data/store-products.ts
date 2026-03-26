@@ -30,4 +30,10 @@ export const products: Product[] = [
   }
 ];
 
-export const categories = ["Todos", "Fones & Headsets", "Carregadores & Power Banks", "Smartwatches", "Serviços Digitais"];
+export const categories = [
+  "Todos", 
+  "Fones & Headsets", 
+  "Carregadores & Power Banks", 
+  "Smartwatches", 
+  "Serviços Digitais"
+];
