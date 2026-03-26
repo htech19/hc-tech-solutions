@@ -1,4 +1,4 @@
-import { MessageCircle, ShoppingBag, Zap, Send, Smartphone, Laptop, Monitor, CheckCircle } from "lucide-react";
+import { MessageCircle, ShoppingBag, Zap, Send, Smartphone, Laptop, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
@@ -84,69 +84,4 @@ const HomePage = () => {
                   <span className="text-[#00A651] text-[10px] font-black uppercase tracking-[0.2em]">{p.category}</span>
                   <h4 className="text-white font-black text-lg truncate uppercase italic tracking-tighter">{p.name}</h4>
                   <a 
-                    href={`https://wa.me/5511940562933?text=Olá! Tenho interesse no item: ${p.name}`}
-                    target="_blank"
-                    className="mt-6 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[11px] font-black text-center block hover:bg-[#00A651] hover:text-white transition-all uppercase tracking-widest"
-                  >
-                    CONSULTAR PREÇO
-                  </a>
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* SEÇÃO DE SERVIÇOS */}
-      <section id="servicos" className="py-32 px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="glass-card overflow-hidden group border border-white/5 rounded-3xl bg-white/[0.01]">
-              <div className="h-64 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800" className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-50" />
-              </div>
-              <div className="p-10">
-                <div className="bg-[#00A651] w-12 h-12 rounded-xl flex items-center justify-center mb-6">
-                  <Smartphone className="text-white" size={24} />
-                </div>
-                <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Smartphones</h3>
-                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Troca de telas, baterias e reparos em placa com micro-soldagem.</p>
-              </div>
-            </div>
-
-            <div className="glass-card overflow-hidden group border border-white/5 rounded-3xl bg-white/[0.01]">
-              <div className="h-64 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800" className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-50" />
-              </div>
-              <div className="p-10">
-                <div className="bg-[#00A651] w-12 h-12 rounded-xl flex items-center justify-center mb-6">
-                  <Laptop className="text-white" size={24} />
-                </div>
-                <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Computadores</h3>
-                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Manutenção preventiva, upgrades (SSD/RAM) e recuperação de dados.</p>
-              </div>
-            </div>
-
-            <div className="glass-card overflow-hidden group border border-[#00A651]/30 rounded-3xl bg-[#00A651]/5">
-              <div className="h-64 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1517336712672-477551799003?w=800" className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-50" />
-              </div>
-              <div className="p-10">
-                <div className="bg-[#00A651] w-12 h-12 rounded-xl flex items-center justify-center mb-6">
-                  <CheckCircle className="text-white" size={24} />
-                </div>
-                <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Qualidade HC</h3>
-                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Garantia total em todos os serviços e peças de primeira linha.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FORMULÁRIO FALE CONOSCO */}
-      <section id="contato" className="py-32 px-6 bg-[#050505]">
-        <div className="max-w-4xl mx-auto">
-          <div className="glass-card p-12 border-[#00A651]/20 relative overflow-hidden bg-white/[0.02] rounded-3xl">
-            <div className="relative z-10">
-              <h2 className="text-4xl font-black text-white uppercase italic tracking-tighter mb-4">Iniciar Atendimento</h2>
-              <p className="text-gray-500 mb-10
+                    href={`
