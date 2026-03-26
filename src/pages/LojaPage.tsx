@@ -66,7 +66,7 @@ const LojaPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter text-[#00A651] text-glow-green"
           >
-            CATÁLOGO HC TECH
+            HC TECH STORE
           </motion.h1>
 
           {/* Filtros de Categoria */}

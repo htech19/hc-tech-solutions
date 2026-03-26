@@ -9,8 +9,8 @@ export interface CartItem {
 interface CartContextType {
   items: CartItem[];
   addToCart: (product: Product) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  removeFromCart: (productId: string | number) => void;
+  updateQuantity: (productId: string | number, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
   isOpen: boolean;
@@ -49,11 +49,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setIsOpen(true);
   }, []);
 
-  const removeFromCart = useCallback((productId: string) => {
+  const removeFromCart = useCallback((productId: string | number) => {
     setItems((prev) => prev.filter((i) => i.product.id !== productId));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string | number, quantity: number) => {
     if (quantity <= 0) {
       setItems((prev) => prev.filter((i) => i.product.id !== productId));
       return;
