@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { products } from "@/data/store-products"; 
 
 const Index = () => {
@@ -13,7 +14,7 @@ const Index = () => {
   return (
     <div className="relative flex flex-col min-h-screen bg-black overflow-x-hidden">
       
-      {/* BACKGROUND IMAGE - VISIBILIDADE AJUSTADA */}
+      {/* BACKGROUND IMAGE */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div 
           className="absolute inset-0 opacity-45" 
@@ -30,7 +31,7 @@ const Index = () => {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
 
-        {/* HERO SECTION - TÍTULO MENOR */}
+        {/* HERO SECTION */}
         <section id="inicio" className="min-h-screen flex items-center justify-center px-6 text-center pt-20">
           <motion.div 
             initial={{ opacity: 0, y: 30 }} 
@@ -63,7 +64,7 @@ const Index = () => {
           </motion.div>
         </section>
 
-        {/* CARROSSEL INFINITO */}
+        {/* CARROSSEL INFINITO - VELOCIDADE REDUZIDA */}
         <section className="py-24 bg-[#050505]/60 backdrop-blur-md border-y border-white/5 overflow-hidden relative">
           <div className="max-w-7xl mx-auto mb-12 px-8 flex justify-between items-end relative z-10">
             <div>
@@ -79,7 +80,7 @@ const Index = () => {
             <motion.div 
               className="flex gap-8 whitespace-nowrap"
               animate={{ x: ["0%", "-50%"] }}
-              transition={{ ease: "linear", duration: 40, repeat: Infinity }}
+              transition={{ ease: "linear", duration: 80, repeat: Infinity }}
             >
               {[...topVendas, ...topVendas, ...topVendas].map((p, i) => (
                 <div key={i} className="inline-block w-72 md:w-96 glass-card p-6 shrink-0 group border border-white/5 rounded-3xl bg-white/[0.02]">
@@ -104,68 +105,99 @@ const Index = () => {
           </div>
         </section>
 
-        {/* SEÇÃO DE SERVIÇOS */}
+        {/* SEÇÃO NOSSOS SERVIÇOS - MELHORADA */}
         <section id="servicos" className="py-32 px-8 relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00A651]/[0.03] to-transparent pointer-events-none" />
           <div className="max-w-7xl mx-auto relative z-10">
-            <div className="mb-20 text-center">
+            <motion.div 
+              className="mb-20 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Expertise Técnica</span>
               <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4">
-                NOSSAS <span className="text-[#00A651]">SOLUÇÕES</span>
+                NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
               </h2>
-            </div>
+              <p className="mt-6 text-gray-500 font-bold uppercase tracking-widest text-xs max-w-2xl mx-auto">
+                Soluções completas para celulares, notebooks e hardware avançado
+              </p>
+            </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
-                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
-                  <Smartphone size={28} className="text-[#00A651]" />
-                </div>
-                <h3 className="text-xl font-black text-white uppercase italic mb-6">Android</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Troca de Tela e Vidro</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Conector de Carga</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Troca de Bateria</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Softwares/Atualização</li>
-                </ul>
-              </div>
-
-              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
-                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
-                  <Zap size={28} className="text-[#00A651]" />
-                </div>
-                <h3 className="text-xl font-black text-white uppercase italic mb-6">iPhone</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Telas Originais/Premium</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Reparo de Face ID</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Bateria (Sem Mensagem)</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Reparo de Placa</li>
-                </ul>
-              </div>
-
-              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
-                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
-                  <Laptop size={28} className="text-[#00A651]" />
-                </div>
-                <h3 className="text-xl font-black text-white uppercase italic mb-6">Notebook & PC</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Formatação e Backup</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Upgrade SSD e RAM</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Limpeza e Térmica</li>
-                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Telas e Teclados</li>
-                </ul>
-              </div>
-
-              <div className="glass-card p-8 border border-[#00A651]/30 rounded-3xl bg-[#00A651]/10 transition-all group backdrop-blur-sm">
-                <div className="bg-[#00A651] w-14 h-14 rounded-2xl flex items-center justify-center mb-8 shadow-[0_0_15px_rgba(0,166,81,0.4)]">
-                  <Monitor size={28} className="text-white" />
-                </div>
-                <h3 className="text-xl font-black text-white uppercase italic mb-6">Hardware Pro</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Reparo em Placa-Mãe</li>
-                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Reballing & Chipsets</li>
-                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Troca de Chipset</li>
-                  <li className="flex items-center gap-3 text-gray-200 text-xs font-black uppercase tracking-wider"><Zap size={14} className="text-[#00A651]" /> Montagem PC Gamer</li>
-                </ul>
-              </div>
+              {[
+                {
+                  icon: <Smartphone size={28} className="text-[#00A651]" />,
+                  title: "Android",
+                  items: ["Troca de Tela e Vidro", "Conector de Carga", "Troca de Bateria", "Softwares/Atualização"],
+                  highlight: false,
+                },
+                {
+                  icon: <Zap size={28} className="text-[#00A651]" />,
+                  title: "iPhone",
+                  items: ["Telas Originais/Premium", "Reparo de Face ID", "Bateria (Sem Mensagem)", "Reparo de Placa"],
+                  highlight: false,
+                },
+                {
+                  icon: <Laptop size={28} className="text-[#00A651]" />,
+                  title: "Notebook & PC",
+                  items: ["Formatação e Backup", "Upgrade SSD e RAM", "Limpeza e Térmica", "Telas e Teclados"],
+                  highlight: false,
+                },
+                {
+                  icon: <Monitor size={28} className="text-white" />,
+                  title: "Hardware Pro",
+                  items: ["Reparo em Placa-Mãe", "Reballing & Chipsets", "Troca de Chipset", "Montagem PC Gamer"],
+                  highlight: true,
+                },
+              ].map((service, idx) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className={`group p-8 rounded-3xl backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 ${
+                    service.highlight
+                      ? "border border-[#00A651]/40 bg-[#00A651]/10 shadow-[0_0_40px_rgba(0,166,81,0.1)] hover:shadow-[0_0_60px_rgba(0,166,81,0.2)]"
+                      : "glass-card border border-white/5 bg-[#050505]/40 hover:border-[#00A651]/30"
+                  }`}
+                >
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-8 transition-all duration-500 group-hover:scale-110 ${
+                    service.highlight
+                      ? "bg-[#00A651] shadow-[0_0_20px_rgba(0,166,81,0.5)]"
+                      : "bg-[#00A651]/10 group-hover:bg-[#00A651]/20"
+                  }`}>
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-black text-white uppercase italic mb-6">{service.title}</h3>
+                  <ul className="space-y-4">
+                    {service.items.map((item) => (
+                      <li key={item} className={`flex items-center gap-3 text-xs font-bold uppercase tracking-wider ${
+                        service.highlight ? "text-gray-200 font-black" : "text-gray-400"
+                      }`}>
+                        {service.highlight 
+                          ? <Zap size={14} className="text-[#00A651]" /> 
+                          : <CheckCircle size={14} className="text-[#00A651]" />
+                        }
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <a 
+                    href={`https://wa.me/5511940562933?text=Olá! Gostaria de saber mais sobre o serviço: ${service.title}`}
+                    target="_blank"
+                    className={`mt-8 w-full py-3.5 rounded-xl text-[10px] font-black text-center block uppercase tracking-widest transition-all duration-300 ${
+                      service.highlight
+                        ? "bg-[#00A651] text-white hover:shadow-[0_0_20px_rgba(0,166,81,0.4)] hover:scale-[1.02]"
+                        : "bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00A651] hover:text-white hover:border-transparent"
+                    }`}
+                  >
+                    SOLICITAR ORÇAMENTO
+                  </a>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
@@ -189,6 +221,9 @@ const Index = () => {
 
         <Footer />
       </div>
+
+      {/* BOTÃO FLUTUANTE WHATSAPP */}
+      <WhatsAppButton />
     </div>
   );
 };
