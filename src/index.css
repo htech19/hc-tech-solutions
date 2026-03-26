@@ -3,32 +3,25 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
   body {
-    @apply bg-[#050505] text-slate-50 antialiased font-sans min-h-screen;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/hero-bg.jpg');
-    background-attachment: fixed;
+    @apply bg-[#050505] text-slate-50 antialiased min-h-screen;
+    /* Configuração da Capa Persistente */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/hero-bg.jpg');
+    background-attachment: scroll; /* Rola com a página conforme pedido */
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
   }
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl hover:border-[#00A651]/40 transition-all duration-500 shadow-2xl;
+  .text-glow-cyan {
+    text-shadow: 0 0 15px rgba(0, 206, 209, 0.5);
   }
-  
-  .btn-primary {
-    @apply bg-[#00A651] text-white px-8 py-4 rounded-2xl font-black flex items-center gap-2 hover:scale-105 hover:shadow-[0_0_30px_rgba(0,166,81,0.4)] transition-all uppercase tracking-tighter active:scale-95;
-  }
-
   .text-glow-green {
-    text-shadow: 0 0 20px rgba(0, 166, 81, 0.6);
+    text-shadow: 0 0 15px rgba(0, 166, 81, 0.5);
   }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  .terminal-window {
+    @apply bg-black/80 border border-white/10 rounded-lg overflow-hidden shadow-[0_0_50px_rgba(0,206,209,0.1)];
   }
 }
