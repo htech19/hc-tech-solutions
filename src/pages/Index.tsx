@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import { products } from "@/data/store-products"; 
 
 const Index = () => {
-  // Filtra produtos para o carrossel (prioriza os que têm badge)
   const topVendas = products.filter(p => p.badge).length > 0 
     ? products.filter(p => p.badge) 
     : products.slice(0, 10);
@@ -14,10 +13,10 @@ const Index = () => {
   return (
     <div className="relative flex flex-col min-h-screen bg-black overflow-x-hidden">
       
-      {/* BACKGROUND IMAGE - BASTANTE VISÍVEL (Ajuste para menos escuro) */}
+      {/* BACKGROUND IMAGE - VISIBILIDADE AJUSTADA */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute inset-0 opacity-45" // Aumentado para 45% para detalhes nítidos e claros
+          className="absolute inset-0 opacity-45" 
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
             backgroundSize: 'cover',
@@ -25,15 +24,13 @@ const Index = () => {
             backgroundAttachment: 'fixed',
           }}
         />
-        {/* Suavização sutil apenas nas extremidades, sem escurecer o centro */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
       </div>
 
-      {/* CONTEÚDO DO SITE (Acima do fundo) */}
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
 
-        {/* HERO SECTION */}
+        {/* HERO SECTION - TÍTULO MENOR */}
         <section id="inicio" className="min-h-screen flex items-center justify-center px-6 text-center pt-20">
           <motion.div 
             initial={{ opacity: 0, y: 30 }} 
@@ -45,7 +42,6 @@ const Index = () => {
               <span className="text-[#00A651] font-black uppercase tracking-[0.3em] text-[10px]">SÃO BERNARDO DO CAMPO • SP</span>
             </div>
             
-            {/* TÍTULO - TAMANHO REDUZIDO (text-6xl no desktop) */}
             <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-[0.95] text-white">
               ASSISTÊNCIA TÉCNICA<br/>
               <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.5)]">ESPECIALIZADA</span><br/>
@@ -57,7 +53,7 @@ const Index = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 mt-14 justify-center">
-              <a href="https://wa.me/5511940562933" target="_blank" className="btn-primary flex items-center justify-center gap-3 px-10 py-5 bg-[#00A651] text-white font-black uppercase italic rounded-2xl hover:scale-105 transition-all">
+              <a href="https://wa.me/5511940562933" target="_blank" className="flex items-center justify-center gap-3 px-10 py-5 bg-[#00A651] text-white font-black uppercase italic rounded-2xl hover:scale-105 transition-all">
                 <MessageCircle size={22} /> ORÇAMENTO RÁPIDO
               </a>
               <Link to="/loja" className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 px-10 py-5 rounded-2xl font-black uppercase text-sm text-white hover:bg-white/10 transition-all backdrop-blur-sm">
@@ -103,3 +99,41 @@ const Index = () => {
                     </a>
                   </div>
                 </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* SEÇÃO DE SERVIÇOS */}
+        <section id="servicos" className="py-32 px-8 relative">
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="mb-20 text-center">
+              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Expertise Técnica</span>
+              <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4">
+                NOSSAS <span className="text-[#00A651]">SOLUÇÕES</span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
+                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
+                  <Smartphone size={28} className="text-[#00A651]" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-6">Android</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Troca de Tela e Vidro</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Conector de Carga</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Troca de Bateria</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Softwares/Atualização</li>
+                </ul>
+              </div>
+
+              <div className="glass-card p-8 border border-white/5 rounded-3xl bg-[#050505]/40 hover:border-[#00A651]/30 transition-all group backdrop-blur-sm">
+                <div className="bg-[#00A651]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-8">
+                  <Zap size={28} className="text-[#00A651]" />
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-6">iPhone</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Telas Originais/Premium</li>
+                  <li className="flex items-center gap-3 text-gray-400 text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} className="text-[#00A651]" /> Reparo de Face ID</li>
+                  <li className="flex items-center gap-
