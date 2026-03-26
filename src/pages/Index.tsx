@@ -34,7 +34,7 @@ const Index = () => {
           </h1>
           
           <p className="mt-10 text-gray-500 font-bold uppercase tracking-widest text-sm md:text-base max-w-2xl mx-auto">
-            Reparos avançados em hardware, micro-soldagem e software com garantia de excelência.
+            Reparos especializados em Apple, Samsung, Xiaomi e Notebooks de todas as marcas.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-5 mt-14 justify-center">
