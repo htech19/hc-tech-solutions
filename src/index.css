@@ -7,10 +7,9 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-[#050505] text-slate-50 antialiased min-h-screen;
-    /* Imagem de fundo que rola com a página */
+    @apply bg-[#050505] text-slate-50 antialiased font-sans min-h-screen;
     background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('/hero-bg.jpg');
-    background-attachment: scroll; 
+    background-attachment: fixed;
     background-size: cover;
     background-position: center;
   }
@@ -20,10 +19,16 @@
   .glass-card {
     @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl hover:border-[#00A651]/40 transition-all duration-500 shadow-2xl;
   }
+  
   .btn-primary {
     @apply bg-[#00A651] text-white px-8 py-4 rounded-2xl font-black flex items-center gap-2 hover:scale-105 hover:shadow-[0_0_30px_rgba(0,166,81,0.4)] transition-all uppercase tracking-tighter active:scale-95;
   }
+
   .text-glow-green {
     text-shadow: 0 0 20px rgba(0, 166, 81, 0.6);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
