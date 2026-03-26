@@ -46,7 +46,7 @@ const HomePage = () => {
 
         {/* Título Corrigido Conforme Imagem 1 */}
         <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-tight uppercase mb-8">
-          <span className="text-white text-glow">Nossas</span><br/>
+          <span className="text-white text-glow">PICLES</span><br/>
           <span className="text-[#00A651] text-glow-green">Soluções</span>
         </h1>
 
