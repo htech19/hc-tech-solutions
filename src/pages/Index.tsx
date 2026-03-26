@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { products } from "@/data/store-products"; 
 
 const HomePage = () => {
-  // Filtra produtos com selo (badge) para o carrossel ou pega os 10 primeiros
+  // Filtra produtos para o carrossel (prioriza os que têm badge)
   const topVendas = products.filter(p => p.badge).length > 0 
     ? products.filter(p => p.badge) 
     : products.slice(0, 10);
@@ -15,7 +15,7 @@ const HomePage = () => {
     <div className="flex flex-col min-h-screen bg-black">
       <Header />
 
-      {/* HERO SECTION - IMPACTO TOTAL */}
+      {/* HERO SECTION */}
       <section className="min-h-screen flex items-center justify-center px-6 text-center pt-20">
         <motion.div 
           initial={{ opacity: 0, y: 30 }} 
@@ -38,7 +38,7 @@ const HomePage = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-5 mt-14 justify-center">
-            <a href="https://wa.me/5511940562933" target="_blank" className="btn-primary flex items-center justify-center gap-3 px-10 py-5 bg-[#00A651] text-white font-black uppercase italic rounded-2xl hover:scale-105 transition-all">
+            <a href="https://wa.me/5511940562933" target="_blank" className="flex items-center justify-center gap-3 px-10 py-5 bg-[#00A651] text-white font-black uppercase italic rounded-2xl hover:scale-105 transition-all">
               <MessageCircle size={22} /> ORÇAMENTO RÁPIDO
             </a>
             <Link to="/loja" className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 px-10 py-5 rounded-2xl font-black uppercase text-sm text-white hover:bg-white/10 transition-all">
@@ -48,7 +48,7 @@ const HomePage = () => {
         </motion.div>
       </section>
 
-      {/* CARROSSEL INFINITO DE PRODUTOS */}
+      {/* CARROSSEL INFINITO */}
       <section className="py-24 bg-[#050505] border-y border-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto mb-12 px-8 flex justify-between items-end">
           <div>
@@ -57,7 +57,7 @@ const HomePage = () => {
               DESTAQUES <span className="text-[#00A651]">HC TECH</span>
             </h2>
           </div>
-          <Link to="/loja" className="hidden md:block text-[10px] font-black text-gray-500 hover:text-[#00A651] uppercase tracking-widest transition-colors border-b border-gray-800 pb-1">Ver todos</Link>
+          <Link to="/loja" className="text-[10px] font-black text-gray-500 hover:text-[#00A651] uppercase tracking-widest transition-colors border-b border-gray-800 pb-1">Ver todos</Link>
         </div>
 
         <div className="relative flex overflow-x-hidden">
@@ -83,7 +83,6 @@ const HomePage = () => {
                 <div className="space-y-1 px-2">
                   <span className="text-[#00A651] text-[10px] font-black uppercase tracking-[0.2em]">{p.category}</span>
                   <h4 className="text-white font-black text-lg truncate uppercase italic tracking-tighter">{p.name}</h4>
-                  
                   <a 
                     href={`https://wa.me/5511940562933?text=Olá! Tenho interesse no item: ${p.name}`}
                     target="_blank"
@@ -98,11 +97,10 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* SEÇÃO DE SERVIÇOS (SOLUÇÕES) */}
+      {/* SEÇÃO DE SERVIÇOS */}
       <section id="servicos" className="py-32 px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Card 1 */}
             <div className="glass-card overflow-hidden group border border-white/5 rounded-3xl bg-white/[0.01]">
               <div className="h-64 overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800" className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-50" />
@@ -112,11 +110,10 @@ const HomePage = () => {
                   <Smartphone className="text-white" size={24} />
                 </div>
                 <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Smartphones</h3>
-                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Especialistas em iPhone e Android. Troca de telas, baterias e reparos em placa com micro-soldagem.</p>
+                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Troca de telas, baterias e reparos em placa com micro-soldagem.</p>
               </div>
             </div>
 
-            {/* Card 2 */}
             <div className="glass-card overflow-hidden group border border-white/5 rounded-3xl bg-white/[0.01]">
               <div className="h-64 overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800" className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-50" />
@@ -126,11 +123,10 @@ const HomePage = () => {
                   <Laptop className="text-white" size={24} />
                 </div>
                 <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Computadores</h3>
-                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Manutenção preventiva, upgrades (SSD/RAM), formatação e recuperação de dados em notebooks e PCs.</p>
+                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Manutenção preventiva, upgrades (SSD/RAM) e recuperação de dados.</p>
               </div>
             </div>
 
-            {/* Card 3 */}
             <div className="glass-card overflow-hidden group border border-[#00A651]/30 rounded-3xl bg-[#00A651]/5">
               <div className="h-64 overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1517336712672-477551799003?w=800" className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-50" />
@@ -140,16 +136,17 @@ const HomePage = () => {
                   <CheckCircle className="text-white" size={24} />
                 </div>
                 <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Qualidade HC</h3>
-                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Garantia total em todos os serviços executados e peças de primeira linha para seu dispositivo.</p>
+                <p className="text-gray-500 text-sm mt-4 font-bold uppercase leading-relaxed tracking-tight">Garantia total em todos os serviços e peças de primeira linha.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <Footer />
-    </div>
-  );
-};
-
-export default HomePage;
+      {/* FORMULÁRIO FALE CONOSCO */}
+      <section id="contato" className="py-32 px-6 bg-[#050505]">
+        <div className="max-w-4xl mx-auto">
+          <div className="glass-card p-12 border-[#00A651]/20 relative overflow-hidden bg-white/[0.02] rounded-3xl">
+            <div className="relative z-10">
+              <h2 className="text-4xl font-black text-white uppercase italic tracking-tighter mb-4">Iniciar Atendimento</h2>
+              <p className="text-gray-500 mb-10
