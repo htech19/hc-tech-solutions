@@ -92,8 +92,8 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter">
-              <span className="text-white">HARDWARE</span><br/>
-              <span className="text-gray-600">& REPAROS.</span>
+              <span className="text-white">nossos</span><br/>
+              <span className="text-gray-600">Serviços</span>
             </h2>
           </div>
           
