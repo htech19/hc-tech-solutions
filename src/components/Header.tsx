@@ -44,7 +44,7 @@ export default function Header() {
 
       <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* LOGO */}
-        <Link to="/" className="text-3xl font-black italic tracking-tighter">
+        <Link to="/" className="text-2xl font-black italic tracking-tighter">
           HC<span className="text-[#00A651]">TECH</span>
         </Link>
 
