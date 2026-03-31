@@ -158,7 +158,7 @@ const Index = () => {
               SOBRE <span className="text-[#00A651]">NÓS</span>
             </h2>
             <p className="text-gray-300 font-medium leading-relaxed uppercase tracking-wide mb-8">
-              A HC Tech Infocell é referência em São Bernardo do Campo para manutenção de dispositivos móveis e informática, unindo técnica avançada com atendimento personalizado.
+              HC Tech Infocell é uma empresa dedicada a fornecer soluções de alta qualidade para diversas necessidades de tecnologia. Eles oferecem uma ampla gama de serviços, incluindo reparos de celulares, manutenção em informática, compra e venda de aparelhos, e suporte técnico por profissionais com formação em TI. Além disso, a empresa também oferece benefícios adicionais, como serviço de retirada e entrega de equipamentos e garantia, demonstrando seu compromisso em manter os dispositivos de seus clientes funcionando. Confie na HC Tech Infocell para resolver seus problemas de tecnologia e aproveite a experiência de seus profissionais. Eles estão comprometidos em oferecer soluções eficientes e de alta qualidade para atender às necessidades de seus clientes..
             </p>
             <div className="grid grid-cols-3 gap-8 mt-16">
               <div className="flex flex-col items-center gap-3">
