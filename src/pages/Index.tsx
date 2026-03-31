@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { 
   MessageCircle, ShoppingBag, Zap, Send, Smartphone, 
   Laptop, Monitor, CheckCircle, ShieldCheck, Clock, Award,
-  PhoneCall, Search, Settings, Truck, Cpu
+  PhoneCall, Search, Settings, Truck
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -12,75 +12,163 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { products } from "@/data/store-products";
 
 const Index = () => {
-  const logosMarcas = [
-    { name: "Apple", url: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" },
-    { name: "Samsung", url: "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" },
-    { name: "Motorola", url: "https://upload.wikimedia.org/wikipedia/commons/a/a3/Motorola_logo.svg" },
-    { name: "Xiaomi", url: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg" },
-    { name: "Dell", url: "https://upload.wikimedia.org/wikipedia/commons/1/18/Dell_logo_2016.svg" },
-    { name: "HP", url: "https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg" },
-    { name: "Lenovo", url: "https://upload.wikimedia.org/wikipedia/commons/b/b8/Lenovo_logo_2015.svg" },
-    { name: "Intel", url: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_logo_%282020%29.svg" },
+  const topVendas = products.filter(p => p.badge).length > 0 
+    ? products.filter(p => p.badge) 
+    : products.slice(0, 10);
+
+  // Lista de marcas para o carrossel
+  const marcas = [
+    "APPLE", "SAMSUNG", "XIAOMI", "MOTOROLA", "ASUS", 
+    "DELL", "LENOVO", "HP", "ACER", "INTEL", "AMD", "NVIDIA"
   ];
 
   return (
     <div className="relative flex flex-col min-h-screen bg-black overflow-x-hidden text-white">
       
-      {/* BACKGROUND */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "url('/hero-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black" />
+      {/* BACKGROUND FIXO */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute inset-0 opacity-45" 
+          style={{
+            backgroundImage: "url('/hero-bg.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
       </div>
 
-      <div className="relative z-10 flex flex-col">
+      <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
 
-        {/* HERO - MAIS COMPACTO */}
-        <section id="inicio" className="min-h-[85vh] flex items-center justify-center px-6 text-center pt-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00A651]/10 border border-[#00A651]/20 mb-6">
-              <Zap size={12} className="text-[#00A651]" />
-              <span className="text-[#00A651] font-black uppercase tracking-[0.2em] text-[9px]">SÃO BERNARDO DO CAMPO • SP</span>
+        {/* HERO SECTION */}
+        <section id="inicio" className="min-h-screen flex items-center justify-center px-6 text-center pt-20">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00A651]/10 border border-[#00A651]/20 mb-8 backdrop-blur-sm">
+              <Zap size={14} className="text-[#00A651]" />
+              <span className="text-[#00A651] font-black uppercase tracking-[0.3em] text-[10px]">SÃO BERNARDO DO CAMPO • SP</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic leading-tight mb-8">
-              ASSISTÊNCIA <span className="text-[#00A651]">ESPECIALIZADA</span><br/>
-              <span className="text-white/80 text-2xl md:text-3xl">CELULARES & NOTEBOOKS</span>
+            <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-[0.95] text-white">
+              ASSISTÊNCIA TÉCNICA<br/>
+              <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.5)]">ESPECIALIZADA</span><br/>
+              <span className="text-white/90">CELULARES & NOTEBOOKS</span>
             </h1>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
-              <a href="https://wa.me/5511940562933" target="_blank" className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-[#25D366] rounded-xl hover:scale-105 transition-all">
-                <MessageCircle size={20} /> <span className="text-sm font-black uppercase italic">WhatsApp</span>
-              </a>
-              <a href="https://t.me/hctechinfocell_bot" target="_blank" className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-[#24A1DE] rounded-xl hover:scale-105 transition-all">
-                <Send size={20} /> <span className="text-sm font-black uppercase italic">Telegram</span>
-              </a>
+            <div className="flex flex-col gap-6 mt-14 items-center">
+              <p className="text-[#00A651] font-black text-[10px] uppercase tracking-[0.4em] mb-[-10px]">
+                SOLICITE SEU ORÇAMENTO PELA SUA REDE PREFERIDA
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-5 justify-center w-full max-w-3xl px-4">
+                <a 
+                  href="https://wa.me/5511940562933" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-3 px-8 py-5 bg-[#25D366] text-white font-black uppercase italic rounded-2xl hover:scale-105 transition-all shadow-[0_0_20px_rgba(37,211,102,0.3)]"
+                >
+                  <MessageCircle size={24} /> 
+                  <div className="flex flex-col items-start leading-none text-left">
+                    <span className="text-[10px] opacity-80 mb-1 font-bold">Atendimento via</span>
+                    <span className="text-sm tracking-tighter font-black">WhatsApp</span>
+                  </div>
+                </a>
+
+                <a 
+                  href="https://t.me/hctechinfocell_bot" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-3 px-8 py-5 bg-[#24A1DE] text-white font-black uppercase italic rounded-2xl hover:scale-105 transition-all shadow-[0_0_20px_rgba(36,161,222,0.3)]"
+                >
+                  <Send size={24} /> 
+                  <div className="flex flex-col items-start leading-none text-left">
+                    <span className="text-[10px] opacity-80 mb-1 font-bold">Atendimento via</span>
+                    <span className="text-sm tracking-tighter font-black">Telegram</span>
+                  </div>
+                </a>
+              </div>
+
+              <Link 
+                to="/loja" 
+                className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 px-12 py-4 rounded-2xl font-black uppercase text-[10px] text-gray-400 hover:text-white hover:bg-white/10 transition-all backdrop-blur-sm mt-4 tracking-[0.2em]"
+              >
+                <ShoppingBag size={18} /> ACESSAR NOSSA LOJA
+              </Link>
             </div>
           </motion.div>
         </section>
 
-        {/* SERVIÇOS - GRADE OTIMIZADA */}
-        <section id="servicos" className="py-20 px-6 bg-zinc-900/30">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-black text-center uppercase italic mb-12 tracking-tighter">
+        {/* PROCESSO */}
+        <section id="processo-como-funciona" className="py-24 px-8 bg-zinc-900/40 backdrop-blur-sm border-y border-white/5">
+          <div className="max-w-7xl mx-auto text-center">
+            <h2 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-16">
+              PROCESSO - <span className="text-[#00A651]">COMO FUNCIONA</span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { icon: <PhoneCall size={40} />, title: "Contato", text: "Agende seu serviço pelo WhatsApp ou Telegram." },
+                { icon: <Search size={40} />, title: "Diagnóstico", text: "Análise técnica detalhada do seu equipamento." },
+                { icon: <Settings size={40} />, title: "Reparo", text: "Manutenção com peças de alta qualidade." },
+                { icon: <Truck size={40} />, title: "Entrega", text: "Seu aparelho pronto com garantia total." }
+              ].map((step, i) => (
+                <div key={i} className="p-8 bg-black/40 border border-white/5 rounded-3xl">
+                  <div className="text-[#00A651] mb-6 flex justify-center">{step.icon}</div>
+                  <h3 className="text-xl font-black text-white uppercase italic mb-4">{step.title}</h3>
+                  <p className="text-gray-400 text-sm font-medium uppercase">{step.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* NOSSOS SERVIÇOS */}
+        <section id="servicos" className="py-32 px-8 bg-black/20">
+          <div className="max-w-7xl mx-auto text-center">
+            <h2 className="text-5xl font-black text-white uppercase italic tracking-tighter mb-20">
               NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
             </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
               {[
-                { icon: <Smartphone size={24} />, title: "Android", items: ["Telas Originais", "Baterias", "Conector", "Software"] },
-                { icon: <Zap size={24} />, title: "iPhone", items: ["Telas OLED", "Saúde 100%", "Face ID", "Placa"] },
-                { icon: <Laptop size={24} />, title: "Notebooks", items: ["SSD & RAM", "Limpeza", "Teclado", "Dobradiça"] },
-                { icon: <Monitor size={24} />, title: "PCs & Gamer", items: ["Montagem", "Upgrade", "Drivers", "Reballing"] },
-                { icon: <Cpu size={24} />, title: "Avançados", items: ["Microsolda", "Dados", "FRP/MDM", "Curto em Placa"] },
+                { 
+                  icon: <Smartphone size={28} />, 
+                  title: "Android", 
+                  items: ["Troca de Tela (Original/Premium)", "Troca de Bateria", "Conector de Carga", "Reinstalação de Sistema", "Remoção de Vírus", "Aparelhos que não ligam", "Desbloqueio de Conta"] 
+                },
+                { 
+                  icon: <Zap size={28} />, 
+                  title: "iPhone", 
+                  items: ["Telas Premium OLED", "Saúde de Bateria 100%", "Reparo de Face ID", "Loop e Travamentos", "Microsolda em Placa", "Recuperação Total", "Limpeza Interna"] 
+                },
+                { 
+                  icon: <Laptop size={28} />, 
+                  title: "Notebooks", 
+                  items: ["Upgrade SSD & RAM", "Otimização de Sistema", "Troca de Pasta Térmica", "Teclado e Tela", "Reparo de Dobradiças", "Sistema Corrompido", "Limpeza Química"] 
+                },
+                { 
+                  icon: <Monitor size={28} />, 
+                  title: "PCs Gamer", 
+                  items: ["Montagem Customizada", "Upgrades de Performance", "Cable Management", "Drivers e Bios", "Diagnóstico de Hardware", "Reparo Placa-Mãe", "Reballing Profissional"] 
+                },
+                { 
+                  icon: <Settings size={28} />, 
+                  title: "Avançados", 
+                  items: ["Reparo em Placa Lógica", "Recuperação de Dados", "Remoção FRP e MDM", "Backup e Migração", "Atualização de Firmware", "Correção de Curto"] 
+                },
               ].map((service, idx) => (
-                <div key={idx} className="p-6 rounded-2xl bg-black/60 border border-white/5 hover:border-[#00A651]/40 transition-all">
-                  <div className="text-[#00A651] mb-4">{service.icon}</div>
-                  <h3 className="text-lg font-black uppercase italic mb-4">{service.title}</h3>
-                  <ul className="space-y-2">
+                <div key={idx} className="p-6 rounded-3xl bg-[#050505]/60 border border-white/5 text-left hover:border-[#00A651]/40 transition-colors">
+                  <div className="w-12 h-12 bg-[#00A651]/20 rounded-xl flex items-center justify-center mb-6 text-[#00A651]">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-lg font-black text-white uppercase italic mb-6 leading-tight">{service.title}</h3>
+                  <ul className="space-y-3">
                     {service.items.map((item, i) => (
-                      <li key={i} className="flex items-center gap-2 text-[11px] font-bold uppercase text-gray-400">
-                        <CheckCircle size={12} className="text-[#00A651]" /> {item}
+                      <li key={i} className="flex items-start gap-2 text-[9px] font-bold uppercase text-gray-400 tracking-tighter">
+                        <CheckCircle size={12} className="text-[#00A651] shrink-0" /> {item}
                       </li>
                     ))}
                   </ul>
@@ -90,30 +178,68 @@ const Index = () => {
           </div>
         </section>
 
-        {/* LOGOS - MAIS DISCRETOS */}
-        <section className="py-12 bg-black border-y border-white/5 overflow-hidden">
-          <div className="flex overflow-x-hidden">
-            <motion.div className="flex gap-16 whitespace-nowrap items-center" animate={{ x: ["0%", "-50%"] }} transition={{ ease: "linear", duration: 20, repeat: Infinity }}>
-              {[...logosMarcas, ...logosMarcas].map((logo, i) => (
-                <img key={i} src={logo.url} alt={logo.name} className="h-6 md:h-8 grayscale opacity-40 hover:opacity-100 transition-all" />
+        {/* SEÇÃO DE MARCAS - NOVA */}
+        <section className="py-20 bg-[#050505]/40 border-y border-white/5 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-8 mb-10 text-center">
+            <span className="text-[#00A651] font-black text-[10px] uppercase tracking-[0.5em]">Hardware & Software</span>
+            <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter mt-2">MARCAS QUE <span className="text-[#00A651]">ATENDEMOS</span></h3>
+          </div>
+          
+          <div className="relative flex overflow-x-hidden">
+            <motion.div 
+              className="flex gap-20 whitespace-nowrap items-center"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ ease: "linear", duration: 30, repeat: Infinity }}
+            >
+              {[...marcas, ...marcas].map((marca, i) => (
+                <span key={i} className="text-gray-600 hover:text-[#00A651] transition-colors font-black text-3xl md:text-5xl italic tracking-tighter uppercase opacity-30 hover:opacity-100 cursor-default">
+                  {marca}
+                </span>
               ))}
             </motion.div>
           </div>
         </section>
 
-        {/* CONTATO - COMPACTO */}
-        <section id="contato" className="py-20 px-6 text-center">
-          <div className="max-w-3xl mx-auto bg-zinc-900/50 p-8 rounded-3xl border border-[#00A651]/20">
-            <h2 className="text-2xl font-black uppercase italic mb-6">SOLICITE UM ORÇAMENTO</h2>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a href="https://wa.me/5511940562933" className="bg-[#25D366] px-8 py-3 rounded-lg text-xs font-black uppercase tracking-widest">WhatsApp</a>
-              <a href="https://t.me/hctechinfocell_bot" className="bg-[#24A1DE] px-8 py-3 rounded-lg text-xs font-black uppercase tracking-widest">Telegram</a>
+        {/* SOBRE NÓS */}
+        <section id="sobre-nos" className="py-32 px-8 bg-zinc-900/20 text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-5xl font-black text-white uppercase italic tracking-tighter mb-10">
+              SOBRE <span className="text-[#00A651]">NÓS</span>
+            </h2>
+            <p className="text-gray-300 font-medium leading-relaxed uppercase tracking-wide mb-8">
+              A HC Tech Infocell é uma empresa dedicada a fornecer soluções de alta qualidade para diversas necessidades de tecnologia. Localizada em São Bernardo do Campo, oferecemos reparos especializados por profissionais com formação em TI, serviço de leva e traz e garantia total em todos os procedimentos.
+            </p>
+            <div className="grid grid-cols-3 gap-8 mt-16">
+              <div className="flex flex-col items-center gap-3">
+                <ShieldCheck className="text-[#00A651]" size={32} />
+                <span className="text-[10px] font-black uppercase tracking-widest">Garantia</span>
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <Clock className="text-[#00A651]" size={32} />
+                <span className="text-[10px] font-black uppercase tracking-widest">Agilidade</span>
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <Award className="text-[#00A651]" size={32} />
+                <span className="text-[10px] font-black uppercase tracking-widest">Qualidade</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CONTATO */}
+        <section id="contato" className="py-32 px-8 border-t border-white/5 text-center">
+          <div className="max-w-4xl mx-auto bg-zinc-900/40 p-12 rounded-3xl border border-[#00A651]/20">
+            <h2 className="text-3xl font-black text-white uppercase italic tracking-tighter mb-8">PRONTO PARA REPARAR?</h2>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="https://wa.me/5511940562933" target="_blank" className="bg-[#25D366] px-10 py-4 rounded-xl text-white font-black uppercase text-xs tracking-widest hover:scale-105 transition-transform">WhatsApp</a>
+              <a href="https://t.me/hctechinfocell_bot" target="_blank" className="bg-[#24A1DE] px-10 py-4 rounded-xl text-white font-black uppercase text-xs tracking-widest hover:scale-105 transition-transform">Telegram</a>
             </div>
           </div>
         </section>
 
         <Footer />
       </div>
+
       <WhatsAppButton />
     </div>
   );
