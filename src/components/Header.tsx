@@ -17,7 +17,7 @@ const socialLinks = [
 
 const navLinks = [
   { label: "INÍCIO", href: "/#inicio" },
-  { label: "QUEM SOMOS", href: "/#servicos" },
+  { label: "NOSSOS SERVIÇOS", href: "/#servicos" },
   { label: "LOJA", href: "/loja" },
   { label: "CONTATO", href: "/#contato" },
 ];
