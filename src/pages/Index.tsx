@@ -95,9 +95,6 @@ const Index = () => {
                   <div className="space-y-1 px-2">
                     <span className="text-[#00A651] text-[10px] font-black uppercase tracking-[0.2em]">{p.category}</span>
                     <h4 className="text-white font-black text-lg truncate uppercase italic tracking-tighter">{p.name}</h4>
-                    <a href={`https://wa.me/5511940562933?text=Olá! Tenho interesse no item: ${p.name}`} target="_blank" className="mt-6 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[11px] font-black text-center block hover:bg-[#00A651] hover:text-white transition-all uppercase tracking-widest">
-                      CONSULTAR PREÇO
-                    </a>
                   </div>
                 </div>
               ))}
@@ -157,52 +154,51 @@ const Index = () => {
           </div>
         </section>
 
-        {/* SEÇÃO: SOBRE NÓS (TEXTO ATUALIZADO) */}
+        {/* SEÇÃO: SOBRE NÓS (SEM IMAGEM E ESCRITA ORIGINAL) */}
         <section id="sobre-nos" className="py-32 px-8 relative bg-zinc-900/20">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+          <div className="max-w-4xl mx-auto text-center">
             <motion.div 
-              className="w-full lg:w-1/2"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Nossa Identidade</span>
-              <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4 mb-8">
+              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Nossa História</span>
+              <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4 mb-10">
                 SOBRE <span className="text-[#00A651]">NÓS</span>
               </h2>
               
-              <div className="space-y-6">
-                <p className="text-white font-black text-xl italic leading-tight uppercase tracking-tighter">
-                  Líder em soluções tecnológicas e reparos avançados no ABC Paulista.
+              <div className="space-y-8">
+                <p className="text-gray-300 font-medium leading-relaxed text-base md:text-lg uppercase tracking-wide">
+                  HC Tech Infocell é uma empresa dedicada a fornecer soluções de alta qualidade para diversas necessidades de tecnologia. 
+                  Oferecemos uma ampla gama de serviços, incluindo reparos de celulares, manutenção em informática, compra e venda de aparelhos, 
+                  e suporte técnico por profissionais com formação em TI.
                 </p>
-                <p className="text-gray-400 font-medium leading-relaxed text-sm md:text-base uppercase tracking-wide">
-                  A <span className="text-white font-black">HC TECH INFOCELL</span> é uma empresa de tecnologia de elite, composta por especialistas com formação acadêmica em TI e vasta experiência em infraestrutura. 
+
+                <p className="text-gray-400 font-medium leading-relaxed text-sm md:text-base uppercase tracking-widest">
+                  Além disso, a empresa também oferece benefícios adicionais, como serviço de retirada e entrega de equipamentos e garantia, 
+                  demonstrando seu compromisso em manter os dispositivos de seus clientes funcionando. Confie na HC Tech Infocell para 
+                  resolver seus problemas de tecnologia e aproveite a experiência de seus profissionais.
                 </p>
-                <p className="text-gray-500 font-medium leading-relaxed text-sm uppercase">
-                  Oferecemos um ecossistema completo: desde o reparo especializado em celulares e notebooks até a compra, venda e manutenção preventiva de hardware de alto desempenho com <span className="text-[#00A651] font-bold">serviço exclusivo de leva e traz</span>.
+
+                <p className="text-[#00A651] font-black text-sm uppercase tracking-[0.3em] italic">
+                  Comprometidos em oferecer soluções eficientes e de alta qualidade.
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
-                <div className="p-6 bg-white/5 border border-white/10 rounded-2xl text-center group hover:border-[#00A651]/50 transition-all">
-                  <ShieldCheck className="text-[#00A651] mx-auto mb-3" size={32} />
-                  <span className="block text-white font-black text-xl italic tracking-tighter uppercase">Garantia</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-20">
+                <div className="flex flex-col items-center">
+                  <ShieldCheck className="text-[#00A651] mb-4" size={40} />
+                  <span className="text-white font-black text-xs uppercase tracking-widest">Garantia</span>
                 </div>
-                <div className="p-6 bg-white/5 border border-white/10 rounded-2xl text-center group hover:border-[#00A651]/50 transition-all">
-                  <Clock className="text-[#00A651] mx-auto mb-3" size={32} />
-                  <span className="block text-white font-black text-xl italic tracking-tighter uppercase">Delivery</span>
+                <div className="flex flex-col items-center">
+                  <Clock className="text-[#00A651] mb-4" size={40} />
+                  <span className="text-white font-black text-xs uppercase tracking-widest">Leva e Traz</span>
                 </div>
-                <div className="p-6 bg-white/5 border border-white/10 rounded-2xl text-center group hover:border-[#00A651]/50 transition-all">
-                  <Award className="text-[#00A651] mx-auto mb-3" size={32} />
-                  <span className="block text-white font-black text-xl italic tracking-tighter uppercase">Expertise</span>
+                <div className="flex flex-col items-center">
+                  <Award className="text-[#00A651] mb-4" size={40} />
+                  <span className="text-white font-black text-xs uppercase tracking-widest">Expertise TI</span>
                 </div>
               </div>
-            </motion.div>
-            
-            <motion.div className="w-full lg:w-1/2" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-               <div className="aspect-square rounded-3xl overflow-hidden border border-[#00A651]/30 relative">
-                  <img src="/hero-bg.jpg" alt="HC Tech Lab" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
-               </div>
             </motion.div>
           </div>
         </section>
@@ -227,5 +223,4 @@ const Index = () => {
   );
 };
 
-// ESTA LINHA É A MAIS IMPORTANTE PARA CORRIGIR O ERRO:
 export default Index;
