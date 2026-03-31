@@ -19,7 +19,7 @@ const navLinks = [
   { label: "INÍCIO", href: "/#inicio" },
   { label: "NOSSOS SERVIÇOS", href: "/#servicos" },
   { label: "LOJA", href: "/loja" },
-  { label: "QUEM SOMOS", href: "/Quem Somos" },
+  { label: "QUEM SOMOS", href: "/#sobre-nos" }, // ID conectado à seção de texto
   { label: "CONTATO", href: "/#contato" },
 ];
 
