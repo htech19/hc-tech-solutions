@@ -137,7 +137,7 @@ const Index = () => {
                 { 
                   icon: <Smartphone size={28} />, 
                   title: "Android", 
-                  items: ["Troca de Tela (Original/Premium)", "Troca de Bateria", "Conector de Carga", "Reinstalação de Sistema", "Remoção de Vírus", "Aparelhos que não ligam", "Desbloqueio de Conta"] 
+                  items: ["Troca de Tela (Original/Premium)", "Troca de Bateria", "Conector de Carga", "Reinstalação de Sistema", "Remoção de Vírus", "Aparelhos que não ligam", "Raparo de software"] 
                 },
                 { 
                   icon: <Zap size={28} />, 
