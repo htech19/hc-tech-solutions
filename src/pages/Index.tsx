@@ -54,7 +54,6 @@ const Index = () => {
               <span className="text-white/90">CELULARES & NOTEBOOKS</span>
             </h1>
 
-            {/* CTA BUTTONS */}
             <div className="flex flex-col gap-6 mt-14 items-center">
               <p className="text-[#00A651] font-black text-[10px] uppercase tracking-[0.4em] mb-[-10px]">
                 SOLICITE SEU ORÇAMENTO PELA SUA REDE PREFERIDA
@@ -69,8 +68,8 @@ const Index = () => {
                 >
                   <MessageCircle size={24} /> 
                   <div className="flex flex-col items-start leading-none text-left">
-                    <span className="text-[10px] opacity-80 mb-1">Atendimento via</span>
-                    <span className="text-sm tracking-tighter">WhatsApp</span>
+                    <span className="text-[10px] opacity-80 mb-1 font-bold">Atendimento via</span>
+                    <span className="text-sm tracking-tighter font-black">WhatsApp</span>
                   </div>
                 </a>
 
@@ -82,8 +81,8 @@ const Index = () => {
                 >
                   <Send size={24} /> 
                   <div className="flex flex-col items-start leading-none text-left">
-                    <span className="text-[10px] opacity-80 mb-1">Suporte via Bot</span>
-                    <span className="text-sm tracking-tighter">Telegram</span>
+                    <span className="text-[10px] opacity-80 mb-1 font-bold">Suporte via Bot</span>
+                    <span className="text-sm tracking-tighter font-black">Telegram</span>
                   </div>
                 </a>
               </div>
@@ -98,47 +97,35 @@ const Index = () => {
           </motion.div>
         </section>
 
-        {/* PROCESSO - ID: processo-como-funciona */}
+        {/* PROCESSO */}
         <section id="processo-como-funciona" className="py-24 px-8 bg-zinc-900/40 backdrop-blur-sm border-y border-white/5">
           <div className="max-w-7xl mx-auto text-center">
             <h2 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-16">
               PROCESSO - <span className="text-[#00A651]">COMO FUNCIONA</span>
             </h2>
-            
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
-                { icon: <PhoneCall size={40} />, title: "Contato", text: "Entre em contato conosco para agendar um serviço." },
-                { icon: <Search size={40} />, title: "Diagnóstico", text: "Realizamos um diagnóstico completo do seu aparelho." },
-                { icon: <Settings size={40} />, title: "Reparo", text: "Consertamos seu aparelho rapidamente e com qualidade." },
-                { icon: <Truck size={40} />, title: "Entrega", text: "Realizamos a entrega do seu aparelho pronto." }
+                { icon: <PhoneCall size={40} />, title: "Contato", text: "Agende seu serviço pelo WhatsApp ou Telegram." },
+                { icon: <Search size={40} />, title: "Diagnóstico", text: "Análise técnica detalhada do seu equipamento." },
+                { icon: <Settings size={40} />, title: "Reparo", text: "Manutenção com peças de alta qualidade." },
+                { icon: <Truck size={40} />, title: "Entrega", text: "Seu aparelho pronto com garantia total." }
               ].map((step, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="p-8 bg-black/40 border border-white/5 rounded-3xl group hover:border-[#00A651]/50 transition-all"
-                >
+                <div key={i} className="p-8 bg-black/40 border border-white/5 rounded-3xl">
                   <div className="text-[#00A651] mb-6 flex justify-center">{step.icon}</div>
                   <h3 className="text-xl font-black text-white uppercase italic mb-4">{step.title}</h3>
                   <p className="text-gray-400 text-sm font-medium uppercase">{step.text}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* NOSSOS SERVIÇOS - ID: servicos */}
-        <section id="servicos" className="py-32 px-8 relative">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-20 text-center">
-              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Expertise Técnica</span>
-              <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4">
-                NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
-              </h2>
-            </div>
-
+        {/* NOSSOS SERVIÇOS */}
+        <section id="servicos" className="py-32 px-8">
+          <div className="max-w-7xl mx-auto text-center">
+            <h2 className="text-5xl font-black text-white uppercase italic tracking-tighter mb-20">
+              NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 { icon: <Smartphone size={28} />, title: "Android", items: ["Troca de Tela", "Conector", "Bateria"] },
@@ -146,4 +133,67 @@ const Index = () => {
                 { icon: <Laptop size={28} />, title: "Notebook", items: ["SSD e RAM", "Limpeza", "Teclados"] },
                 { icon: <Monitor size={28} />, title: "Hardware", items: ["PC Gamer", "Placa-Mãe", "Reballing"] },
               ].map((service, idx) => (
-                <div key={idx} className="p-8 rounded-3xl bg-[#050505]/
+                <div key={idx} className="p-8 rounded-3xl bg-[#050505]/40 border border-white/5 text-left">
+                  <div className="w-12 h-12 bg-[#00A651]/20 rounded-xl flex items-center justify-center mb-6 text-[#00A651]">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-lg font-black text-white uppercase italic mb-4">{service.title}</h3>
+                  <ul className="space-y-3">
+                    {service.items.map((item, i) => (
+                      <li key={i} className="flex items-center gap-2 text-[10px] font-bold uppercase text-gray-400">
+                        <CheckCircle size={12} className="text-[#00A651]" /> {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SOBRE NÓS */}
+        <section id="sobre-nos" className="py-32 px-8 bg-zinc-900/20 text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-5xl font-black text-white uppercase italic tracking-tighter mb-10">
+              SOBRE <span className="text-[#00A651]">NÓS</span>
+            </h2>
+            <p className="text-gray-300 font-medium leading-relaxed uppercase tracking-wide mb-8">
+              A HC Tech Infocell é referência em São Bernardo do Campo para manutenção de dispositivos móveis e informática, unindo técnica avançada com atendimento personalizado.
+            </p>
+            <div className="grid grid-cols-3 gap-8 mt-16">
+              <div className="flex flex-col items-center gap-3">
+                <ShieldCheck className="text-[#00A651]" size={32} />
+                <span className="text-[10px] font-black uppercase tracking-widest">Garantia</span>
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <Clock className="text-[#00A651]" size={32} />
+                <span className="text-[10px] font-black uppercase tracking-widest">Agilidade</span>
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <Award className="text-[#00A651]" size={32} />
+                <span className="text-[10px] font-black uppercase tracking-widest">Qualidade</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CONTATO */}
+        <section id="contato" className="py-32 px-8 border-t border-white/5 text-center">
+          <div className="max-w-4xl mx-auto bg-zinc-900/40 p-12 rounded-3xl border border-[#00A651]/20">
+            <h2 className="text-3xl font-black text-white uppercase italic tracking-tighter mb-8">PRONTO PARA REPARAR?</h2>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="https://wa.me/5511940562933" target="_blank" className="bg-[#25D366] px-10 py-4 rounded-xl text-white font-black uppercase text-xs tracking-widest">WhatsApp</a>
+              <a href="https://t.me/hctechinfocell_bot" target="_blank" className="bg-[#24A1DE] px-10 py-4 rounded-xl text-white font-black uppercase text-xs tracking-widest">Telegram</a>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
+
+      <WhatsAppButton />
+    </div>
+  );
+};
+
+export default Index;
