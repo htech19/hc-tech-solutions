@@ -158,42 +158,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* NOSSOS SERVIÇOS */}
-        <section id="servicos" className="py-32 px-8 relative">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-20 text-center">
-              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Expertise Técnica</span>
-              <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4">
-                NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { icon: <Smartphone size={28} />, title: "Android", items: ["Troca de Tela", "Conector", "Bateria"] },
-                { icon: <Zap size={28} />, title: "iPhone", items: ["Telas Premium", "Face ID", "Placa"] },
-                { icon: <Laptop size={28} />, title: "Notebook", items: ["SSD e RAM", "Limpeza", "Teclados"] },
-                { icon: <Monitor size={28} />, title: "Hardware", items: ["PC Gamer", "Placa-Mãe", "Reballing"] },
-              ].map((service, idx) => (
-                <div key={idx} className="p-8 rounded-3xl bg-[#050505]/40 border border-white/5">
-                  <div className="w-14 h-14 bg-[#00A651]/20 rounded-2xl flex items-center justify-center mb-8 text-[#00A651]">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-xl font-black text-white uppercase italic mb-6">{service.title}</h3>
-                  <ul className="space-y-4">
-                    {service.items.map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-xs font-bold uppercase text-gray-400">
-                        <CheckCircle size={14} className="text-[#00A651]" /> {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* SOBRE NÓS - TEXTO ORIGINAL CENTRALIZADO */}
+        {/* SOBRE NÓS */}
         <section id="sobre-nos" className="py-32 px-8 relative bg-zinc-900/20 text-center">
           <div className="max-w-4xl mx-auto">
             <motion.div 
@@ -207,4 +172,42 @@ const Index = () => {
               </h2>
               
               <div className="space-y-8">
-                <p
+                <p className="text-gray-300 font-medium leading-relaxed text-base md:text-lg uppercase tracking-wide">
+                  HC Tech Infocell é uma empresa dedicada a fornecer soluções de alta qualidade para diversas necessidades de tecnologia. 
+                  Eles oferecem uma ampla gama de serviços, incluindo reparos de celulares, manutenção em informática, compra e venda de aparelhos, 
+                  e suporte técnico por profissionais com formação em TI.
+                </p>
+
+                <p className="text-gray-400 font-medium leading-relaxed text-sm md:text-base uppercase tracking-widest">
+                  Além disso, a empresa também oferece benefícios adicionais, como serviço de retirada e entrega de equipamentos e garantia, 
+                  demonstrando seu compromisso em manter os dispositivos de seus clientes funcionando.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-20">
+                <div className="flex flex-col items-center">
+                  <ShieldCheck className="text-[#00A651] mb-4" size={40} />
+                  <span className="text-white font-black text-xs uppercase tracking-widest">Garantia</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <Clock className="text-[#00A651] mb-4" size={40} />
+                  <span className="text-white font-black text-xs uppercase tracking-widest">Leva e Traz</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <Award className="text-[#00A651] mb-4" size={40} />
+                  <span className="text-white font-black text-xs uppercase tracking-widest">Expertise TI</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
+
+      <WhatsAppButton />
+    </div>
+  );
+};
+
+export default Index;
