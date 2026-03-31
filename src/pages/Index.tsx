@@ -54,7 +54,7 @@ const Index = () => {
               <span className="text-white/90">CELULARES & NOTEBOOKS</span>
             </h1>
 
-            {/* CTA BUTTONS - WHATSAPP & TELEGRAM */}
+            {/* CTA BUTTONS */}
             <div className="flex flex-col gap-6 mt-14 items-center">
               <p className="text-[#00A651] font-black text-[10px] uppercase tracking-[0.4em] mb-[-10px]">
                 SOLICITE SEU ORÇAMENTO PELA SUA REDE PREFERIDA
@@ -98,5 +98,52 @@ const Index = () => {
           </motion.div>
         </section>
 
-        {/* PROCESSO - COMO FUNCIONA */}
-        <section id="processo-como-funciona" className="py-
+        {/* PROCESSO - ID: processo-como-funciona */}
+        <section id="processo-como-funciona" className="py-24 px-8 bg-zinc-900/40 backdrop-blur-sm border-y border-white/5">
+          <div className="max-w-7xl mx-auto text-center">
+            <h2 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-16">
+              PROCESSO - <span className="text-[#00A651]">COMO FUNCIONA</span>
+            </h2>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { icon: <PhoneCall size={40} />, title: "Contato", text: "Entre em contato conosco para agendar um serviço." },
+                { icon: <Search size={40} />, title: "Diagnóstico", text: "Realizamos um diagnóstico completo do seu aparelho." },
+                { icon: <Settings size={40} />, title: "Reparo", text: "Consertamos seu aparelho rapidamente e com qualidade." },
+                { icon: <Truck size={40} />, title: "Entrega", text: "Realizamos a entrega do seu aparelho pronto." }
+              ].map((step, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="p-8 bg-black/40 border border-white/5 rounded-3xl group hover:border-[#00A651]/50 transition-all"
+                >
+                  <div className="text-[#00A651] mb-6 flex justify-center">{step.icon}</div>
+                  <h3 className="text-xl font-black text-white uppercase italic mb-4">{step.title}</h3>
+                  <p className="text-gray-400 text-sm font-medium uppercase">{step.text}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* NOSSOS SERVIÇOS - ID: servicos */}
+        <section id="servicos" className="py-32 px-8 relative">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-20 text-center">
+              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Expertise Técnica</span>
+              <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4">
+                NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: <Smartphone size={28} />, title: "Android", items: ["Troca de Tela", "Conector", "Bateria"] },
+                { icon: <Zap size={28} />, title: "iPhone", items: ["Telas Premium", "Face ID", "Placa"] },
+                { icon: <Laptop size={28} />, title: "Notebook", items: ["SSD e RAM", "Limpeza", "Teclados"] },
+                { icon: <Monitor size={28} />, title: "Hardware", items: ["PC Gamer", "Placa-Mãe", "Reballing"] },
+              ].map((service, idx) => (
+                <div key={idx} className="p-8 rounded-3xl bg-[#050505]/
