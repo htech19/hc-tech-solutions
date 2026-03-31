@@ -82,7 +82,7 @@ const Index = () => {
                 >
                   <Send size={24} /> 
                   <div className="flex flex-col items-start leading-none text-left">
-                    <span className="text-[10px] opacity-80 mb-1">Suporte via Bot</span>
+                    <span className="text-[10px] opacity-80 mb-1">Atendimento via</span>
                     <span className="text-sm tracking-tighter">Telegram</span>
                   </div>
                 </a>
