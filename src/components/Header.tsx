@@ -19,7 +19,7 @@ const navLinks = [
   { label: "INÍCIO", href: "/#inicio" },
   { label: "NOSSOS SERVIÇOS", href: "/#servicos" },
   { label: "LOJA", href: "/loja" },
-  { label: "QUEM SOMOS", href: "/#sobre-nos" }, // ID conectado à seção de texto
+  { label: "QUEM SOMOS", href: "/#sobre-nos" },
   { label: "CONTATO", href: "/#contato" },
 ];
 
@@ -52,6 +52,7 @@ export default function Header() {
         {/* NAV DESKTOP */}
         <nav className="hidden md:flex gap-8 items-center">
           {navLinks.map((link) =>
+            // Verifica se o link é para outra página (como /loja) ou para uma âncora na mesma página
             link.href.startsWith("/") && !link.href.includes("#") ? (
               <Link
                 key={link.label}
