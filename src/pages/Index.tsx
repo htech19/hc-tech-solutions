@@ -82,7 +82,7 @@ const Index = () => {
                 >
                   <Send size={24} /> 
                   <div className="flex flex-col items-start leading-none text-left">
-                    <span className="text-[10px] opacity-80 mb-1">Atendimento via</span>
+                    <span className="text-[10px] opacity-80 mb-1">Suporte via Bot</span>
                     <span className="text-sm tracking-tighter">Telegram</span>
                   </div>
                 </a>
@@ -99,115 +99,4 @@ const Index = () => {
         </section>
 
         {/* PROCESSO - COMO FUNCIONA */}
-        <section id="processo-como-funciona" className="py-24 px-8 bg-zinc-900/40 backdrop-blur-sm border-y border-white/5">
-          <div className="max-w-7xl mx-auto text-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-16">
-              PROCESSO - <span className="text-[#00A651]">COMO FUNCIONA</span>
-            </h2>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                { icon: <PhoneCall size={40} />, title: "Contato", text: "Entre em contato conosco para agendar um serviço." },
-                { icon: <Search size={40} />, title: "Diagnóstico", text: "Realizamos um diagnóstico completo do seu aparelho." },
-                { icon: <Settings size={40} />, title: "Reparo", text: "Consertamos seu aparelho rapidamente e com qualidade." },
-                { icon: <Truck size={40} />, title: "Entrega", text: "Realizamos a entrega do seu aparelho pronto." }
-              ].map((step, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="p-8 bg-black/40 border border-white/5 rounded-3xl group hover:border-[#00A651]/50 transition-all"
-                >
-                  <div className="text-[#00A651] mb-6 flex justify-center">{step.icon}</div>
-                  <h3 className="text-xl font-black text-white uppercase italic mb-4">{step.title}</h3>
-                  <p className="text-gray-400 text-sm font-medium uppercase">{step.text}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* VITRINE TECH */}
-        <section className="py-24 bg-[#050505]/60 backdrop-blur-md border-b border-white/5 overflow-hidden">
-          <div className="max-w-7xl mx-auto mb-12 px-8 flex justify-between items-end">
-            <div>
-              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Vitrine Tech</span>
-              <h2 className="text-4xl font-black uppercase italic tracking-tighter text-white mt-2">
-                DESTAQUES <span className="text-[#00A651]">HC TECH</span>
-              </h2>
-            </div>
-          </div>
-
-          <div className="relative flex overflow-x-hidden">
-            <motion.div 
-              className="flex gap-8 whitespace-nowrap"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ ease: "linear", duration: 80, repeat: Infinity }}
-            >
-              {[...topVendas, ...topVendas].map((p, i) => (
-                <div key={i} className="inline-block w-72 md:w-96 p-6 shrink-0 border border-white/5 rounded-3xl bg-white/[0.02]">
-                  <div className="relative h-56 md:h-72 mb-6 overflow-hidden rounded-2xl bg-black">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover opacity-80" />
-                  </div>
-                  <h4 className="text-white font-black text-lg truncate uppercase italic tracking-tighter">{p.name}</h4>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* SOBRE NÓS */}
-        <section id="sobre-nos" className="py-32 px-8 relative bg-zinc-900/20 text-center">
-          <div className="max-w-4xl mx-auto">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Nossa Identidade</span>
-              <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4 mb-10">
-                SOBRE <span className="text-[#00A651]">NÓS</span>
-              </h2>
-              
-              <div className="space-y-8">
-                <p className="text-gray-300 font-medium leading-relaxed text-base md:text-lg uppercase tracking-wide">
-                  HC Tech Infocell é uma empresa dedicada a fornecer soluções de alta qualidade para diversas necessidades de tecnologia. 
-                  Eles oferecem uma ampla gama de serviços, incluindo reparos de celulares, manutenção em informática, compra e venda de aparelhos, 
-                  e suporte técnico por profissionais com formação em TI.
-                </p>
-
-                <p className="text-gray-400 font-medium leading-relaxed text-sm md:text-base uppercase tracking-widest">
-                  Além disso, a empresa também oferece benefícios adicionais, como serviço de retirada e entrega de equipamentos e garantia, 
-                  demonstrando seu compromisso em manter os dispositivos de seus clientes funcionando.
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-20">
-                <div className="flex flex-col items-center">
-                  <ShieldCheck className="text-[#00A651] mb-4" size={40} />
-                  <span className="text-white font-black text-xs uppercase tracking-widest">Garantia</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Clock className="text-[#00A651] mb-4" size={40} />
-                  <span className="text-white font-black text-xs uppercase tracking-widest">Leva e Traz</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Award className="text-[#00A651] mb-4" size={40} />
-                  <span className="text-white font-black text-xs uppercase tracking-widest">Expertise TI</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        <Footer />
-      </div>
-
-      <WhatsAppButton />
-    </div>
-  );
-};
-
-export default Index;
+        <section id="processo-como-funciona" className="py-
