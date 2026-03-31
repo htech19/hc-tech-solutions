@@ -16,6 +16,12 @@ const Index = () => {
     ? products.filter(p => p.badge) 
     : products.slice(0, 10);
 
+  // Lista de marcas para o carrossel
+  const marcas = [
+    "APPLE", "SAMSUNG", "XIAOMI", "MOTOROLA", "ASUS", 
+    "DELL", "LENOVO", "HP", "ACER", "INTEL", "AMD", "NVIDIA"
+  ];
+
   return (
     <div className="relative flex flex-col min-h-screen bg-black overflow-x-hidden text-white">
       
@@ -121,33 +127,76 @@ const Index = () => {
         </section>
 
         {/* NOSSOS SERVIÇOS */}
-        <section id="servicos" className="py-32 px-8">
+        <section id="servicos" className="py-32 px-8 bg-black/20">
           <div className="max-w-7xl mx-auto text-center">
             <h2 className="text-5xl font-black text-white uppercase italic tracking-tighter mb-20">
               NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
               {[
-                { icon: <Smartphone size={28} />, title: "Android", items: ["Troca de Tela", "Conector", "Bateria"] },
-                { icon: <Zap size={28} />, title: "iPhone", items: ["Telas Premium", "Face ID", "Placa"] },
-                { icon: <Laptop size={28} />, title: "Notebook", items: ["SSD e RAM", "Limpeza", "Teclados"] },
-                { icon: <Monitor size={28} />, title: "Hardware", items: ["PC Gamer", "Placa-Mãe", "Reballing"] },
+                { 
+                  icon: <Smartphone size={28} />, 
+                  title: "Android", 
+                  items: ["Troca de Tela (Original/Premium)", "Troca de Bateria", "Conector de Carga", "Reinstalação de Sistema", "Remoção de Vírus", "Aparelhos que não ligam", "Desbloqueio de Conta"] 
+                },
+                { 
+                  icon: <Zap size={28} />, 
+                  title: "iPhone", 
+                  items: ["Telas Premium OLED", "Saúde de Bateria 100%", "Reparo de Face ID", "Loop e Travamentos", "Microsolda em Placa", "Recuperação Total", "Limpeza Interna"] 
+                },
+                { 
+                  icon: <Laptop size={28} />, 
+                  title: "Notebooks", 
+                  items: ["Upgrade SSD & RAM", "Otimização de Sistema", "Troca de Pasta Térmica", "Teclado e Tela", "Reparo de Dobradiças", "Sistema Corrompido", "Limpeza Química"] 
+                },
+                { 
+                  icon: <Monitor size={28} />, 
+                  title: "PCs Gamer", 
+                  items: ["Montagem Customizada", "Upgrades de Performance", "Cable Management", "Drivers e Bios", "Diagnóstico de Hardware", "Reparo Placa-Mãe", "Reballing Profissional"] 
+                },
+                { 
+                  icon: <Settings size={28} />, 
+                  title: "Avançados", 
+                  items: ["Reparo em Placa Lógica", "Recuperação de Dados", "Remoção FRP e MDM", "Backup e Migração", "Atualização de Firmware", "Correção de Curto"] 
+                },
               ].map((service, idx) => (
-                <div key={idx} className="p-8 rounded-3xl bg-[#050505]/40 border border-white/5 text-left">
+                <div key={idx} className="p-6 rounded-3xl bg-[#050505]/60 border border-white/5 text-left hover:border-[#00A651]/40 transition-colors">
                   <div className="w-12 h-12 bg-[#00A651]/20 rounded-xl flex items-center justify-center mb-6 text-[#00A651]">
                     {service.icon}
                   </div>
-                  <h3 className="text-lg font-black text-white uppercase italic mb-4">{service.title}</h3>
+                  <h3 className="text-lg font-black text-white uppercase italic mb-6 leading-tight">{service.title}</h3>
                   <ul className="space-y-3">
                     {service.items.map((item, i) => (
-                      <li key={i} className="flex items-center gap-2 text-[10px] font-bold uppercase text-gray-400">
-                        <CheckCircle size={12} className="text-[#00A651]" /> {item}
+                      <li key={i} className="flex items-start gap-2 text-[9px] font-bold uppercase text-gray-400 tracking-tighter">
+                        <CheckCircle size={12} className="text-[#00A651] shrink-0" /> {item}
                       </li>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* SEÇÃO DE MARCAS - NOVA */}
+        <section className="py-20 bg-[#050505]/40 border-y border-white/5 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-8 mb-10 text-center">
+            <span className="text-[#00A651] font-black text-[10px] uppercase tracking-[0.5em]">Hardware & Software</span>
+            <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter mt-2">MARCAS QUE <span className="text-[#00A651]">ATENDEMOS</span></h3>
+          </div>
+          
+          <div className="relative flex overflow-x-hidden">
+            <motion.div 
+              className="flex gap-20 whitespace-nowrap items-center"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ ease: "linear", duration: 30, repeat: Infinity }}
+            >
+              {[...marcas, ...marcas].map((marca, i) => (
+                <span key={i} className="text-gray-600 hover:text-[#00A651] transition-colors font-black text-3xl md:text-5xl italic tracking-tighter uppercase opacity-30 hover:opacity-100 cursor-default">
+                  {marca}
+                </span>
+              ))}
+            </motion.div>
           </div>
         </section>
 
@@ -158,7 +207,7 @@ const Index = () => {
               SOBRE <span className="text-[#00A651]">NÓS</span>
             </h2>
             <p className="text-gray-300 font-medium leading-relaxed uppercase tracking-wide mb-8">
-              HC Tech Infocell é uma empresa dedicada a fornecer soluções de alta qualidade para diversas necessidades de tecnologia. Eles oferecem uma ampla gama de serviços, incluindo reparos de celulares, manutenção em informática, compra e venda de aparelhos, e suporte técnico por profissionais com formação em TI. Além disso, a empresa também oferece benefícios adicionais, como serviço de retirada e entrega de equipamentos e garantia, demonstrando seu compromisso em manter os dispositivos de seus clientes funcionando. Confie na HC Tech Infocell para resolver seus problemas de tecnologia e aproveite a experiência de seus profissionais. Eles estão comprometidos em oferecer soluções eficientes e de alta qualidade para atender às necessidades de seus clientes..
+              A HC Tech Infocell é uma empresa dedicada a fornecer soluções de alta qualidade para diversas necessidades de tecnologia. Localizada em São Bernardo do Campo, oferecemos reparos especializados por profissionais com formação em TI, serviço de leva e traz e garantia total em todos os procedimentos.
             </p>
             <div className="grid grid-cols-3 gap-8 mt-16">
               <div className="flex flex-col items-center gap-3">
@@ -182,8 +231,8 @@ const Index = () => {
           <div className="max-w-4xl mx-auto bg-zinc-900/40 p-12 rounded-3xl border border-[#00A651]/20">
             <h2 className="text-3xl font-black text-white uppercase italic tracking-tighter mb-8">PRONTO PARA REPARAR?</h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://wa.me/5511940562933" target="_blank" className="bg-[#25D366] px-10 py-4 rounded-xl text-white font-black uppercase text-xs tracking-widest">WhatsApp</a>
-              <a href="https://t.me/hctechinfocell_bot" target="_blank" className="bg-[#24A1DE] px-10 py-4 rounded-xl text-white font-black uppercase text-xs tracking-widest">Telegram</a>
+              <a href="https://wa.me/5511940562933" target="_blank" className="bg-[#25D366] px-10 py-4 rounded-xl text-white font-black uppercase text-xs tracking-widest hover:scale-105 transition-transform">WhatsApp</a>
+              <a href="https://t.me/hctechinfocell_bot" target="_blank" className="bg-[#24A1DE] px-10 py-4 rounded-xl text-white font-black uppercase text-xs tracking-widest hover:scale-105 transition-transform">Telegram</a>
             </div>
           </div>
         </section>
