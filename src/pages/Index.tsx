@@ -51,12 +51,12 @@ const Index = () => {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00A651]/10 border border-[#00A651]/20 mb-8 backdrop-blur-sm">
               <Zap size={14} className="text-[#00A651]" />
-              <span className="text-[#00A651] font-black uppercase tracking-[0.3em] text-[10px]">SÃO BERNARDO DO CAMPO • SP</span>
+              <span className="text-[#00A651] font-black uppercase tracking-[0.3em] text-[10px]">ORÇAMENTO GRÁTIS • SÃO BERNARDO DO CAMPO</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-[0.95] text-white">
-              ASSISTÊNCIA TÉCNICA<br/>
-              <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.5)]">ESPECIALIZADA</span><br/>
+              REPARO DE ALTA PRECISÃO<br/>
+              <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.5)]">MICRO-SOLDAGEM & REBALLING</span><br/>
               <span className="text-white/90">CELULARES & NOTEBOOKS</span>
             </h1>
 
