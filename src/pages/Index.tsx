@@ -51,12 +51,12 @@ const Index = () => {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00A651]/10 border border-[#00A651]/20 mb-8 backdrop-blur-sm">
               <Zap size={14} className="text-[#00A651]" />
-              <span className="text-[#00A651] font-black uppercase tracking-[0.3em] text-[10px]">SÃO BERNARDO DO CAMPO • SP</span>
+              <span className="text-[#00A651] font-black uppercase tracking-[0.3em] text-[10px]">ORÇAMENTO GRÁTIS • SÃO BERNARDO DO CAMPO</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-[0.95] text-white">
-              ASSISTÊNCIA TÉCNICA<br/>
-              <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.5)]">ESPECIALIZADA</span><br/>
+              REPARO DE ALTA PRECISÃO<br/>
+              <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.5)]">MICRO-SOLDAGEM & REBALLING</span><br/>
               <span className="text-white/90">CELULARES & NOTEBOOKS</span>
             </h1>
 
@@ -137,12 +137,12 @@ const Index = () => {
                 { 
                   icon: <Smartphone size={28} />, 
                   title: "Android", 
-                  items: ["Troca de Tela (Original/Premium)", "Troca de Bateria", "Conector de Carga", "Reinstalação de Sistema", "Remoção de Vírus", "Aparelhos que não ligam", "Raparo de software"] 
+                  items: ["Troca de Tela Rápida (Original/Premium)", "Troca de Bateria", "Conector de Carga", "Micro-soldagem de Placa", "Remoção de Vírus", "Aparelhos que não ligam", "Reparo de Software"] 
                 },
                 { 
                   icon: <Zap size={28} />, 
                   title: "iPhone", 
-                  items: ["Telas Premium OLED", "Saúde de Bateria 100%", "Reparo de Face ID", "Loop e Travamentos", "Microsolda em Placa", "Recuperação Total", "Limpeza Interna"] 
+                  items: ["Telas Premium OLED", "Saúde de Bateria 100%", "Reparo de Face ID", "Reballing BGA", "Micro-soldagem em Placa", "Recuperação Total", "Limpeza Interna"] 
                 },
                 { 
                   icon: <Laptop size={28} />, 
@@ -157,7 +157,7 @@ const Index = () => {
                 { 
                   icon: <Settings size={28} />, 
                   title: "Avançados", 
-                  items: ["Reparo em Placa Lógica", "Recuperação de Dados", "Remoção FRP e MDM", "Backup e Migração", "Atualização de Firmware", "Correção de Curto"] 
+                  items: ["Reparo em Placa Lógica", "Recuperação de Dados", "Remoção FRP e MDM", "Micro-soldagem SMD", "Atualização de Firmware", "Correção de Curto"] 
                 },
               ].map((service, idx) => (
                 <div key={idx} className="p-6 rounded-3xl bg-[#050505]/60 border border-white/5 text-left hover:border-[#00A651]/40 transition-colors">
@@ -209,18 +209,21 @@ const Index = () => {
             <p className="text-gray-300 font-medium leading-relaxed uppercase tracking-wide mb-8">
               A HC Tech Infocell é uma empresa dedicada a fornecer soluções de alta qualidade para diversas necessidades de tecnologia. Localizada em São Bernardo do Campo, oferecemos reparos especializados por profissionais com formação em TI, serviço de leva e traz e garantia total em todos os procedimentos.
             </p>
-            <div className="grid grid-cols-3 gap-8 mt-16">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-16">
               <div className="flex flex-col items-center gap-3">
                 <ShieldCheck className="text-[#00A651]" size={32} />
-                <span className="text-[10px] font-black uppercase tracking-widest">Garantia</span>
+                <span className="text-sm font-black uppercase tracking-widest">Garantia no Serviço</span>
+                <span className="text-gray-500 text-[10px] uppercase tracking-wide">Peças e mão de obra</span>
               </div>
               <div className="flex flex-col items-center gap-3">
                 <Clock className="text-[#00A651]" size={32} />
-                <span className="text-[10px] font-black uppercase tracking-widest">Agilidade</span>
+                <span className="text-sm font-black uppercase tracking-widest">Orçamento Grátis</span>
+                <span className="text-gray-500 text-[10px] uppercase tracking-wide">Diagnóstico sem compromisso</span>
               </div>
               <div className="flex flex-col items-center gap-3">
                 <Award className="text-[#00A651]" size={32} />
-                <span className="text-[10px] font-black uppercase tracking-widest">Qualidade</span>
+                <span className="text-sm font-black uppercase tracking-widest">Alta Precisão</span>
+                <span className="text-gray-500 text-[10px] uppercase tracking-wide">Micro-soldagem e reballing</span>
               </div>
             </div>
           </div>
