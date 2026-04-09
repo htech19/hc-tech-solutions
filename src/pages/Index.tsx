@@ -55,8 +55,8 @@ const Index = () => {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-[0.95] text-white">
-              REPARO DE ALTA PRECISÃO<br/>
-              <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.5)]">MICRO-SOLDAGEM & REBALLING</span><br/>
+              ASSISTÊNCIA TÉCNICA<br/>
+              <span className="text-[#00A651] drop-shadow-[0_0_15px_rgba(0,166,81,0.5)]">ESPECIALIZADA</span><br/>
               <span className="text-white/90">CELULARES & NOTEBOOKS</span>
             </h1>
 
