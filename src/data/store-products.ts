@@ -10,7 +10,7 @@ export interface Product {
 // Configuração do seu WhatsApp
 const SEU_NUMERO = "5511940562933"; // Seu número HC Tech
 const generateWaLink = (productName: string) => 
-  `https://wa.me/${SEU_NUMERO}?text=Olá! Gostaria de consultar o valor do produto: ${encodeURIComponent(productName)}`;
+  `https://wa.me/${5511940562933}?text=Olá! Gostaria de consultar o valor do produto: ${encodeURIComponent(productName)}`;
 
 export const products: Product[] = [
   // == FONES & HEADSETS ==
