@@ -129,48 +129,76 @@ const Index = () => {
         {/* NOSSOS SERVIÇOS */}
         <section id="servicos" className="py-32 px-8 bg-black/20">
           <div className="max-w-7xl mx-auto text-center">
-            <h2 className="text-5xl font-black text-white uppercase italic tracking-tighter mb-20">
+            <span className="text-[#00A651] font-black text-xs uppercase tracking-[0.4em]">Expertise Técnica</span>
+            <h2 className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mt-4 mb-20">
               NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[
                 {
-                  title: "iPhone",
+                  icon: <Laptop size={28} />,
+                  title: "Notebooks & Laptops",
                   items: [
-                    { name: "Telas Premium OLED", desc: "Restauração visual perfeita" },
-                    { name: "Saúde de Bateria 100%", desc: "Autonomia total renovada" },
-                    { name: "Reparo de Face ID", desc: "Biometria 100% funcional" },
-                    { name: "Reballing BGA", desc: "Soldagem BGA precisa" },
-                    { name: "Micro-soldagem em Placa", desc: "Reparos minuciosos" },
-                    { name: "Recuperação Total", desc: "Revitalização completa" },
+                    { name: "Reparo de Placa-Mãe e BIOS", desc: "Especialistas em micro-soldagem e gravação de BIOS" },
+                    { name: "Manutenção Preventiva", desc: "Limpeza interna e troca de pasta térmica" },
+                    { name: "Upgrades de Hardware", desc: "Instalação de SSD (HD), Memória RAM e dobradiças" },
+                    { name: "Substituição de Componentes", desc: "Telas, Teclados e Baterias de alta performance" },
                   ],
                 },
                 {
-                  title: "PC Gamer",
+                  icon: <Monitor size={28} />,
+                  title: "PC Desktop & Gaming",
                   items: [
-                    { name: "Montagem de PCs Customizados", desc: "Sob medida para você" },
-                    { name: "Upgrade de Performance", desc: "Melhor desempenho" },
-                    { name: "Organização Profissional de Cabos", desc: "Acabamento premium" },
-                    { name: "Instalação e Atualização de Drivers e BIOS", desc: "Sistema otimizado" },
-                    { name: "Diagnóstico Completo de Hardware", desc: "Análise detalhada" },
-                    { name: "Reparo de Placa-Mãe", desc: "Manutenção especializada" },
+                    { name: "Montagem de PCs Customizados", desc: "Máquinas montadas sob medida para trabalho ou games" },
+                    { name: "Upgrade de Performance", desc: "Melhore o desempenho do seu setup atual" },
+                    { name: "Cable Management", desc: "Organização profissional de cabos e fluxo de ar" },
+                    { name: "Diagnóstico Avançado", desc: "Testes completos de hardware e atualização de Drivers/BIOS" },
+                  ],
+                },
+                {
+                  icon: <Smartphone size={28} />,
+                  title: "Smartphones Android",
+                  items: [
+                    { name: "Troca de Tela Rápida", desc: "Telas Originais e Premium com garantia" },
+                    { name: "Reparo Especializado", desc: "Conector de carga, baterias e micro-soldagem de placa" },
+                    { name: "Soluções de Software", desc: "Remoção de vírus, aparelhos que não ligam e recuperação de sistema" },
+                  ],
+                },
+                {
+                  icon: <Zap size={28} />,
+                  title: "Apple iPhone",
+                  items: [
+                    { name: "Telas Premium OLED", desc: "Qualidade de imagem e toque original" },
+                    { name: "Especialista em Bateria", desc: "Substituição com Saúde em 100%" },
+                    { name: "Reparo Avançado", desc: "Face ID, Reballing BGA e micro-soldagem em placas" },
+                    { name: "Estética e Conservação", desc: "Troca de vidro traseiro/frontal e limpeza interna profunda" },
                   ],
                 },
               ].map((cat, idx) => (
-                <div key={idx} className="p-8 rounded-3xl bg-[#050505]/60 border border-white/5 text-left hover:border-[#00A651]/40 transition-colors">
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="p-8 rounded-3xl bg-[#050505]/60 border border-white/5 text-left hover:border-[#00A651]/40 transition-all group"
+                >
+                  <div className="w-14 h-14 bg-[#00A651]/20 rounded-2xl flex items-center justify-center mb-6 text-[#00A651] group-hover:bg-[#00A651]/30 transition-colors">
+                    {cat.icon}
+                  </div>
                   <h3 className="text-2xl font-black text-white uppercase italic mb-8 leading-tight">{cat.title}</h3>
                   <div className="space-y-5">
                     {cat.items.map((item, i) => (
                       <div key={i} className="flex items-start gap-3">
-                        <CheckCircle size={16} className="text-[#00A651] shrink-0 mt-0.5" />
+                        <CheckCircle size={16} className="text-[#00A651] shrink-0 mt-1" />
                         <div>
                           <span className="text-white font-black text-sm uppercase tracking-tight block">{item.name}</span>
-                          <span className="text-gray-400 text-xs font-medium uppercase tracking-wider">{item.desc}</span>
+                          <span className="text-gray-400 text-xs font-medium tracking-wider">{item.desc}</span>
                         </div>
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
