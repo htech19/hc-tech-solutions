@@ -132,46 +132,44 @@ const Index = () => {
             <h2 className="text-5xl font-black text-white uppercase italic tracking-tighter mb-20">
               NOSSOS <span className="text-[#00A651]">SERVIÇOS</span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[
-                { 
-                  icon: <Smartphone size={28} />, 
-                  title: "Android", 
-                  items: ["Troca de Tela Rápida (Original/Premium)", "Troca de Bateria", "Conector de Carga", "Micro-soldagem de Placa", "Remoção de Vírus", "Aparelhos que não ligam", "Reparo de Software"] 
+                {
+                  title: "iPhone",
+                  items: [
+                    { name: "Telas Premium OLED", desc: "Restauração visual perfeita" },
+                    { name: "Saúde de Bateria 100%", desc: "Autonomia total renovada" },
+                    { name: "Reparo de Face ID", desc: "Biometria 100% funcional" },
+                    { name: "Reballing BGA", desc: "Soldagem BGA precisa" },
+                    { name: "Micro-soldagem em Placa", desc: "Reparos minuciosos" },
+                    { name: "Recuperação Total", desc: "Revitalização completa" },
+                  ],
                 },
-                { 
-                  icon: <Zap size={28} />, 
-                  title: "iPhone", 
-                  items: ["Telas Premium OLED", "Saúde de Bateria 100%", "Reparo de Face ID", "Reballing BGA", "Micro-soldagem em Placa", "Recuperação Total", "Limpeza Interna"] 
+                {
+                  title: "PC Gamer",
+                  items: [
+                    { name: "Montagem de PCs Customizados", desc: "Sob medida para você" },
+                    { name: "Upgrade de Performance", desc: "Melhor desempenho" },
+                    { name: "Organização Profissional de Cabos", desc: "Acabamento premium" },
+                    { name: "Instalação e Atualização de Drivers e BIOS", desc: "Sistema otimizado" },
+                    { name: "Diagnóstico Completo de Hardware", desc: "Análise detalhada" },
+                    { name: "Reparo de Placa-Mãe", desc: "Manutenção especializada" },
+                  ],
                 },
-                { 
-                  icon: <Laptop size={28} />, 
-                  title: "Notebooks", 
-                  items: ["Upgrade SSD & RAM", "Otimização de Sistema", "Troca de Pasta Térmica", "Teclado e Tela", "Reparo de Dobradiças", "Sistema Corrompido", "Limpeza Química"] 
-                },
-                { 
-                  icon: <Monitor size={28} />, 
-                  title: "PCs Gamer", 
-                  items: ["Montagem Customizada", "Upgrades de Performance", "Cable Management", "Drivers e Bios", "Diagnóstico de Hardware", "Reparo Placa-Mãe", "Reballing Profissional"] 
-                },
-                { 
-                  icon: <Settings size={28} />, 
-                  title: "Avançados", 
-                  items: ["Reparo em Placa Lógica", "Recuperação de Dados", "Remoção FRP e MDM", "Micro-soldagem SMD", "Atualização de Firmware", "Correção de Curto"] 
-                },
-              ].map((service, idx) => (
-                <div key={idx} className="p-6 rounded-3xl bg-[#050505]/60 border border-white/5 text-left hover:border-[#00A651]/40 transition-colors">
-                  <div className="w-12 h-12 bg-[#00A651]/20 rounded-xl flex items-center justify-center mb-6 text-[#00A651]">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-lg font-black text-white uppercase italic mb-6 leading-tight">{service.title}</h3>
-                  <ul className="space-y-3">
-                    {service.items.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-[9px] font-bold uppercase text-gray-400 tracking-tighter">
-                        <CheckCircle size={12} className="text-[#00A651] shrink-0" /> {item}
-                      </li>
+              ].map((cat, idx) => (
+                <div key={idx} className="p-8 rounded-3xl bg-[#050505]/60 border border-white/5 text-left hover:border-[#00A651]/40 transition-colors">
+                  <h3 className="text-2xl font-black text-white uppercase italic mb-8 leading-tight">{cat.title}</h3>
+                  <div className="space-y-5">
+                    {cat.items.map((item, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <CheckCircle size={16} className="text-[#00A651] shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-white font-black text-sm uppercase tracking-tight block">{item.name}</span>
+                          <span className="text-gray-400 text-xs font-medium uppercase tracking-wider">{item.desc}</span>
+                        </div>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               ))}
             </div>
