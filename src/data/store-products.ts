@@ -8,7 +8,7 @@ export interface Product {
 }
 
 // Configuração do seu WhatsApp
-const SEU_NUMERO = "5511999999999"; // Substitua pelo seu número real (DDI + DDD + Número)
+const SEU_NUMERO = "5511940562933"; // Substitua pelo seu número real (DDI + DDD + Número)
 const generateWaLink = (productName: string) => 
   `https://wa.me/${SEU_NUMERO}?text=Olá! Gostaria de consultar o valor do produto: ${encodeURIComponent(productName)}`;
 
