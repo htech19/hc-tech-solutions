@@ -201,7 +201,7 @@ const Index = () => {
                     ))}
                   </div>
                   <a
-                    href="https://wa.me/5511940562933?text=Olá! Gostaria de um orçamento para o serviço de {cat.title}."
+                    href={`https://wa.me/5511940562933?text=Olá! Gostaria de um orçamento para o serviço de ${cat.title}.`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-8 w-full py-3.5 rounded-xl bg-[#00A651]/10 border border-[#00A651]/20 text-[#00A651] font-black text-xs uppercase tracking-widest text-center hover:bg-[#00A651] hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
