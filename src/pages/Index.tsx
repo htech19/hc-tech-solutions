@@ -12,9 +12,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { products } from "@/data/store-products";
 
 const Index = () => {
-  const topVendas = products.filter(p => p.badge).length > 0 
-    ? products.filter(p => p.badge) 
-    : products.slice(0, 10);
+  const topVendas = products.slice(0, 10);
 
   // Lista de marcas para o carrossel
   const marcas = [
