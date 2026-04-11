@@ -1,123 +1,126 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { 
-  Facebook, Instagram, Youtube, Send, Globe, 
-  Link as LinkIcon, Twitter, Menu, X 
+  Menu, X, Zap, ClipboardList, Grid3X3, ShoppingBag
 } from "lucide-react";
 
-const socialLinks = [
-  { icon: <Facebook size={16} />, url: "https://www.facebook.com/hctechcelulareinfo", color: "hover:text-[#1877F2]" },
-  { icon: <Instagram size={16} />, url: "https://www.instagram.com/hctechinfocell/", color: "hover:text-[#E4405F]" },
-  { icon: <Twitter size={16} />, url: "https://x.com/HUnlockbr", color: "hover:text-white" },
-  { icon: <Send size={16} />, url: "https://t.me/Hunlockbr", color: "hover:text-[#24A1DE]" },
-  { icon: <Youtube size={16} />, url: "https://www.youtube.com/channel/UCeF0ILTAnUUBV1TdEteyICA", color: "hover:text-[#FF0000]" },
-  { icon: <Globe size={16} />, url: "https://hctechinfocell.blogspot.com/", color: "hover:text-[#ff5722]" },
-  { icon: <LinkIcon size={16} />, url: "https://linktr.ee/hctechcell", color: "hover:text-[#43ee62]" },
+const numero = "5511940562933";
+function abrirWhatsApp(mensagem = "") {
+  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, '_blank');
+}
+
+const navLeft = [
+  { label: "INÍCIO", href: "/#inicio" },
+  { label: "SERVIÇOS", href: "/#servicos" },
+  { label: "MARCAS", href: "/#marcas" },
+  { label: "SOBRE NÓS", href: "/#sobre-nos" },
+  { label: "CONTATO", href: "/#contato" },
 ];
 
-const navLinks = [
-  { label: "INÍCIO", href: "/#inicio" },
-  { label: "NOSSOS SERVIÇOS", href: "/#servicos" },
-  { label: "LOJA", href: "/loja" },
-  { label: "QUEM SOMOS", href: "/#sobre-nos" },
-  { label: "CONTATO", href: "/#contato" },
+const navRight = [
+  { label: "ORÇAMENTO", href: "/#orcamento", icon: <ClipboardList size={14} /> },
+  { label: "PELÍCULAS", href: "/#peliculas", icon: <Grid3X3 size={14} /> },
 ];
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  return (
-    <header className="fixed top-0 left-0 right-0 z-[100] bg-black/90 backdrop-blur-md border-b border-white/10">
-      {/* Barra de redes sociais */}
-      <div className="hidden md:flex justify-center gap-3 py-1 border-b border-white/5 bg-black/60">
-        {socialLinks.map((social, i) => (
-          <a
-            key={i}
-            href={social.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`text-gray-600 transition-all duration-300 hover:scale-110 ${social.color}`}
-          >
-            {social.icon}
-          </a>
-        ))}
-      </div>
+  const renderLink = (link: { label: string; href: string; icon?: React.ReactNode }, className: string, onClick?: () => void) => {
+    const isPage = link.href.startsWith("/") && !link.href.includes("#");
+    const content = (
+      <>
+        {link.icon && link.icon}
+        {link.label}
+      </>
+    );
 
-      <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-        {/* LOGO */}
-        <Link to="/" className="text-2xl font-black italic tracking-tighter">
-          HC<span className="text-[#00A651]">TECH</span>
+    if (isPage) {
+      return (
+        <Link key={link.label} to={link.href} onClick={onClick} className={className}>
+          {content}
         </Link>
+      );
+    }
+    return (
+      <a key={link.label} href={link.href} onClick={onClick} className={className}>
+        {content}
+      </a>
+    );
+  };
 
-        {/* NAV DESKTOP */}
-        <nav className="hidden md:flex gap-8 items-center">
-          {navLinks.map((link) =>
-            // Verifica se o link é para outra página (como /loja) ou para uma âncora na mesma página
-            link.href.startsWith("/") && !link.href.includes("#") ? (
-              <Link
-                key={link.label}
-                to={link.href}
-                className="text-xs font-black text-gray-300 hover:text-[#00A651] transition-colors uppercase tracking-widest"
-              >
-                {link.label}
-              </Link>
-            ) : (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-xs font-black text-gray-300 hover:text-[#00A651] transition-colors uppercase tracking-widest"
-              >
-                {link.label}
-              </a>
-            )
-          )}
+  const linkClass = "text-[11px] font-bold text-gray-300 hover:text-white transition-colors uppercase tracking-[0.15em]";
+  const btnClass = "flex items-center gap-2 text-[11px] font-bold text-gray-300 hover:text-white transition-colors uppercase tracking-[0.15em] border border-white/20 rounded-lg px-4 py-2 hover:border-white/40";
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-[100] bg-black/95 backdrop-blur-md">
+      {/* Main nav bar */}
+      <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+        {/* NAV LEFT */}
+        <nav className="hidden lg:flex gap-7 items-center">
+          {navLeft.map((link) => renderLink(link, linkClass))}
         </nav>
 
+        {/* NAV RIGHT */}
+        <div className="hidden lg:flex gap-3 items-center">
+          {navRight.map((link) => renderLink(link, btnClass))}
+          <Link
+            to="/loja"
+            className="flex items-center gap-2 text-[11px] font-black text-white uppercase tracking-[0.15em] bg-[#00A651] rounded-lg px-5 py-2 hover:bg-[#00bf5a] transition-colors"
+          >
+            <ShoppingBag size={14} />
+            LOJA
+          </Link>
+        </div>
+
         {/* MOBILE TOGGLE */}
+        <span className="lg:hidden text-xl font-black italic tracking-tighter">
+          HC<span className="text-[#00A651]">TECH</span>
+        </span>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-white"
+          className="lg:hidden text-white"
         >
           {mobileOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
+      {/* Location bar */}
+      <div className="flex justify-center py-1.5">
+        <button
+          onClick={() => abrirWhatsApp("Olá! Gostaria de solicitar um orçamento.")}
+          className="flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#00A651]/15 border border-[#00A651]/30 text-[#00A651] text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-[#00A651]/25 transition-colors cursor-pointer"
+        >
+          <Zap size={12} />
+          SÃO BERNARDO DO CAMPO • SP
+        </button>
+      </div>
+
       {/* MOBILE MENU */}
       {mobileOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-lg border-t border-white/5 px-6 py-8 space-y-6">
-          {navLinks.map((link) =>
-            link.href.startsWith("/") && !link.href.includes("#") ? (
-              <Link
-                key={link.label}
-                to={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="block text-sm font-black text-gray-300 hover:text-[#00A651] transition-colors uppercase tracking-widest"
-              >
-                {link.label}
-              </Link>
-            ) : (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="block text-sm font-black text-gray-300 hover:text-[#00A651] transition-colors uppercase tracking-widest"
-              >
-                {link.label}
-              </a>
-            )
+        <div className="lg:hidden bg-black/95 backdrop-blur-lg border-t border-white/10 px-6 py-6 space-y-4">
+          {navLeft.map((link) =>
+            renderLink(link, "block text-sm font-bold text-gray-300 hover:text-white transition-colors uppercase tracking-widest", () => setMobileOpen(false))
           )}
-          <div className="flex gap-4 pt-4 border-t border-white/10">
-            {socialLinks.map((social, i) => (
-              <a
-                key={i}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`text-gray-500 transition-all ${social.color}`}
-              >
-                {social.icon}
-              </a>
-            ))}
+          <div className="border-t border-white/10 pt-4 space-y-3">
+            {navRight.map((link) =>
+              renderLink(link, "flex items-center gap-2 text-sm font-bold text-gray-300 hover:text-white transition-colors uppercase tracking-widest", () => setMobileOpen(false))
+            )}
+            <Link
+              to="/loja"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 text-sm font-black text-white uppercase tracking-widest bg-[#00A651] rounded-lg px-4 py-2 w-fit"
+            >
+              <ShoppingBag size={16} />
+              LOJA
+            </Link>
+          </div>
+          <div className="border-t border-white/10 pt-3">
+            <button
+              onClick={() => { abrirWhatsApp("Olá! Gostaria de solicitar um orçamento."); setMobileOpen(false); }}
+              className="text-[#00A651] text-xs font-bold uppercase tracking-widest"
+            >
+              📍 São Bernardo do Campo • SP
+            </button>
           </div>
         </div>
       )}
