@@ -136,7 +136,7 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[
                 {
-                  icon: <Laptop size={28} />,
+                  icon: <Laptop size={32} />,
                   title: "Notebooks & Laptops",
                   items: [
                     { name: "Reparo de Placa-Mãe e BIOS", desc: "Especialistas em micro-soldagem e gravação de BIOS" },
@@ -146,7 +146,7 @@ const Index = () => {
                   ],
                 },
                 {
-                  icon: <Monitor size={28} />,
+                  icon: <Monitor size={32} />,
                   title: "PC Desktop & Gaming",
                   items: [
                     { name: "Montagem de PCs Customizados", desc: "Máquinas montadas sob medida para trabalho ou games" },
@@ -156,7 +156,7 @@ const Index = () => {
                   ],
                 },
                 {
-                  icon: <Smartphone size={28} />,
+                  icon: <Smartphone size={32} />,
                   title: "Smartphones Android",
                   items: [
                     { name: "Troca de Tela Rápida", desc: "Telas Originais e Premium com garantia" },
@@ -165,7 +165,7 @@ const Index = () => {
                   ],
                 },
                 {
-                  icon: <Zap size={28} />,
+                  icon: <Zap size={32} />,
                   title: "Apple iPhone",
                   items: [
                     { name: "Telas Premium OLED", desc: "Qualidade de imagem e toque original" },
@@ -181,23 +181,33 @@ const Index = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="p-8 rounded-3xl bg-[#050505]/60 border border-white/5 text-left hover:border-[#00A651]/40 transition-all group"
+                  className="p-8 rounded-3xl bg-gradient-to-b from-white/[0.04] to-transparent border border-white/5 text-left hover:border-[#00A651]/40 transition-all duration-500 group flex flex-col"
                 >
-                  <div className="w-14 h-14 bg-[#00A651]/20 rounded-2xl flex items-center justify-center mb-6 text-[#00A651] group-hover:bg-[#00A651]/30 transition-colors">
-                    {cat.icon}
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-14 h-14 bg-[#00A651]/15 rounded-2xl flex items-center justify-center text-[#00A651] group-hover:bg-[#00A651] group-hover:text-white transition-all duration-500">
+                      {cat.icon}
+                    </div>
+                    <h3 className="text-xl font-black text-white uppercase italic leading-tight">{cat.title}</h3>
                   </div>
-                  <h3 className="text-2xl font-black text-white uppercase italic mb-8 leading-tight">{cat.title}</h3>
-                  <div className="space-y-5">
+                  <div className="space-y-4 flex-1">
                     {cat.items.map((item, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <CheckCircle size={16} className="text-[#00A651] shrink-0 mt-1" />
+                      <div key={i} className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/[0.03] transition-colors">
+                        <CheckCircle size={16} className="text-[#00A651] shrink-0 mt-0.5" />
                         <div>
-                          <span className="text-white font-black text-sm uppercase tracking-tight block">{item.name}</span>
-                          <span className="text-gray-400 text-xs font-medium tracking-wider">{item.desc}</span>
+                          <span className="text-white font-bold text-sm block">{item.name}</span>
+                          <span className="text-gray-500 text-xs">{item.desc}</span>
                         </div>
                       </div>
                     ))}
                   </div>
+                  <a
+                    href="https://wa.me/5511940562933?text=Olá! Gostaria de um orçamento para o serviço de {cat.title}."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-8 w-full py-3.5 rounded-xl bg-[#00A651]/10 border border-[#00A651]/20 text-[#00A651] font-black text-xs uppercase tracking-widest text-center hover:bg-[#00A651] hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle size={16} /> SOLICITAR ORÇAMENTO
+                  </a>
                 </motion.div>
               ))}
             </div>

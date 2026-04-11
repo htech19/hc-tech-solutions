@@ -30,8 +30,11 @@ const Footer = () => {
         
         {/* COLUNA 1: LOGO E BIO */}
         <div className="space-y-6">
-          <Link to="/" className="text-3xl font-black italic uppercase tracking-tighter">
-            HC<span className="text-[#00A651]">TECH</span>
+          <Link to="/" className="inline-flex items-center gap-3">
+            <img src="/logo.png" alt="HC Tech Logo" className="h-12 w-auto" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden'); }} />
+            <span className="text-3xl font-black italic uppercase tracking-tighter hidden">
+              HC<span className="text-[#00A651]">TECH</span>
+            </span>
           </Link>
           <p className="text-gray-500 text-sm font-bold uppercase tracking-widest leading-relaxed">
             Assistência técnica especializada em São Bernardo do Campo. Excelência em hardware e software.
