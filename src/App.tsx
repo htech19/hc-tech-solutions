@@ -4,7 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
-import Index from "./pages/Index"; // Agora o nome bate com o export default Index
+import ChatWidget from "@/components/ChatWidget";
+import Index from "./pages/Index";
 import LojaPage from "./pages/LojaPage";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/loja" element={<LojaPage />} />
           </Routes>
+          {/* Chat Widget — Aparece em todas as páginas */}
+          <ChatWidget />
         </BrowserRouter>
       </TooltipProvider>
     </CartProvider>
