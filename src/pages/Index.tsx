@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import MaiaChat from "@/components/MaiaChat";
 import { products } from "@/data/store-products";
 
 const Index = () => {
@@ -279,7 +278,6 @@ const Index = () => {
       </div>
 
       <WhatsAppButton />
-      <MaiaChat />
     </div>
   );
 };
