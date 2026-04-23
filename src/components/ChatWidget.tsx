@@ -386,9 +386,9 @@ export default function ChatWidget() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Abrir chat com a Maia"
-        className="fixed bottom-6 right-24 z-50 group flex items-center gap-2"
+        className="maia fixed bottom-6 right-6 z-50 group flex items-center gap-2 animate-maia-blink"
       >
-        <span className="hidden sm:inline-block bg-[#00A651] text-white text-xs font-black uppercase italic px-2 py-1 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="hidden sm:inline-block bg-[#00A651] text-white text-[8px] font-black uppercase italic px-2 py-1 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
           Fale com a Maia
         </span>
         <span className="relative w-14 h-14 bg-gradient-to-br from-[#00A651] to-[#008a3d] rounded-full shadow-[0_0_20px_rgba(0,166,81,0.5)] hover:shadow-[0_0_30px_rgba(0,166,81,0.7)] hover:scale-110 transition-all flex items-center justify-center text-white">
@@ -400,7 +400,7 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-24 w-[92vw] max-w-sm h-[70vh] max-h-[600px] bg-[#1a1a1a] rounded-2xl shadow-2xl flex flex-col z-50 border border-[#00A651]/30">
+    <div className="maia fixed bottom-6 right-6 w-[92vw] max-w-sm h-[70vh] max-h-[600px] bg-[#1a1a1a] rounded-2xl shadow-2xl flex flex-col z-50 border border-[#00A651]/30 text-xs">
       {/* Header */}
       <div className="bg-gradient-to-r from-[#00A651] to-[#008a3d] p-4 rounded-t-2xl flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -408,8 +408,8 @@ export default function ChatWidget() {
             <MessageCircle className="w-5 h-5 text-white" />
           </div>
           <div className="leading-tight">
-            <div className="font-black uppercase italic text-white text-sm">MAIA</div>
-            <div className="text-[10px] text-white/80">Assistente HC Tech • Online</div>
+            <div className="font-black uppercase italic text-white text-xs">MAIA</div>
+            <div className="text-[8px] text-white/80">Assistente HC Tech • Online</div>
           </div>
         </div>
         <button
