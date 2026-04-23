@@ -65,17 +65,17 @@ const detectar_intencao = (texto: string): string => {
   const t = texto.toLowerCase();
   
   const padroes: [RegExp, string][] = [
-    (/tela|display|vidro|quebrad/i, 'tela'),
-    (/bateria|carga|energia|carrega/i, 'bateria'),
-    (/não liga|dead|não funciona|brick/i, 'naoliga'),
-    (/água|chuva|molhad|líquido|derramad/i, 'agua'),
-    (/lento|travad|loop|reinicia|reinício|lag/i, 'software'),
-    (/carregador|conector|jack|usb|lightning|tipo[ -]c/i, 'conector'),
-    (/câmera|foto|imagem|lente|blur/i, 'camera'),
-    (/som|áudio|alto[ -]falante|microfone|fone|speaker/i, 'audio'),
-    (/teclado|tecla|digita/i, 'teclado'),
-    (/preço|tabela|valor|quanto/i, 'preco'),
-    (/orçamento|orcamento|quanto custa|tabela/i, 'orcamento'),
+    [/tela|display|vidro|quebrad/i, 'tela'],
+    [/bateria|carga|energia|carrega/i, 'bateria'],
+    [/não liga|dead|não funciona|brick/i, 'naoliga'],
+    [/água|chuva|molhad|líquido|derramad/i, 'agua'],
+    [/lento|travad|loop|reinicia|reinício|lag/i, 'software'],
+    [/carregador|conector|jack|usb|lightning|tipo[ -]c/i, 'conector'],
+    [/câmera|foto|imagem|lente|blur/i, 'camera'],
+    [/som|áudio|alto[ -]falante|microfone|fone|speaker/i, 'audio'],
+    [/teclado|tecla|digita/i, 'teclado'],
+    [/preço|tabela|valor|quanto/i, 'preco'),
+    [/orçamento|orcamento|quanto custa|tabela/i, 'orcamento'],
   ];
 
   for (const [regex, intencao] of padroes) {
