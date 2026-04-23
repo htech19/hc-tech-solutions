@@ -74,7 +74,7 @@ const detectar_intencao = (texto: string): string => {
     [/câmera|foto|imagem|lente|blur/i, 'camera'],
     [/som|áudio|alto[ -]falante|microfone|fone|speaker/i, 'audio'],
     [/teclado|tecla|digita/i, 'teclado'],
-    [/preço|tabela|valor|quanto/i, 'preco'),
+    [/preço|tabela|valor|quanto/i, 'preco'],
     [/orçamento|orcamento|quanto custa|tabela/i, 'orcamento'],
   ];
 
