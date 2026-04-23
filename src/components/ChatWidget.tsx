@@ -386,9 +386,9 @@ export default function ChatWidget() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Abrir chat com a Maia"
-        className="fixed bottom-6 right-24 z-50 group flex items-center gap-2"
+        className="maia fixed bottom-6 right-6 z-50 group flex items-center gap-2 animate-maia-blink"
       >
-        <span className="hidden sm:inline-block bg-[#00A651] text-white text-xs font-black uppercase italic px-2 py-1 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="hidden sm:inline-block bg-[#00A651] text-white text-[8px] font-black uppercase italic px-2 py-1 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
           Fale com a Maia
         </span>
         <span className="relative w-14 h-14 bg-gradient-to-br from-[#00A651] to-[#008a3d] rounded-full shadow-[0_0_20px_rgba(0,166,81,0.5)] hover:shadow-[0_0_30px_rgba(0,166,81,0.7)] hover:scale-110 transition-all flex items-center justify-center text-white">
