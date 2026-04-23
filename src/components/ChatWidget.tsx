@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, MessageCircle, ChevronRight, Home } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import screenCatalog from './screenCatalog.json';
 
 // ────────────────────────────────────────────────────────────────
@@ -23,11 +24,8 @@ interface MenuState {
 // CONFIGURAÇÃO
 // ────────────────────────────────────────────────────────────────
 const CONFIG = {
-  wa_numero: import.meta.env.VITE_WHATSAPP_NUMERO || '5511940562933',
-  site_url: import.meta.env.VITE_SITE_URL || 'https://hctechinfocell.com.br',
-  anthropic_key: import.meta.env.VITE_ANTHROPIC_API_KEY || '',
-  openrouter_key: import.meta.env.VITE_OPENROUTER_API_KEY || '',
-  groq_key: import.meta.env.VITE_GROQ_API_KEY || '',
+  wa_numero: '5511940562933',
+  site_url: 'https://hctechinfocell.com.br',
 };
 
 const SERVICOS_CELULAR = {
@@ -103,135 +101,29 @@ const resposta_local = (intencao: string): string => {
 };
 
 // ────────────────────────────────────────────────────────────────
-// INTEGRAÇÃO COM IA
+// INTEGRAÇÃO COM IA (via Lovable Cloud Edge Function)
 // ────────────────────────────────────────────────────────────────
-interface IAProvider {
-  name: string;
-  call: (messages: Array<{ role: string; content: string }>) => Promise<string>;
-}
+const consultarIA = async (
+  messages: Array<{ role: string; content: string }>
+): Promise<string | null> => {
+  try {
+    const lastUser = [...messages].reverse().find((m) => m.role === 'user');
+    if (!lastUser) return null;
 
-const createAnthropicProvider = (): IAProvider => ({
-  name: 'Anthropic',
-  call: async (messages) => {
-    if (!CONFIG.anthropic_key) throw new Error('Anthropic API key not configured');
-    
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': CONFIG.anthropic_key,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 500,
-        system: `Você é um assistente de atendimento premium da HC Tech, empresa especializada em consertos e vendas de eletrônicos.
-Persona: HC Tech IA Elite - Atencioso, rápido e objetivo.
-Responda em português brasileiro natural.
-Se não conseguir resolver, sempre ofereça contato via WhatsApp.
-Seja conversacional mas eficiente.`,
-        messages: messages.map(m => ({
-          role: m.role as 'user' | 'assistant',
-          content: m.content,
-        })),
-      }),
+    const { data, error } = await supabase.functions.invoke('maia-chat', {
+      body: { message: lastUser.content, history: messages },
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error?.message || 'Anthropic API error');
+    if (error) {
+      console.warn('[IA] maia-chat error:', error);
+      return null;
     }
 
-    const data = await response.json();
-    return data.content[0].text;
-  },
-});
-
-const createOpenRouterProvider = (): IAProvider => ({
-  name: 'OpenRouter',
-  call: async (messages) => {
-    if (!CONFIG.openrouter_key) throw new Error('OpenRouter API key not configured');
-    
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${CONFIG.openrouter_key}`,
-        'HTTP-Referer': CONFIG.site_url,
-        'X-Title': 'HC Tech Chat',
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-3.3-70b-instruct:free',
-        max_tokens: 500,
-        messages: messages.map(m => ({
-          role: m.role,
-          content: m.content,
-        })),
-        system: `Você é um assistente de atendimento da HC Tech - especialista em consertos de eletrônicos.
-Responda em português brasileiro, seja amigável e objetivo.
-Ofereça sempre opções de contato (WhatsApp, chat).`,
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error?.message || 'OpenRouter error');
-    }
-
-    const data = await response.json();
-    return data.choices[0].message.content;
-  },
-});
-
-const createGroqProvider = (): IAProvider => ({
-  name: 'Groq',
-  call: async (messages) => {
-    if (!CONFIG.groq_key) throw new Error('Groq API key not configured');
-    
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${CONFIG.groq_key}`,
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: 500,
-        messages: messages.map(m => ({
-          role: m.role,
-          content: m.content,
-        })),
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error?.message || 'Groq error');
-    }
-
-    const data = await response.json();
-    return data.choices[0].message.content;
-  },
-});
-
-const consultarIA = async (messages: Array<{ role: string; content: string }>): Promise<string | null> => {
-  const providers: IAProvider[] = [];
-  
-  if (CONFIG.anthropic_key) providers.push(createAnthropicProvider());
-  if (CONFIG.openrouter_key) providers.push(createOpenRouterProvider());
-  if (CONFIG.groq_key) providers.push(createGroqProvider());
-
-  for (const provider of providers) {
-    try {
-      console.log(`[IA] Tentando ${provider.name}...`);
-      return await provider.call(messages);
-    } catch (error) {
-      console.warn(`[IA] ${provider.name} falhou:`, error);
-      continue;
-    }
+    return data?.reply ?? null;
+  } catch (err) {
+    console.warn('[IA] falha ao chamar maia-chat:', err);
+    return null;
   }
-  
-  return null;
 };
 
 // ────────────────────────────────────────────────────────────────
