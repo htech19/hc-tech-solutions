@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
+import ChatWidget from "@/components/ChatWidget";
 import Index from "./pages/Index";
 import LojaPage from "./pages/LojaPage";
 
@@ -20,6 +21,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/loja" element={<LojaPage />} />
           </Routes>
+          {/* Chat Widget — Aparece em todas as páginas */}
+          <ChatWidget />
         </BrowserRouter>
       </TooltipProvider>
     </CartProvider>
