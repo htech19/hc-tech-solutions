@@ -422,7 +422,7 @@ export default function ChatWidget() {
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#1a1a1a]">
+      <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2.5 bg-[#1a1a1a]">
         {messages.length === 0 && menu.current === 'inicio' && (
           <div className="h-full flex items-center justify-center">
             <div className="text-center text-[#666]">
@@ -431,17 +431,17 @@ export default function ChatWidget() {
             </div>
           </div>
         )}
-        
+
         {messages.map(msg => (
           <div
             key={msg.id}
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-xs px-4 py-2 rounded-lg whitespace-pre-wrap text-sm ${
+              className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl whitespace-pre-wrap break-words text-sm leading-relaxed ${
                 msg.role === 'user'
-                  ? 'bg-[#00A651] text-white'
-                  : 'bg-[#2a2a2a] text-[#e0e0e0]'
+                  ? 'bg-[#00A651] text-white rounded-br-sm'
+                  : 'bg-[#2a2a2a] text-[#e8e8e8] rounded-bl-sm'
               }`}
             >
               {msg.content}
@@ -451,7 +451,7 @@ export default function ChatWidget() {
 
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-[#2a2a2a] text-[#999] px-4 py-2 rounded-lg text-sm">
+            <div className="bg-[#2a2a2a] text-[#999] px-4 py-2 rounded-2xl text-sm">
               Digitando<span className="animate-pulse">...</span>
             </div>
           </div>
@@ -460,37 +460,37 @@ export default function ChatWidget() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Menu ou Input */}
-      {menu.current === 'inicio' && messages.length > 0 ? (
-        <div className="p-4 bg-[#1a1a1a] border-t border-[#333]">
-          {renderMenu()}
-        </div>
-      ) : menu.current !== 'inicio' ? (
-        <div className="p-4 bg-[#1a1a1a] border-t border-[#333] max-h-64 overflow-y-auto">
-          {renderMenu()}
-        </div>
-      ) : (
-        <div className="p-4 bg-[#1a1a1a] border-t border-[#333]">
+      {/* Menu (somente quando ativo, fora do início) */}
+      {menu.current !== 'inicio' && (
+        <div className="p-3 bg-[#1a1a1a] border-t border-[#333] max-h-[40%] overflow-y-auto shrink-0">
           {renderMenu()}
         </div>
       )}
 
-      {/* Input Area */}
+      {/* Menu inicial compacto (somente quando ainda não há mensagens) */}
+      {menu.current === 'inicio' && messages.length === 0 && (
+        <div className="p-3 bg-[#1a1a1a] border-t border-[#333] shrink-0">
+          {renderMenu()}
+        </div>
+      )}
+
+      {/* Input Area — sempre visível no início */}
       {menu.current === 'inicio' && (
-        <div className="p-4 bg-[#1a1a1a] border-t border-[#333] flex gap-2">
+        <div className="p-3 bg-[#1a1a1a] border-t border-[#333] flex gap-2 shrink-0">
           <input
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyPress={e => e.key === 'Enter' && handleSendMessage()}
             placeholder="Sua mensagem..."
-            className="flex-1 bg-[#2a2a2a] border border-[#333] rounded-lg px-3 py-2 text-white text-sm placeholder-[#666] focus:outline-none focus:border-[#00A651] transition-colors"
+            className="flex-1 bg-[#2a2a2a] border border-[#333] rounded-lg px-3 py-2.5 text-white text-sm placeholder-[#666] focus:outline-none focus:border-[#00A651] transition-colors"
             disabled={loading}
           />
           <button
             onClick={handleSendMessage}
-            disabled={loading}
-            className="bg-[#00A651] hover:bg-[#008a3d] disabled:opacity-50 text-white p-2 rounded-lg transition-colors"
+            disabled={loading || !input.trim()}
+            aria-label="Enviar mensagem"
+            className="bg-[#00A651] hover:bg-[#008a3d] disabled:opacity-50 text-white p-2.5 rounded-lg transition-colors"
           >
             <Send className="w-5 h-5" />
           </button>
