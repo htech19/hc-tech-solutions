@@ -400,20 +400,21 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="maia fixed bottom-6 right-6 w-[92vw] max-w-sm h-[70vh] max-h-[600px] bg-[#1a1a1a] rounded-2xl shadow-2xl flex flex-col z-50 border border-[#00A651]/30 text-xs">
+    <div className="maia fixed bottom-6 right-6 w-[94vw] sm:w-[420px] max-w-[440px] h-[80vh] max-h-[680px] bg-[#1a1a1a] rounded-2xl shadow-2xl flex flex-col z-50 border border-[#00A651]/30 text-sm">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#00A651] to-[#008a3d] p-4 rounded-t-2xl flex items-center justify-between">
+      <div className="bg-gradient-to-r from-[#00A651] to-[#008a3d] p-3 rounded-t-2xl flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
             <MessageCircle className="w-5 h-5 text-white" />
           </div>
           <div className="leading-tight">
-            <div className="font-black uppercase italic text-white text-xs">MAIA</div>
-            <div className="text-[8px] text-white/80">Assistente HC Tech • Online</div>
+            <div className="font-black uppercase italic text-white text-sm">MAIA</div>
+            <div className="text-[10px] text-white/80">Assistente HC Tech • Online</div>
           </div>
         </div>
         <button
           onClick={() => setIsOpen(false)}
+          aria-label="Fechar chat"
           className="bg-white/20 hover:bg-white/30 p-2 rounded-lg transition-colors"
         >
           <X className="w-5 h-5 text-white" />
