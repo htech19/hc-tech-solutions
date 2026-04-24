@@ -1,274 +1,172 @@
 import { corsHeaders } from "@supabase/supabase-js/cors";
+import {
+  BASE_PRECOS,
+  buscarPreco,
+  detectarModelo,
+  detectarServico,
+  formatarRespostaVenda,
+  rotuloServico,
+  type ServicoKey,
+} from "./precos.ts";
 
 // ──────────────────────────────────────────────────────────────
-// MAIA — Atendente HC Tech
-// Cascata: Regras locais → Lovable AI → Anthropic → Gemini → Grok → Fallback
+// MAIA — Atendente comercial HC Tech
+// Fluxo: contexto (histórico) → detectar modelo+serviço → BUSCAR base
+// → responder venda. Fallback nunca trava nem reinicia.
 // ──────────────────────────────────────────────────────────────
 
 const WA = "https://wa.me/5511940562933";
-const SITE = "https://hctechinfocell.com.br";
 
-const SYSTEM_PROMPT = `Você é a MAIA, atendente virtual da HC Tech — assistência técnica premium em São Bernardo do Campo, SP.
-Atenda em português do Brasil, com cortesia, autoridade técnica e tom acolhedor.
-Use no MÁXIMO 3 frases curtas. Nunca invente preços exatos.
-Quando faltar info, peça apenas: marca, modelo e defeito principal.
-Encerre orientando: continuar pelo chat ou abrir o WhatsApp (11) 94056-2933.`;
+type ChatMsg = { role: "user" | "assistant"; content: string };
 
-// ──────────── Respostas locais (variadas) ────────────
-const RESPOSTAS_LOCAIS: Record<string, string[]> = {
-  saudacao: [
-    "👋 Olá! Aqui é a Maia, da HC Tech. Me conta qual o aparelho e o defeito principal que já encaminho seu atendimento.",
-    "Oi! Bem-vindo(a) à HC Tech ✨ Qual o problema do seu dispositivo hoje?",
-    "Olá! 🤝 Pode me passar a marca e o modelo do seu aparelho e o que está acontecendo?",
-  ],
-  preco: [
-    "💼 Para passar um valor preciso preciso saber: marca, modelo e tipo de defeito. Pode me informar?",
-    "🔍 Os valores variam conforme aparelho e peça. Me diz o modelo e o defeito que sigo com o orçamento.",
-  ],
-  tela: [
-    "🔨 Trocamos telas com peças selecionadas e garantia HC Tech. Apenas o vidro quebrou ou o touch também parou? Qual o modelo?",
-    "📺 Tela quebrada? Trabalhamos com Incell, OLED, Nacional e linha COM ARO. Me passa o modelo do aparelho.",
-  ],
-  bateria: [
-    "⚡ Bateria original ou premium com 90 dias de garantia. Seu aparelho descarrega rápido, não liga ou está estufada?",
-    "🔋 Trocamos bateria com garantia. Me diz o modelo do aparelho.",
-  ],
-  naoliga: [
-    "❌ Diagnóstico elétrico avançado e reparo SMD. Caiu, molhou, ou simplesmente parou? Qual o modelo?",
-  ],
-  agua: [
-    "💧 Higienização interna e desoxidação. Quanto tempo faz que molhou? E qual o modelo do aparelho?",
-  ],
-  software: [
-    "🔄 Corrigimos loop, brick, lentidão e travamentos. Qual o modelo e o que está acontecendo?",
-  ],
-  conector: [
-    "🔌 Trocamos conector USB-C, Lightning e Micro USB com garantia. Qual o modelo?",
-  ],
-  camera: [
-    "📷 Trocamos câmera traseira, frontal, lente e flex. Qual o modelo?",
-  ],
-  audio: [
-    "🔊 Reparo de alto-falante, fone, microfone e vibracall. Qual o modelo?",
-  ],
-  teclado: [
-    "⌨️ Trocamos teclado de notebook. Me passa marca e modelo.",
-  ],
-  garantia: [
-    "✅ Trabalhamos com 90 dias de garantia em peças e mão de obra. Posso ajudar em algo mais?",
-  ],
-  duracao: [
-    "⏱️ Telas e baterias normalmente saem no mesmo dia. Reparo de placa ou dano por água: 2 a 5 dias úteis.",
-  ],
-  whatsapp: [
-    `📲 Claro! Fala direto com a gente: ${WA} — nosso técnico responde rapidinho.`,
-  ],
-  local: [
-    "📍 Atendemos em São Bernardo do Campo, SP. Posso te enviar a localização exata pelo WhatsApp.",
-  ],
-  horario: [
-    "🕐 Funcionamos de segunda a sábado, das 9h às 18h. Precisa de outro horário? Me avisa pelo WhatsApp.",
-  ],
-  site: [
-    `🌐 Confira nosso catálogo completo em ${SITE}`,
-  ],
-  agradecimento: [
-    "Por nada! 🤝 Qualquer coisa estou por aqui.",
-    "Disponha! ✨ Conte com a HC Tech.",
-  ],
-};
+// Saudações que NÃO devem disparar resposta de boas-vindas se já há contexto
+const SAUDACOES = ["oi", "olá", "ola", "opa", "bom dia", "boa tarde", "boa noite", "hey", "hello", "eai", "e ai"];
+const AGRADECIMENTOS = ["obrigado", "obrigada", "valeu", "vlw", "agradecido", "thanks"];
 
-const INTENCOES: Record<string, string[]> = {
-  saudacao: ["oi", "olá", "ola", "opa", "bom dia", "boa tarde", "boa noite", "hey", "hello", "eai", "e ai"],
-  agradecimento: ["obrigado", "obrigada", "valeu", "vlw", "agradecido", "thanks"],
-  preco: ["quanto custa", "preço", "preco", "valor", "tabela", "orçamento", "orcamento", "custo", "quanto fica", "quanto sai"],
-  tela: ["tela", "display", "vidro", "touch", "trincou", "rachou", "quebrou a tela"],
-  bateria: ["bateria", "carga", "descarrega", "estufada", "estufou", "não segura"],
-  naoliga: ["não liga", "nao liga", "morreu", "apagou", "não acende", "nao acende"],
-  agua: ["molhou", "molhei", "água", "agua", "caiu na agua", "caiu na água", "líquido", "liquido", "chuva"],
-  software: ["lento", "travando", "travado", "loop", "reinicia", "reinício", "brick", "lentidão", "lentidao"],
-  conector: ["conector", "carregador", "não carrega", "nao carrega", "porta de carga", "usb", "tipo c", "tipo-c", "lightning"],
-  camera: ["câmera", "camera", "lente", "foto borrada", "foco"],
-  audio: ["som", "áudio", "audio", "alto-falante", "alto falante", "microfone", "fone", "vibracall"],
-  teclado: ["teclado", "tecla", "digitar"],
-  garantia: ["garantia", "garantido"],
-  duracao: ["quanto tempo", "demora", "prazo", "fica pronto", "entrega"],
-  whatsapp: ["whatsapp", "zap", "telefone", "humano", "atendente", "ligar"],
-  local: ["onde", "endereço", "endereco", "fica", "localização", "localizacao"],
-  horario: ["horário", "horario", "aberto", "fecha", "funciona", "funcionamento"],
-  site: ["site", "página", "pagina", "link"],
-};
+function ehSaudacao(t: string) {
+  const x = t.toLowerCase().trim();
+  return SAUDACOES.some((s) => x === s || x.startsWith(s + " ") || x.startsWith(s + "!"));
+}
+function ehAgradecimento(t: string) {
+  const x = t.toLowerCase();
+  return AGRADECIMENTOS.some((s) => x.includes(s));
+}
 
-function detectarIntencao(texto: string): string | null {
-  const t = texto.toLowerCase();
-  for (const [intencao, palavras] of Object.entries(INTENCOES)) {
-    if (palavras.some((p) => t.includes(p))) return intencao;
+// Procura no histórico o último modelo/serviço já mencionado pelo cliente
+function extrairContexto(history: ChatMsg[]): {
+  modeloEntry: ReturnType<typeof detectarModelo>;
+  servico: ServicoKey | null;
+} {
+  let modeloEntry: ReturnType<typeof detectarModelo> = null;
+  let servico: ServicoKey | null = null;
+  // Varre do mais recente pro mais antigo, considera mensagens do user
+  for (let i = history.length - 1; i >= 0; i--) {
+    const m = history[i];
+    if (m.role !== "user") continue;
+    if (!modeloEntry) modeloEntry = detectarModelo(m.content);
+    if (!servico) servico = detectarServico(m.content);
+    if (modeloEntry && servico) break;
   }
-  return null;
+  return { modeloEntry, servico };
 }
 
-function respostaLocal(intencao: string): string {
-  const opts = RESPOSTAS_LOCAIS[intencao];
-  if (!opts || opts.length === 0) return null as unknown as string;
-  return opts[Math.floor(Math.random() * opts.length)];
-}
-
-function textoRuim(t: string | null | undefined): boolean {
-  if (!t || t.trim().length < 8) return true;
-  const ruins = ["rate limit", "too many requests", "cannot assist", "api key", "authentication", "i'm sorry", "as an ai"];
-  return ruins.some((r) => t.toLowerCase().includes(r));
-}
-
-// ──────────── Provedores de IA ────────────
-async function callLovableAI(message: string): Promise<string | null> {
-  const key = Deno.env.get("LOVABLE_API_KEY");
-  if (!key) return null;
-  try {
-    const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: message },
-        ],
-        max_tokens: 150,
-      }),
-    });
-    if (!r.ok) {
-      console.error("LovableAI status:", r.status);
-      return null;
-    }
-    const data = await r.json();
-    return data?.choices?.[0]?.message?.content?.trim() ?? null;
-  } catch {
-    console.error("LovableAI exception");
-    return null;
-  }
-}
-
-async function callAnthropic(message: string): Promise<string | null> {
-  const key = Deno.env.get("ANTHROPIC_API_KEY");
-  if (!key) return null;
-  try {
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "x-api-key": key,
-        "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "claude-3-5-haiku-20241022",
-        max_tokens: 150,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: message }],
-      }),
-    });
-    if (!r.ok) { console.error("Anthropic status:", r.status); return null; }
-    const data = await r.json();
-    return data?.content?.[0]?.text?.trim() ?? null;
-  } catch { console.error("Anthropic exception"); return null; }
-}
-
-async function callGemini(message: string): Promise<string | null> {
-  const key = Deno.env.get("GEMINI_API_KEY");
-  if (!key) return null;
-  try {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: [{ role: "user", parts: [{ text: message }] }],
-          generationConfig: { maxOutputTokens: 150, temperature: 0.4 },
-        }),
-      },
-    );
-    if (!r.ok) { console.error("Gemini status:", r.status); return null; }
-    const data = await r.json();
-    return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? null;
-  } catch { console.error("Gemini exception"); return null; }
-}
-
-async function callGrok(message: string): Promise<string | null> {
-  const key = Deno.env.get("GROK_API_KEY");
-  if (!key) return null;
-  try {
-    const r = await fetch("https://api.x.ai/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "grok-2-latest",
-        max_tokens: 150,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: message },
-        ],
-      }),
-    });
-    if (!r.ok) { console.error("Grok status:", r.status); return null; }
-    const data = await r.json();
-    return data?.choices?.[0]?.message?.content?.trim() ?? null;
-  } catch { console.error("Grok exception"); return null; }
-}
-
-// Cascata IA: Lovable → Anthropic → Gemini → Grok
-async function callAI(message: string): Promise<string | null> {
-  const providers = [callLovableAI, callAnthropic, callGemini, callGrok];
-  for (const fn of providers) {
-    const reply = await fn(message);
-    if (reply && !textoRuim(reply)) return reply;
-  }
-  return null;
+function listaModelosSugeridos(limite = 6): string {
+  return BASE_PRECOS.slice(0, limite)
+    .map((m) => "• " + m.apelidos[0])
+    .join("\n");
 }
 
 // ──────────── Handler ────────────
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
+  const json = (body: unknown, status = 200) =>
+    new Response(JSON.stringify(body), {
+      status,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+
   try {
-    const { message } = await req.json();
+    const { message, history } = await req.json();
     if (!message || typeof message !== "string") {
-      return new Response(JSON.stringify({ error: "Mensagem inválida" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return json({ error: "Mensagem inválida" }, 400);
     }
 
-    const trimmed = message.slice(0, 300).trim();
+    const trimmed = message.slice(0, 400).trim();
+    const hist: ChatMsg[] = Array.isArray(history)
+      ? history.filter((m: any) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+      : [];
 
-    // 1) Intenção local primeiro (custo zero, instantâneo)
-    const intencao = detectarIntencao(trimmed);
-    if (intencao) {
-      const local = respostaLocal(intencao);
-      if (local) {
-        return new Response(JSON.stringify({ reply: local, source: `local:${intencao}` }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+    const temContextoAnterior = hist.some((m) => m.role === "user");
+
+    // 1) Detectar na MENSAGEM atual
+    const modeloAtual = detectarModelo(trimmed);
+    const servicoAtual = detectarServico(trimmed);
+
+    // 2) Recuperar contexto do histórico
+    const ctx = extrairContexto(hist);
+
+    // 3) Mesclar: prioridade pra mensagem atual, fallback pro histórico
+    const modeloEntry = modeloAtual ?? ctx.modeloEntry;
+    const servico = servicoAtual ?? ctx.servico;
+
+    // ─── Caso A: temos modelo + serviço → buscar base e responder venda
+    if (modeloEntry && servico) {
+      const item = buscarPreco(modeloEntry.entry, servico);
+      if (item) {
+        return json({
+          reply: formatarRespostaVenda(modeloEntry.canonico, servico, item),
+          source: "base",
         });
       }
-    }
-
-    // 2) IA em cascata
-    const aiReply = await callAI(trimmed);
-    if (aiReply) {
-      return new Response(JSON.stringify({ reply: aiReply, source: "ai" }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      // Modelo existe mas serviço não cadastrado pra ele
+      return json({
+        reply:
+          `Para ${modeloEntry.canonico}, ${rotuloServico(servico)} ainda não está na base. ` +
+          `Conseguimos verificar pra você rapidamente. Quer que eu te conecte com um técnico no WhatsApp?\n${WA}`,
+        source: "fallback:servico-ausente",
       });
     }
 
-    // 3) Fallback amigável (não só "vai pro WhatsApp")
-    const fallback = `🤔 Posso te ajudar melhor se me passar a marca, o modelo e o defeito do aparelho. Se preferir, fale direto no WhatsApp: ${WA}`;
-    return new Response(JSON.stringify({ reply: fallback, source: "fallback" }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    // ─── Caso B: só serviço (falta modelo)
+    if (servico && !modeloEntry) {
+      return json({
+        reply:
+          `Perfeito, ${rotuloServico(servico).toLowerCase()}. Para te passar valor e prazo exatos, ` +
+          `me diz a marca e o modelo do aparelho (ex: iPhone 12, Samsung A51, Redmi Note 11).`,
+        source: "ask:modelo",
+      });
+    }
+
+    // ─── Caso C: só modelo (falta serviço)
+    if (modeloEntry && !servico) {
+      const servicosDisponiveis = Object.keys(modeloEntry.entry.servicos)
+        .map((s) => "• " + rotuloServico(s as ServicoKey))
+        .join("\n");
+      return json({
+        reply:
+          `Beleza, ${modeloEntry.canonico}! Qual o problema?\n${servicosDisponiveis}`,
+        source: "ask:servico",
+      });
+    }
+
+    // ─── Caso D: agradecimento
+    if (ehAgradecimento(trimmed)) {
+      return json({ reply: "Por nada! 🤝 Qualquer coisa estou por aqui.", source: "thanks" });
+    }
+
+    // ─── Caso E: saudação
+    if (ehSaudacao(trimmed)) {
+      // Se já há contexto, não reinicia
+      if (temContextoAnterior) {
+        return json({
+          reply: "Tô aqui 👋 Me conta a marca, o modelo e o defeito que sigo o atendimento.",
+          source: "greeting:resume",
+        });
+      }
+      return json({
+        reply:
+          "👋 Olá! Aqui é a Maia, da HC Tech. Me passa marca, modelo e o defeito (ex: \"tela iPhone 12\") que já te passo o valor.",
+        source: "greeting",
+      });
+    }
+
+    // ─── Caso F: nada detectado → fallback inteligente, sem reiniciar
+    return json({
+      reply:
+        `Pra te ajudar rapidinho, me diz o modelo e o defeito. Exemplos:\n` +
+        `• "tela iPhone 12"\n• "bateria Samsung A51"\n• "não carrega Redmi Note 11"\n\n` +
+        `Modelos populares na nossa base:\n${listaModelosSugeridos()}\n\n` +
+        `Se preferir falar com um humano: ${WA}`,
+      source: "fallback:ask",
     });
   } catch (e) {
     console.error("maia-chat error:", e);
     return new Response(
-      JSON.stringify({ reply: `Tive um probleminha. Fale com a gente no WhatsApp: ${WA}`, source: "error" }),
+      JSON.stringify({
+        reply: `Tive um probleminha aqui, mas seguimos! Me passa o modelo e o defeito que continuo o atendimento. Se preferir: ${WA}`,
+        source: "error",
+      }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
