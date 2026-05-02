@@ -1,117 +1,63 @@
-import { useState, useMemo } from "react";
-import { MessageCircle, Search } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import Header from "@/components/Header";
-import { products, categories } from "../data/store-products";
-
-export default function ProductPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
-
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === "Todos" || product.category === selectedCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchTerm, selectedCategory]);
-
-  return (
-    <div className="min-h-screen bg-black text-white font-sans">
-      <Header />
-
-      <main className="pt-24 pb-12 px-4 max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <motion.h1 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-black italic text-green-500 mb-4"
-          >
-            HC TECH STORE
-          </motion.h1>
-          <p className="text-gray-400">Qualidade e tecnologia ao seu alcance</p>
-        </div>
-
-        <div className="flex flex-col gap-6 mb-12">
-          <div className="relative max-w-2xl mx-auto w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-            <input
-              type="text"
-              placeholder="Buscar modelo, marca ou acessório..."
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-full py-4 pl-12 pr-6 focus:outline-none focus:border-green-500 transition-colors"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
-                  selectedCategory === category
-                    ? "bg-green-500 text-black"
-                    : "bg-zinc-900 text-gray-400 hover:bg-zinc-800"
-                }`}
-              >
-                {category.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredProducts.map((product) => (
-              <motion.div
-                layout
-                key={product.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 hover:border-green-500/50 transition-all group"
-              >
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-
-                <div className="p-6">
-                  <p className="text-green-500 text-[10px] font-bold uppercase mb-2">
-                    {product.category}
-                  </p>
-                  <h3 className="text-lg font-bold text-white mb-1 line-clamp-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-green-400 text-xl font-black mb-4">
-                    {product.price}
-                  </p>
-                  
-                  <a
-                    href={product.whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-400 text-black font-black py-3 rounded-xl transition-colors"
-                  >
-                    COMPRAR
-                    <MessageCircle size={18} />
-                  </a>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-gray-500 text-xl">Nenhum produto encontrado nesta categoria.</p>
-          </div>
-        )}
-      </main>
-    </div>
-  );
+export interface Product {
+  id: number;
+  name: string;
+  price: string;
+  category: string;
+  image: string;
+  whatsappUrl: string;
 }
+
+const SEU_NUMERO = "551194056293";
+
+const generateWaLink = (productName: string) =>
+  `https://wa.me/${SEU_NUMERO}?text=${encodeURIComponent(`Olá! Tenho interesse no produto: ${productName}`)}`;
+
+// 🔥 Função automática (NÃO PRECISA MAIS ESCREVER MANUAL)
+const img = (nome: string) => `/images/produtos/${nome}.jpg`;
+
+export const products: Product[] = [
+  // FONES
+  { id: 1, name: "Fone Bluetooth KD-790", price: "R$ 79,90", category: "Fones & Headsets", image: img("fone-kd-790"), whatsappUrl: generateWaLink("Fone Bluetooth KD-790") },
+  { id: 2, name: "Fone Bluetooth KD-788", price: "R$ 59,90", category: "Fones & Headsets", image: img("fone-kd-788"), whatsappUrl: generateWaLink("Fone Bluetooth KD-788") },
+  { id: 3, name: "Fone Bluetooth Knc-4219", price: "R$ 129,90", category: "Fones & Headsets", image: img("fone-knc-4219"), whatsappUrl: generateWaLink("Fone Bluetooth Knc-4219") },
+  { id: 4, name: "Fone Bluetooth Knc-5601", price: "R$ 54,90", category: "Fones & Headsets", image: img("fone-knc-5601"), whatsappUrl: generateWaLink("Fone Bluetooth Knc-5601") },
+  { id: 5, name: "Fone Bluetooth Knc-5602", price: "R$ 69,90", category: "Fones & Headsets", image: img("fone-knc-5602"), whatsappUrl: generateWaLink("Fone Bluetooth Knc-5602") },
+
+  // CABOS
+  { id: 22, name: "Cabo Usb/V8 (2 Metros)", price: "R$ 19,90", category: "Cabos", image: img("cabo-usb-v8-2m"), whatsappUrl: generateWaLink("Cabo Usb/V8 (2 Metros)") },
+  { id: 23, name: "Usb/V8 Silicone", price: "R$ 18,00", category: "Cabos", image: img("cabo-usb-v8-silicone"), whatsappUrl: generateWaLink("Usb/V8 Silicone") },
+  { id: 24, name: "Usb/V8 Comum", price: "R$ 15,00", category: "Cabos", image: img("cabo-usb-v8-comum"), whatsappUrl: generateWaLink("Usb/V8 Comum") },
+
+  // CARREGADORES
+  { id: 40, name: "Carregador Rápido (12W)", price: "R$ 34,90", category: "Carregadores & Fontes", image: img("carregador-12w"), whatsappUrl: generateWaLink("Carregador Rápido (12W)") },
+  { id: 41, name: "Carregador Turbo T-C 17W", price: "R$ 44,90", category: "Carregadores & Fontes", image: img("carregador-turbo-17w"), whatsappUrl: generateWaLink("Carregador Turbo T-C 17W") },
+
+  // POWER BANK
+  { id: 47, name: "Power Bank 10000mah KD-952", price: "R$ 95,00", category: "Power Banks", image: img("powerbank-10000mah"), whatsappUrl: generateWaLink("Power Bank 10000mah KD-952") },
+
+  // CAIXA DE SOM
+  { id: 50, name: "Caixa de Som AM-552 3000W", price: "R$ 249,00", category: "Caixas de Som", image: img("caixa-som-am552"), whatsappUrl: generateWaLink("Caixa de Som AM-552 3000W") },
+
+  // INFORMÁTICA
+  { id: 55, name: "Teclado Mecânico LEY-2080", price: "R$ 189,00", category: "Informática & Periféricos", image: img("teclado-ley-2080"), whatsappUrl: generateWaLink("Teclado Mecânico LEY-2080") },
+
+  // SMARTWATCH
+  { id: 68, name: "Smartwatch Kw62max", price: "R$ 259,00", category: "Smartwatches", image: img("smartwatch-kw62max"), whatsappUrl: generateWaLink("Smartwatch Kw62max") },
+
+  // UTILIDADES
+  { id: 71, name: "Marmita Elétrica LEY-2200", price: "R$ 129,00", category: "Utilidades", image: img("marmita-eletrica"), whatsappUrl: generateWaLink("Marmita Elétrica LEY-2200") },
+];
+
+export const categories = [
+  "Todos",
+  "Fones & Headsets",
+  "Cabos",
+  "Carregadores & Fontes",
+  "Power Banks",
+  "Caixas de Som",
+  "Informática & Periféricos",
+  "Acessórios",
+  "Eletrônicos",
+  "Smartwatches",
+  "Utilidades",
+];
