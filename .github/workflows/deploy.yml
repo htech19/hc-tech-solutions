@@ -24,6 +24,8 @@ jobs:
         run: bun install
 
       - name: Build
+        env:
+          VITE_GA_MEASUREMENT_ID: ${{ vars.VITE_GA_MEASUREMENT_ID }}
         run: bun run build
 
       - uses: actions/upload-pages-artifact@v3
