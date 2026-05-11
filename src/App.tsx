@@ -6,8 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import ChatWidget from "@/components/ChatWidget";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import CookieConsent from "@/components/CookieConsent";
 import Index from "./pages/Index";
 import LojaPage from "./pages/LojaPage";
+import PrivacidadePage from "./pages/PrivacidadePage";
 
 const queryClient = new QueryClient();
 
@@ -22,9 +24,10 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/loja" element={<LojaPage />} />
+            <Route path="/privacidade" element={<PrivacidadePage />} />
           </Routes>
-          {/* Chat Widget — Aparece em todas as páginas */}
           <ChatWidget />
+          <CookieConsent />
         </BrowserRouter>
       </TooltipProvider>
     </CartProvider>
