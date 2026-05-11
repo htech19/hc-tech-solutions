@@ -3,29 +3,24 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  // Configurações do servidor de desenvolvimento
+export default defineConfig(({ mode }) => ({
   server: {
     host: "0.0.0.0",
     port: 8080,
   },
-  // Plugins: Usamos apenas o plugin oficial do React para máxima estabilidade
-  plugins: [
-    react(),
-    // IMPORTANTE: Removidos plugins externos como 'lovable-tagger' que travavam o build
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
-      // Define o atalho '@' para a pasta 'src', facilitando as importações
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // Otimizações para o processo de build no GitHub Actions
+  // Strip console/debugger in production builds (keeps dev DX intact)
+  esbuild: mode === "production" ? { drop: ["console", "debugger"] } : undefined,
   build: {
     outDir: "dist",
-    reportCompressedSize: false, // Acelera o build
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
+    sourcemap: false, // never expose source maps in production
+    reportCompressedSize: false,
+    minify: "esbuild",
+    commonjsOptions: { transformMixedEsModules: true },
   },
-});
+}));
