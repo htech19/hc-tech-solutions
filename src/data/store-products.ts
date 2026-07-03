@@ -1,4 +1,4 @@
-export interface Product {
+Avalie e reescreva minha pagina de venda toda hoje as imagens estão quebradas se verificar pelo link "https://hctechinfocell.com.br/loja" segue o conteudo da pagina do git - export interface Product {
   id: number;
   name: string;
   price: string;
