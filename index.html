@@ -6,9 +6,11 @@
     <meta name="google-site-verification" content="-iyNOhPM8LsVpI" />
 
     <!-- ================================================
-         SECURITY HEADERS (meta — fallback p/ hosting estático)
-         OBS: HSTS / X-Frame-Options só funcionam via header HTTP real
-         (ver SECURITY.md → Cloudflare Transform Rules).
+         SECURITY HEADERS (meta http-equiv)
+         GitHub Pages NÃO envia headers HTTP customizados.
+         Só funcionam via meta: CSP, X-Content-Type-Options, Referrer, Permissions-Policy.
+         HSTS, X-Frame-Options, remover "server: GitHub.com" e restringir
+         Access-Control-Allow-Origin exigem proxy (Cloudflare Free — ver SECURITY.md).
     ================================================ -->
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
@@ -17,15 +19,17 @@
       font-src 'self' https://fonts.gstatic.com data:;
       img-src 'self' data: blob: https:;
       connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com;
-      frame-ancestors 'none';
+      frame-ancestors 'self';
       base-uri 'self';
       form-action 'self' https://wa.me;
       object-src 'none';
       upgrade-insecure-requests;
     " />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
 
     <link rel="preconnect" href="https://fiwbbhrrkongcryyqjmv.supabase.co" crossorigin />
 
