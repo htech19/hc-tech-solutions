@@ -5,33 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="-iyNOhPM8LsVpI" />
 
-    <!-- ================================================
-         SECURITY HEADERS (meta http-equiv)
-         GitHub Pages NÃO envia headers HTTP customizados.
-         Só funcionam via meta: CSP, X-Content-Type-Options, Referrer, Permissions-Policy.
-         HSTS, X-Frame-Options, remover "server: GitHub.com" e restringir
-         Access-Control-Allow-Origin exigem proxy (Cloudflare Free — ver SECURITY.md).
-    ================================================ -->
-    <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self';
-      script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com;
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-      font-src 'self' https://fonts.gstatic.com data:;
-      img-src 'self' data: blob: https:;
-      connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com;
-      frame-ancestors 'self';
-      base-uri 'self';
-      form-action 'self' https://wa.me;
-      object-src 'none';
-      upgrade-insecure-requests;
-    " />
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <!-- Security: HSTS, X-Frame-Options, X-Content-Type-Options, Permissions-Policy
+         são enviados pelo Cloudflare (ver SECURITY.md). Meta http-equiv foi removido
+         pois HSTS/XFO são ignorados por meta e duplicam a config do proxy. -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
 
     <link rel="preconnect" href="https://fiwbbhrrkongcryyqjmv.supabase.co" crossorigin />
+    <link rel="preload" as="image" href="/hero-bg.jpg" fetchpriority="high" />
 
     <!-- ================================================
          SEO BÁSICO
@@ -49,7 +29,7 @@
     <meta property="og:url" content="https://hctechinfocell.com.br/" />
     <meta property="og:title" content="Conserto de Celular e Notebook em São Bernardo do Campo – HC Tech" />
     <meta property="og:description" content="Reparo especializado: micro-soldagem, reballing, troca de tela rápida. Orçamento grátis via WhatsApp. Garantia em todos os serviços." />
-    <meta property="og:image" content="https://hctechinfocell.com.br/placeholder.ico" />
+    <meta property="og:image" content="https://hctechinfocell.com.br/hero-bg.jpg" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content="HC Tech" />
 
@@ -59,7 +39,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Conserto de Celular e Notebook em São Bernardo do Campo – HC Tech" />
     <meta name="twitter:description" content="Reparo especializado: micro-soldagem, reballing, troca de tela rápida. Orçamento grátis. Garantia." />
-    <meta name="twitter:image" content="https://hctechinfocell.com.br/placeholder.ico" />
+    <meta name="twitter:image" content="https://hctechinfocell.com.br/hero-bg.jpg" />
 
     <!-- ================================================
          SCHEMA.ORG — LocalBusiness (SEO local Google)
@@ -69,7 +49,7 @@
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "HC Tech – Conserto de Celular e Notebook em São Bernardo do Campo",
-      "image": "https://hctechinfocell.com.br/placeholder.ico",
+      "image": "https://hctechinfocell.com.br/hero-bg.jpg",
       "url": "https://hctechinfocell.com.br",
       "telephone": "+55-11-94056-2933",
       "priceRange": "$$",
@@ -126,7 +106,7 @@
     <!-- ================================================
          FAVICON
     ================================================ -->
-    <link rel="icon" type="image/x-icon" href="/placeholder.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
     <!-- ================================================
          FONTES (preconnect para performance)
