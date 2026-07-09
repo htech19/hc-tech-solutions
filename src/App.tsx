@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,8 +9,10 @@ import ChatWidget from "@/components/ChatWidget";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieConsent from "@/components/CookieConsent";
 import Index from "./pages/Index";
-import LojaPage from "./pages/LojaPage";
-import PrivacidadePage from "./pages/PrivacidadePage";
+
+const LojaPage = lazy(() => import("./pages/LojaPage"));
+const PrivacidadePage = lazy(() => import("./pages/PrivacidadePage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
@@ -21,11 +24,14 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <GoogleAnalytics />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/loja" element={<LojaPage />} />
-            <Route path="/privacidade" element={<PrivacidadePage />} />
-          </Routes>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/loja" element={<LojaPage />} />
+              <Route path="/privacidade" element={<PrivacidadePage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
           <ChatWidget />
           <CookieConsent />
         </BrowserRouter>
