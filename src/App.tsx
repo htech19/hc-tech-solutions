@@ -14,6 +14,14 @@ const LojaPage = lazy(() => import("./pages/LojaPage"));
 const PrivacidadePage = lazy(() => import("./pages/PrivacidadePage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+const AdminLayout = lazy(() => import("./cms/AdminLayout"));
+const LoginPage = lazy(() => import("./cms/pages/LoginPage"));
+const DashboardPage = lazy(() => import("./cms/pages/DashboardPage"));
+const PostsPage = lazy(() => import("./cms/pages/PostsPage"));
+const TaxonomyPage = lazy(() => import("./cms/pages/TaxonomyPage"));
+const SettingsPage = lazy(() => import("./cms/pages/SettingsPage"));
+const LogsPage = lazy(() => import("./cms/pages/LogsPage"));
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -29,6 +37,15 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/loja" element={<LojaPage />} />
               <Route path="/privacidade" element={<PrivacidadePage />} />
+              <Route path="/admin/login" element={<LoginPage />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<DashboardPage />} />
+                <Route path="posts" element={<PostsPage />} />
+                <Route path="categorias" element={<TaxonomyPage kind="category" />} />
+                <Route path="tags" element={<TaxonomyPage kind="tag" />} />
+                <Route path="configuracoes" element={<SettingsPage />} />
+                <Route path="logs" element={<LogsPage />} />
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
